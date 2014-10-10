@@ -1,0 +1,70 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#059e9e"
+    tools:context=".IndexActivity">
+
+        <LinearLayout android:id="@+id/fullscreen_content_controls"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <TextView android:id="@+id/fullscreen_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:keepScreenOn="true"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:textSize="50sp"
+                    android:gravity="center"
+                    android:text="@string/menu"
+                    android:layout_gravity="center" />
+
+             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/fruit"
+                    style="@style/MenuButton"
+                    android:layout_gravity="center"
+                    android:text="@string/fruit"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/vegetable"
+                    style="@style/MenuButton"
+                    android:layout_gravity="center"
+                    android:text="@string/vegetable"/>
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/setting"
+                    style="@style/MenuButton"
+                    android:layout_gravity="center"
+                    android:text="@string/setting"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+</FrameLayout>
