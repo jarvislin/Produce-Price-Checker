@@ -45,7 +45,7 @@ public class DataFetcher {
             Document doc = res.parse();
             mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
-                saveData(doc);
+                saveData(doc.select("td"));
         }catch (Exception ex){
             Log.d("gg","Fetching data failed!");
         }
@@ -55,18 +55,17 @@ public class DataFetcher {
         return "241";
     }
 
-    private void saveData(Document document) {
-        Elements tds =  document.select("td");
-        Log.d("gg", "count" + String.valueOf(tds.size()));
+    private void saveData(Elements elements) {
+        Log.d("gg", "count" + String.valueOf(elements.size()));
         int count = 0;
-        for(int i = 16 ; i < tds.size() ; i += 10){
+        for(int i = 16 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
-            data[0] = tds.get(i).text();
-            data[1] = tds.get(i + 1).text();
-            data[2] = tds.get(i + 3).text();
-            data[3] = tds.get(i + 4).text();
-            data[4] = tds.get(i + 5).text();
-            data[5] = tds.get(i + 6).text();
+            data[0] = elements.get(i).text();
+            data[1] = elements.get(i + 1).text();
+            data[2] = elements.get(i + 3).text();
+            data[3] = elements.get(i + 4).text();
+            data[4] = elements.get(i + 5).text();
+            data[5] = elements.get(i + 6).text();
             mProduceDataMap.put(count, new ProduceData(data));
             count++;
         }
