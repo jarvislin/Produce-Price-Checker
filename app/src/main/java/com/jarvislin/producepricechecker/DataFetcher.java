@@ -19,15 +19,15 @@ public class DataFetcher {
     private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     public boolean mDataExist = false;
+    public int mOffset = 0;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
 
     public DataFetcher(int type) {
-        int offset = 0;
         do {
-            fetchData(getDate(offset), type);
-            offset++;
-        } while(!mDataExist && offset < 5);
+            fetchData(Tools.getDate(mOffset), type);
+            mOffset++;
+        } while(!mDataExist && mOffset < 5);
     }
 
     public HashMap getProduceDataMap(){
@@ -70,18 +70,4 @@ public class DataFetcher {
             count++;
         }
     }
-
-
-    private String[] getDate(int offset) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -offset);
-        String[] date = dateFormat.format(cal.getTime()).split("-");
-        date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
-        Log.d("gg",date[0]+date[1]+date[2]);
-        return date;
-    }
-
-
-
 }
