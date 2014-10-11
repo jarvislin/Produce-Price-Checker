@@ -19,15 +19,15 @@ public class DataFetcher {
     private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     public boolean mDataExist = false;
+    public int mOffset = 0;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
 
     public DataFetcher(int type) {
-        int offset = 0;
         do {
-            fetchData(getDate(offset), type);
-            offset++;
-        } while(!mDataExist && offset < 5);
+            fetchData(Tools.getDate(mOffset), type);
+            mOffset++;
+        } while(!mDataExist && mOffset < 5);
     }
 
     public HashMap getProduceDataMap(){
@@ -45,7 +45,7 @@ public class DataFetcher {
             Document doc = res.parse();
             mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
-                saveData(doc);
+                saveData(doc.select("td"));
         }catch (Exception ex){
             Log.d("gg","Fetching data failed!");
         }
@@ -55,34 +55,19 @@ public class DataFetcher {
         return "241";
     }
 
-    private void saveData(Document document) {
-        Elements tds =  document.select("td");
-        Log.d("gg", "count" + String.valueOf(tds.size()));
+    private void saveData(Elements elements) {
+        Log.d("gg", "count" + String.valueOf(elements.size()));
         int count = 0;
-        for(int i = 16 ; i < tds.size() ; i += 10){
+        for(int i = 16 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
-            data[0] = tds.get(i).text();
-            data[1] = tds.get(i + 1).text();
-            data[2] = tds.get(i + 3).text();
-            data[3] = tds.get(i + 4).text();
-            data[4] = tds.get(i + 5).text();
-            data[5] = tds.get(i + 6).text();
+            data[0] = elements.get(i).text();
+            data[1] = elements.get(i + 1).text();
+            data[2] = elements.get(i + 3).text();
+            data[3] = elements.get(i + 4).text();
+            data[4] = elements.get(i + 5).text();
+            data[5] = elements.get(i + 6).text();
             mProduceDataMap.put(count, new ProduceData(data));
             count++;
         }
     }
-
-
-    private String[] getDate(int offset) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -offset);
-        String[] date = dateFormat.format(cal.getTime()).split("-");
-        date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
-        Log.d("gg",date[0]+date[1]+date[2]);
-        return date;
-    }
-
-
-
 }
