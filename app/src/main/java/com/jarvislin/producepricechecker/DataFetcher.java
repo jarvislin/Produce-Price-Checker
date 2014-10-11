@@ -43,7 +43,7 @@ public class DataFetcher {
                     .execute();
 
             Document doc = res.parse();
-            mDataExist = (doc.select("p").first().text() == "查無結果!") ? false : true ;
+            mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
                 saveData(doc);
         }catch (Exception ex){

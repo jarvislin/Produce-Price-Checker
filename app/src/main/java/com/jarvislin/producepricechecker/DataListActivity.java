@@ -53,7 +53,7 @@ public class DataListActivity extends Activity {
             for(int i = 0 ; i < dataMap.size() ; i++ ){
                 row = ( (i + 1) % 2 == 1) ? inflater.inflate(R.layout.odd_row, null) : inflater.inflate(R.layout.even_row, null) ;
                 tempProduceData = dataMap.get(i);
-                Log.d("gg", dataMap.get(i).getName());
+//                Log.d("gg", dataMap.get(i).getName());
                 addRow(row, tempProduceData);
             }
         }
