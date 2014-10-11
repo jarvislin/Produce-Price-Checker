@@ -1,13 +1,9 @@
 package com.jarvislin.producepricechecker;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -22,15 +18,10 @@ public class IndexActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-
-//        getActionBar().hide();
         setContentView(R.layout.activity_index);
 
         setNetwork();
         initViews();
-
-        final View controlsView = findViewById(R.id.fullscreen_content_controls);
-        final View contentView = findViewById(R.id.fullscreen_content);
 
         if(!Tools.isNetworkAvailable(this))
             Tools.showNetworkErrorMessage(this);
