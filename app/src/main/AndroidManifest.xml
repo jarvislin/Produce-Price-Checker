@@ -30,6 +30,11 @@
             android:label="@string/title_activity_data_list"
             android:theme="@style/FullscreenTheme" >
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings">
+
+        </activity>
     </application>
 
 </manifest>

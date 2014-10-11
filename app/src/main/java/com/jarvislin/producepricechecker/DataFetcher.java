@@ -1,6 +1,5 @@
 package com.jarvislin.producepricechecker;
 
-import android.content.Context;
 import android.util.Log;
 
 import org.jsoup.Connection;
@@ -8,19 +7,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Jarvis Lin on 2014/10/10.
  */
 public class DataFetcher {
-    private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102q.asp";
-    private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v101q.asp";
+    private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
+    private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     public boolean mDataExist = false;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
@@ -48,9 +45,9 @@ public class DataFetcher {
             Document doc = res.parse();
             mDataExist = (doc.select("p").first().text() == "查無結果!") ? false : true ;
             if(mDataExist)
-                savaData(doc);
+                saveData(doc);
         }catch (Exception ex){
-            Log.d("Checker","Fetching data failed!");
+            Log.d("gg","Fetching data failed!");
         }
     }
 
@@ -58,17 +55,31 @@ public class DataFetcher {
         return "241";
     }
 
-    private void savaData(Document document) {
-        String gg = document.select("td").first().text();
+    private void saveData(Document document) {
+        Elements tds =  document.select("td");
+        Log.d("gg", "count" + String.valueOf(tds.size()));
+        int count = 0;
+        for(int i = 16 ; i < tds.size() ; i += 10){
+            String[] data = new String[6];
+            data[0] = tds.get(i).text();
+            data[1] = tds.get(i + 1).text();
+            data[2] = tds.get(i + 3).text();
+            data[3] = tds.get(i + 4).text();
+            data[4] = tds.get(i + 5).text();
+            data[5] = tds.get(i + 6).text();
+            mProduceDataMap.put(count, new ProduceData(data));
+            count++;
+        }
     }
 
 
     private String[] getDate(int offset) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -offset);
-        String[] date = dateFormat.format(cal.getTime()).split("/");
+        String[] date = dateFormat.format(cal.getTime()).split("-");
         date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
+        Log.d("gg",date[0]+date[1]+date[2]);
         return date;
     }
 

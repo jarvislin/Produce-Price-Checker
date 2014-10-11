@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 
 
@@ -17,12 +18,12 @@ public class IndexActivity extends Activity {
     protected View mVegetableButton;
     protected View mSettingButton;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
 
-        getActionBar().hide();
+//        getActionBar().hide();
         setContentView(R.layout.activity_index);
 
         setNetwork();
@@ -31,18 +32,18 @@ public class IndexActivity extends Activity {
         final View controlsView = findViewById(R.id.fullscreen_content_controls);
         final View contentView = findViewById(R.id.fullscreen_content);
 
-        if(!isNetworkAvailable()){
-            Log.d("gg", "no net");
-        }else
-            Log.d("gg", "has net");
+        if(!Tools.isNetworkAvailable(this))
+            Tools.showNetworkErrorMessage(this);
 
     }
 
     private void initViews() {
+        //find views
         mFruitButton = findViewById(R.id.fruit);
         mVegetableButton = findViewById(R.id.vegetable);
         mSettingButton = findViewById(R.id.setting);
 
+        //set listeners
         mFruitButton.setOnClickListener(clickFruit());
         mVegetableButton.setOnClickListener(clickVegetable());
         mSettingButton.setOnClickListener(clickSetting());
@@ -58,12 +59,7 @@ public class IndexActivity extends Activity {
                 .build());
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager
-                .getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
+
 
     private Button.OnClickListener clickFruit(){
         return new Button.OnClickListener(){
@@ -80,7 +76,9 @@ public class IndexActivity extends Activity {
         return new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(IndexActivity.this,DataListActivity.class);
+                intent.putExtra("type", 1);
+                IndexActivity.this.startActivity(intent);
             }
         };
     }
@@ -89,7 +87,8 @@ public class IndexActivity extends Activity {
         return new Button.OnClickListener(){
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(IndexActivity.this,SettingsActivity.class);
+                IndexActivity.this.startActivity(intent);
             }
         };
     }
