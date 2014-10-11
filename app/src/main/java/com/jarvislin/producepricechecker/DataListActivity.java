@@ -51,7 +51,7 @@ public class DataListActivity extends Activity {
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
             View row;
             for(int i = 0 ; i < dataMap.size() ; i++ ){
-                row = inflater.inflate(R.layout.data_row, null);
+                row = ( (i + 1) % 2 == 1) ? inflater.inflate(R.layout.odd_row, null) : inflater.inflate(R.layout.even_row, null) ;
                 tempProduceData = dataMap.get(i);
                 Log.d("gg", dataMap.get(i).getName());
                 addRow(row, tempProduceData);

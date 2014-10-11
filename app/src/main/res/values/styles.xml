@@ -35,13 +35,37 @@
 
     <style name="ButtonBarButton" />
 
-    <style name="TableRow">
+    <style name="OddRow">
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:textSize">20dp</item>
         <item name="android:paddingTop">5dp</item>
         <item name="android:paddingBottom">5dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:textColor">#147585</item>
+    </style>
+
+    <style name="EvenRow">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#EAF2F4</item>
+        <item name="android:textColor">#147585</item>
+    </style>
+
+    <style name="TableHeader">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#167F92</item>
+        <item name="android:textColor">#E2FFFF</item>
     </style>
 
 </resources>

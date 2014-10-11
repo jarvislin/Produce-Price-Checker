@@ -2,9 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#0099cc"
+    android:background="#EAF2F4"
     tools:context="com.jarvislin.producepricechecker.DataListActivity">
-
 
     <ScrollView
         android:layout_width="match_parent"
@@ -21,19 +20,18 @@
             <TableRow
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                    <TextView android:text="產品"
-                        style="@style/TableRow"/>
 
+                    <TextView android:text="品種/名稱"
+                        style="@style/TableHeader"/>
                     <TextView android:text="上價"
-                        style="@style/TableRow"/>
+                        style="@style/TableHeader"/>
                     <TextView android:text="中價"
-                        style="@style/TableRow"/>
+                        style="@style/TableHeader"/>
                     <TextView android:text="下價"
-                        style="@style/TableRow"/>
+                        style="@style/TableHeader"/>
                     <TextView android:text="平均"
-                        style="@style/TableRow"/>
+                        style="@style/TableHeader"/>
             </TableRow>
-
 
         </TableLayout>
     </ScrollView>
