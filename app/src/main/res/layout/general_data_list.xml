@@ -1,0 +1,100 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EAF2F4"
+    android:orientation="vertical"
+    tools:context="com.jarvislin.producepricechecker.DataListActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/DataTitle"
+            android:text="查詢日期："
+            android:gravity="left"/>
+
+        <TextView
+            style="@style/DataTitle"
+            android:id="@+id/currentDate"
+            android:gravity="right"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/DataTitle"
+            android:text="資料日期："
+            android:gravity="left" />
+
+        <TextView
+            android:id="@+id/dataDate"
+            style="@style/DataTitle"
+            android:gravity="right" />/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/DataTitle"
+            android:text="市場："
+            android:gravity="left" />
+
+        <TextView
+            android:id="@+id/marketName"
+            style="@style/DataTitle"
+            android:gravity="right" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/DataTitle"
+            android:text="單位：公斤/元"
+            android:gravity="left" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <TableLayout
+            android:shrinkColumns="0"
+            android:stretchColumns="*"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/tableLayout">
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                    <TextView android:text="品種/名稱"
+                        style="@style/TableHeader"/>
+                    <TextView android:text="上價"
+                        style="@style/TableHeader"/>
+                    <TextView android:text="中價"
+                        style="@style/TableHeader"/>
+                    <TextView android:text="下價"
+                        style="@style/TableHeader"/>
+                    <TextView android:text="平均"
+                        style="@style/TableHeader"/>
+            </TableRow>
+
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>
