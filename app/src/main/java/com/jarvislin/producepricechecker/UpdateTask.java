@@ -21,7 +21,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     protected DataFetcher doInBackground(Integer... type) {
         // TODO Auto-generated method stub
         //開始更新
-        return new DataFetcher(type[0]);
+        return new DataFetcher(type[0], mContext);
     }
 
     @Override

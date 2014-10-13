@@ -43,7 +43,7 @@ public class DataListActivity extends Activity {
     }
 
     public void loadDataMap(DataFetcher dataFetcher){
-        HashMap<Integer, ProduceData> dataMap = (dataFetcher.mDataExist) ? dataFetcher.getProduceDataMap() : null;
+        HashMap<Integer, ProduceData> dataMap = (dataFetcher.hasData()) ? dataFetcher.getProduceDataMap() : null;
         if(dataMap == null)
             Tools.showSiteErrorMessage(this);//site error
         else{

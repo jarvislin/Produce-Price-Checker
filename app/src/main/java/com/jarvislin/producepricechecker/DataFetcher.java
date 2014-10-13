@@ -1,5 +1,7 @@
 package com.jarvislin.producepricechecker;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.jsoup.Connection;
@@ -18,16 +20,24 @@ import java.util.HashMap;
 public class DataFetcher {
     private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
-    public boolean mDataExist = false;
+    private Context mContext;
+    private int retryCount = 0;
+    private boolean mDataExist = false;
+
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
 
-    public DataFetcher(int type) {
+    public DataFetcher(int type, Context context) {
+        mContext = context;
         int offset = 0;
         do {
             fetchData(getDate(offset), type);
             offset++;
-        } while(!mDataExist && offset < 5);
+        } while(!mDataExist && offset < 5 && retryCount < 5);
+    }
+
+    public boolean hasData(){
+        return mDataExist;
     }
 
     public HashMap getProduceDataMap(){
@@ -46,20 +56,25 @@ public class DataFetcher {
             mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
                 saveData(doc);
+            else
+                Log.d("gg","No data detected.");
         }catch (Exception ex){
-            Log.d("gg","Fetching data failed!");
+            Log.d("gg","Fetching data failed! Try again.");
+            fetchData(date, type); //retry
+            retryCount++;
         }
     }
 
     private String getMarketNumber() {
-        return "241";
+        Log.d("gg", "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109"));
+        return PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109");
     }
 
     private void saveData(Document document) {
         Elements tds =  document.select("td");
-        Log.d("gg", "count" + String.valueOf(tds.size()));
-        int count = 0;
-        for(int i = 16 ; i < tds.size() ; i += 10){
+        Log.d("gg", "Size = " + String.valueOf(tds.size()));
+
+        for(int i = 16, count = 0 ; i < tds.size() ; i += 10){
             String[] data = new String[6];
             data[0] = tds.get(i).text();
             data[1] = tds.get(i + 1).text();
@@ -79,7 +94,7 @@ public class DataFetcher {
         cal.add(Calendar.DATE, -offset);
         String[] date = dateFormat.format(cal.getTime()).split("-");
         date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
-        Log.d("gg",date[0]+date[1]+date[2]);
+        Log.d("gg", date[0] + date[1] + date[2]);
         return date;
     }
 
