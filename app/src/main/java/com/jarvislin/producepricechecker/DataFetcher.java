@@ -17,6 +17,7 @@ import java.util.HashMap;
 public class DataFetcher {
     private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
+    private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
     private int mOffset = 0;
     private int mRetryCount = 0;
@@ -56,22 +57,22 @@ public class DataFetcher {
                 saveData(doc.select("td"));
             else {
                 mOffset++;
-                Log.d("gg", "No data detected.");
+                Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
-            Log.d("gg","Fetching data failed! Try again.");
+            Log.d(TAG,"Fetching data failed! Try again.");
             fetchData(date, type); //retry
             mRetryCount++;
         }
     }
 
     private String getMarketNumber() {
-        Log.d("gg", "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list", "109"));
+        Log.d(TAG, "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list", "109"));
         return PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109");
     }
 
     private void saveData(Elements elements) {
-        Log.d("gg", "count" + String.valueOf(elements.size()));
+        Log.d(TAG, "count = " + String.valueOf(elements.size()));
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();

@@ -16,6 +16,7 @@ import java.util.HashMap;
 
 public class DataListActivity extends Activity {
 
+    private final String TAG = this.getClass().getSimpleName();
     private UpdateTask mUpdateTask = new UpdateTask(this);
     private TableLayout mTable;
     private TextView mCurrentDate;
@@ -39,7 +40,7 @@ public class DataListActivity extends Activity {
     }
 
     private boolean isCustomerMode(){
-//        Log.d("gg", "CustomerMode = " + String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("role", false)));
+//        Log.d(TAG, "CustomerMode = " + String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("role", false)));
         return PreferenceManager.getDefaultSharedPreferences(this).getBoolean("role", false);
     }
 
