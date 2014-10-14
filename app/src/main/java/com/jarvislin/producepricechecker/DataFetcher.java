@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Context;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.jsoup.Connection;
@@ -8,33 +9,38 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Jarvis Lin on 2014/10/10.
  */
 public class DataFetcher {
-    private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102q.asp";
-    private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v101q.asp";
-    public boolean mDataExist = false;
+    private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
+    private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
+    private final String TAG = this.getClass().getSimpleName();
+    private Context mContext;
+    private int mOffset = 0;
+    private int mRetryCount = 0;
+    private boolean mDataExist = false;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
-
-    public DataFetcher(int type) {
-        int offset = 0;
+    public DataFetcher(int type, Context context) {
+        mContext = context;
         do {
-            fetchData(getDate(offset), type);
-            offset++;
-        } while(!mDataExist && offset < 5);
+            fetchData(Tools.getDate(mOffset), type);
+        } while(!mDataExist && mOffset < 5 && mRetryCount < 5);
+    }
+
+    public boolean hasData(){
+        return mDataExist;
     }
 
     public HashMap getProduceDataMap(){
         return mProduceDataMap;
+    }
+
+    public int getOffset(){
+        return mOffset;
     }
 
     private void fetchData(String[] date, int type) {
@@ -46,32 +52,37 @@ public class DataFetcher {
                     .execute();
 
             Document doc = res.parse();
-            mDataExist = (doc.select("p").first().text() == "查無結果!") ? false : true ;
+            mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
-                savaData(doc);
+                saveData(doc.select("td"));
+            else {
+                mOffset++;
+                Log.d(TAG, "No data detected.");
+            }
         }catch (Exception ex){
-            Log.d("Checker","Fetching data failed!");
+            Log.d(TAG,"Fetching data failed! Try again.");
+            fetchData(date, type); //retry
+            mRetryCount++;
         }
     }
 
     private String getMarketNumber() {
-        return "241";
+        Log.d(TAG, "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list", "109"));
+        return PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109");
     }
 
-    private void savaData(Document document) {
-        String gg = document.select("td").first().text();
+    private void saveData(Elements elements) {
+        Log.d(TAG, "count = " + String.valueOf(elements.size()));
+        for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
+            String[] data = new String[6];
+            data[0] = elements.get(i).text();
+            data[1] = elements.get(i + 1).text();
+            data[2] = elements.get(i + 3).text();
+            data[3] = elements.get(i + 4).text();
+            data[4] = elements.get(i + 5).text();
+            data[5] = elements.get(i + 6).text();
+            mProduceDataMap.put(count, new ProduceData(data));
+            count++;
+        }
     }
-
-
-    private String[] getDate(int offset) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, -offset);
-        String[] date = dateFormat.format(cal.getTime()).split("/");
-        date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
-        return date;
-    }
-
-
-
 }

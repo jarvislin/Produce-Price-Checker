@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView android:id="@+id/name"
+        style="@style/EvenRow"/>
+    <TextView android:id="@+id/topPrice"
+        style="@style/EvenRow"/>
+    <TextView android:id="@+id/midPrice"
+        style="@style/EvenRow"/>
+    <TextView android:id="@+id/lowPrice"
+        style="@style/EvenRow"/>
+    <TextView android:id="@+id/avgPrice"
+        style="@style/EvenRow"/>
+
+</TableRow>

@@ -21,7 +21,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     protected DataFetcher doInBackground(Integer... type) {
         // TODO Auto-generated method stub
         //開始更新
-        return new DataFetcher(type[0]);
+        return new DataFetcher(type[0], mContext);
     }
 
     @Override
@@ -32,10 +32,11 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
 
     @Override
     protected void onPostExecute(DataFetcher result){
-        //關掉更新畫面
-        mProgressDialog.dismiss();
         if(mContext instanceof DataListActivity)
             ((DataListActivity)mContext).loadDataMap(result);
+        //關掉更新畫面
+        mProgressDialog.dismiss();
+
     }
 
 }

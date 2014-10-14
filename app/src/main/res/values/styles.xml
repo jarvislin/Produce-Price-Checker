@@ -11,7 +11,6 @@
         <item name="android:windowBackground">@null</item>
         <item name="metaButtonBarStyle">@style/ButtonBar</item>
         <item name="metaButtonBarButtonStyle">@style/ButtonBarButton</item>
-        <item name="android:windowActionBar">false</item>
         <item name="android:windowTitleSize">0dp</item>
     </style>
 
@@ -21,6 +20,16 @@
         <item name="android:paddingRight">2dp</item>
         <item name="android:paddingBottom">2dp</item>
         <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="DataTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingTop">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingBottom">2dp</item>
+        <item name="android:textSize">25sp</item>
     </style>
 
     <style name="MenuButton">
@@ -35,5 +44,38 @@
     </style>
 
     <style name="ButtonBarButton" />
+
+    <style name="OddRow">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#FFFFFF</item>
+        <item name="android:textColor">#147585</item>
+    </style>
+
+    <style name="EvenRow">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#EAF2F4</item>
+        <item name="android:textColor">#147585</item>
+    </style>
+
+    <style name="TableHeader">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">#167F92</item>
+        <item name="android:textColor">#E2FFFF</item>
+    </style>
 
 </resources>
