@@ -36,7 +36,6 @@ public class Tools {
         cal.add(Calendar.DATE, -offset);
         String[] date = dateFormat.format(cal.getTime()).split("-");
         date[0] = String.valueOf(Integer.valueOf(date[0]) - 1911);
-        Log.d("gg", date[0] + date[1] + date[2]);
         return date;
     }
 }

@@ -9,9 +9,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 
 /**
@@ -20,18 +17,18 @@ import java.util.HashMap;
 public class DataFetcher {
     private final String FRUIT_URL = "http://amis.afa.gov.tw/t-asp/v102r.asp";
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
+    private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
-    private int retryCount = 0;
+    private int mOffset = 0;
+    private int mRetryCount = 0;
     private boolean mDataExist = false;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
 
     public DataFetcher(int type, Context context) {
         mContext = context;
-        int offset = 0;
         do {
-            fetchData(Tools.getDate(offset), type);
-            offset++;
-        } while(!mDataExist && offset < 5 && retryCount < 5);
+            fetchData(Tools.getDate(mOffset), type);
+        } while(!mDataExist && mOffset < 5 && mRetryCount < 5);
     }
 
     public boolean hasData(){
@@ -40,6 +37,10 @@ public class DataFetcher {
 
     public HashMap getProduceDataMap(){
         return mProduceDataMap;
+    }
+
+    public int getOffset(){
+        return mOffset;
     }
 
     private void fetchData(String[] date, int type) {
@@ -54,22 +55,24 @@ public class DataFetcher {
             mDataExist = (doc.select("td").size() == 0) ? false : true ;
             if(mDataExist)
                 saveData(doc.select("td"));
-            else
-                Log.d("gg","No data detected.");
+            else {
+                mOffset++;
+                Log.d(TAG, "No data detected.");
+            }
         }catch (Exception ex){
-            Log.d("gg","Fetching data failed! Try again.");
+            Log.d(TAG,"Fetching data failed! Try again.");
             fetchData(date, type); //retry
-            retryCount++;
+            mRetryCount++;
         }
     }
 
     private String getMarketNumber() {
-        Log.d("gg", "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109"));
+        Log.d(TAG, "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list", "109"));
         return PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109");
     }
 
     private void saveData(Elements elements) {
-        Log.d("gg", "count" + String.valueOf(elements.size()));
+        Log.d(TAG, "count = " + String.valueOf(elements.size()));
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();
