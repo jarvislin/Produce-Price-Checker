@@ -21,6 +21,7 @@ public class DataListActivity extends Activity {
     private TableLayout mTable;
     private TextView mCurrentDate;
     private TextView mDataDate;
+    private TextView mMarketName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class DataListActivity extends Activity {
         mTable = (TableLayout)findViewById(R.id.tableLayout);
         mCurrentDate = (TextView)findViewById(R.id.currentDate);
         mDataDate = (TextView)findViewById(R.id.dataDate);
+        mMarketName = (TextView)findViewById(R.id.marketName);
     }
 
     private boolean isCustomerMode(){
@@ -74,6 +76,8 @@ public class DataListActivity extends Activity {
 
         tempDate = Tools.getDate(offset);
         mDataDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
+
+        mMarketName.setText(Tools.getMarketName(Integer.valueOf(Tools.getMarketNumber(this))));
     }
 
     private void addGeneralRow(View row, ProduceData produceData) {
