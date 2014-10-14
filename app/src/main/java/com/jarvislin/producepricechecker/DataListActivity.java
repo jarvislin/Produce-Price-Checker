@@ -1,9 +1,13 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -25,13 +29,34 @@ public class DataListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
+
+        if(!Tools.isNetworkAvailable(this)) {
+            Tools.showNetworkErrorMessage(this);
+            this.finish();
+        }
+
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
         mUpdateTask.execute(getType());
-
         findViews();
+        Tools.setActionBar(this);
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                DataListActivity.this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void findViews() {

@@ -1,5 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory
+        android:title="一般設定"/>
     <ListPreference
         android:key="market_list"
         android:title="@string/pref_choose_market"

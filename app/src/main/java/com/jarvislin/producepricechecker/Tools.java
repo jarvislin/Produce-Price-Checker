@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -62,5 +63,10 @@ public class Tools {
 
     public static String getMarketNumber(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list","109");
+    }
+
+    public static void setActionBar(Activity activity) {
+        activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getActionBar().setDisplayShowHomeEnabled(true);
     }
 }
