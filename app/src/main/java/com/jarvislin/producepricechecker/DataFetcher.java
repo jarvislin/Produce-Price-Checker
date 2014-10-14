@@ -47,7 +47,7 @@ public class DataFetcher {
         String url = (type < 0) ? FRUIT_URL : VEGETABLE_URL;
         try {
             Connection.Response res = Jsoup.connect(url)
-                    .data("mkno", getMarketNumber(), "myy", date[0], "mmm", date[1], "mdd", date[2])
+                    .data("mkno", Tools.getMarketNumber(mContext), "myy", date[0], "mmm", date[1], "mdd", date[2])
                     .method(Connection.Method.POST)
                     .execute();
 
@@ -66,10 +66,7 @@ public class DataFetcher {
         }
     }
 
-    private String getMarketNumber() {
-        Log.d(TAG, "market num = " + PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list", "109"));
-        return PreferenceManager.getDefaultSharedPreferences(mContext).getString("market_list","109");
-    }
+
 
     private void saveData(Elements elements) {
         Log.d(TAG, "count = " + String.valueOf(elements.size()));
