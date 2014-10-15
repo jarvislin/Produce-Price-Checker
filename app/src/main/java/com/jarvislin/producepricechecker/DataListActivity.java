@@ -18,7 +18,6 @@ import java.util.HashMap;
 public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private UpdateTask mUpdateTask = new UpdateTask(this);
     private TableLayout mTable;
     private TextView mCurrentDate;
     private TextView mDataDate;
@@ -27,24 +26,19 @@ public class DataListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(!ToolsHelper.isNetworkAvailable(this)) {
-            ToolsHelper.showNetworkErrorMessage(this);
-            this.finish();
-        }
-    }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         update();
         ToolsHelper.setActionBar(this, R.string.title_activity_data_list);
     }
 
     private void update() {
-        setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
-        new UpdateTask(this).execute(getType());
-        findViews();
+        if(!ToolsHelper.isNetworkAvailable(this)) {
+            ToolsHelper.showNetworkErrorMessage(this);
+            this.finish();
+        } else {
+            setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
+            new UpdateTask(this).execute(getType());
+            findViews();
+        }
     }
 
     @Override
@@ -124,10 +118,10 @@ public class DataListActivity extends Activity {
 
         String completedName = (produceData.getType().length() <= 1) ? produceData.getName() : produceData.getType() + "\n" + produceData.getName() ;
         name.setText(completedName);
-        topPrice.setText(produceData.getTopPrice());
-        midPrice.setText(produceData.getMidPrice());
-        lowPrice.setText((produceData.getLowPrice()));
-        avgPrice.setText(produceData.getAvgPrice());
+        topPrice.setText(getPriceWithUnit(produceData.getTopPrice()));
+        midPrice.setText(getPriceWithUnit(produceData.getMidPrice()));
+        lowPrice.setText(getPriceWithUnit(produceData.getLowPrice()));
+        avgPrice.setText(getPriceWithUnit(produceData.getAvgPrice()));
 
         mTable.addView(row);
     }
@@ -151,8 +145,15 @@ public class DataListActivity extends Activity {
 
     private String getPriceRange(String price){
         float tmpPrice = Float.valueOf(price);
-        price = String.format("%.1f",tmpPrice * 0.6 * 1.3) + " - " + String.format("%.1f", tmpPrice * 0.6 * 1.5); //price * unit(0.6kg) * profit
+        float unit = ToolsHelper.getUnit(this);
+        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); //price * unit * profit
         return price;
+    }
+
+    private String getPriceWithUnit(String price){
+        float tmpPrice = Float.valueOf(price);
+        float unit = ToolsHelper.getUnit(this);
+        return String.format("%.1f", tmpPrice * unit );
     }
 }
 

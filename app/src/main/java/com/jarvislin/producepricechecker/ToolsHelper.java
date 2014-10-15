@@ -66,7 +66,8 @@ public class ToolsHelper {
     }
 
     public static float getUnit(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getFloat("unit", 1);
+        String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
+        return Float.valueOf(temp);
     }
 
     public static void setActionBar(Activity activity, int stringId) {
