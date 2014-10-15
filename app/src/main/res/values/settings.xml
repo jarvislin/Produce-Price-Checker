@@ -1,8 +1,9 @@
 <resources>
     <string name="title_activity_settings">設定</string>
-
-
     <string name="pref_choose_market">選擇批發市場</string>
+    <string name="unit">重量單位</string>
+    <string name="customer_mode">消費者模式</string>
+    <string name="customer_mode_description">顯示利潤為3~5成的平均價格</string>
     <string-array name="pref_market_titles">
         <item>中山區 台北二市</item>
         <item>萬華區 台北一市</item>
@@ -30,5 +31,13 @@
         <item>800</item>
         <item>830</item>
         <item>930</item>
+    </string-array>
+    <string-array name="pref_unit_titles">
+        <item>公斤</item>
+        <item>台斤</item>
+    </string-array>
+    <string-array name="pref_unit_values">
+        <item>1.0</item>
+        <item>0.6</item>
     </string-array>
 </resources>

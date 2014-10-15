@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 /**
  * Created by Jarvis Lin on 2014/10/11.
  */
-public class Tools {
+public class ToolsHelper {
 
     private static final HashMap<Integer, String> MARKET_MAP = new HashMap<Integer, String>(){{
         put(104, "中山區 台北二市");
@@ -62,5 +63,17 @@ public class Tools {
 
     public static String getMarketNumber(Context context) {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list","109");
+    }
+
+    public static float getUnit(Context context) {
+        String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
+        return Float.valueOf(temp);
+    }
+
+    public static void setActionBar(Activity activity, int stringId) {
+        activity.getActionBar().setDisplayHomeAsUpEnabled(true);
+        activity.getActionBar().setDisplayShowHomeEnabled(false);
+        activity.getActionBar().setDisplayShowTitleEnabled(true);
+        activity.getActionBar().setTitle(activity.getString(stringId));
     }
 }
