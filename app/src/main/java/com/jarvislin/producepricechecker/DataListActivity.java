@@ -4,9 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -17,7 +18,6 @@ import java.util.HashMap;
 public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
-    private UpdateTask mUpdateTask = new UpdateTask(this);
     private TableLayout mTable;
     private TextView mCurrentDate;
     private TextView mDataDate;
@@ -25,13 +25,42 @@ public class DataListActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         super.onCreate(savedInstanceState);
-        setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
-        mUpdateTask.execute(getType());
+        update();
+        ToolsHelper.setActionBar(this, R.string.title_activity_data_list);
+    }
 
-        findViews();
+    private void update() {
+        if(!ToolsHelper.isNetworkAvailable(this)) {
+            ToolsHelper.showNetworkErrorMessage(this);
+            this.finish();
+        } else {
+            setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
+            new UpdateTask(this).execute(getType());
+            findViews();
+        }
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.data_list_bar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                DataListActivity.this.finish();
+                return true;
+            case R.id.action_refresh:
+                update();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void findViews() {
@@ -53,7 +82,7 @@ public class DataListActivity extends Activity {
     public void loadDataMap(DataFetcher dataFetcher){
         HashMap<Integer, ProduceData> dataMap = (dataFetcher.hasData()) ? dataFetcher.getProduceDataMap() : null;
         if(dataMap == null)
-            Tools.showSiteErrorMessage(this);//site error
+            ToolsHelper.showSiteErrorMessage(this);//site error
         else{
             editViewInfo(dataFetcher.getOffset());
             ProduceData tempProduceData;
@@ -71,13 +100,13 @@ public class DataListActivity extends Activity {
     }
 
     private void editViewInfo(int offset) {
-        String[] tempDate = Tools.getDate(0);
+        String[] tempDate = ToolsHelper.getDate(0);
         mCurrentDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
 
-        tempDate = Tools.getDate(offset);
+        tempDate = ToolsHelper.getDate(offset);
         mDataDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
 
-        mMarketName.setText(Tools.getMarketName(Integer.valueOf(Tools.getMarketNumber(this))));
+        mMarketName.setText(ToolsHelper.getMarketName(Integer.valueOf(ToolsHelper.getMarketNumber(this))));
     }
 
     private void addGeneralRow(View row, ProduceData produceData) {
@@ -89,10 +118,10 @@ public class DataListActivity extends Activity {
 
         String completedName = (produceData.getType().length() <= 1) ? produceData.getName() : produceData.getType() + "\n" + produceData.getName() ;
         name.setText(completedName);
-        topPrice.setText(produceData.getTopPrice());
-        midPrice.setText(produceData.getMidPrice());
-        lowPrice.setText((produceData.getLowPrice()));
-        avgPrice.setText(produceData.getAvgPrice());
+        topPrice.setText(getPriceWithUnit(produceData.getTopPrice()));
+        midPrice.setText(getPriceWithUnit(produceData.getMidPrice()));
+        lowPrice.setText(getPriceWithUnit(produceData.getLowPrice()));
+        avgPrice.setText(getPriceWithUnit(produceData.getAvgPrice()));
 
         mTable.addView(row);
     }
@@ -116,8 +145,15 @@ public class DataListActivity extends Activity {
 
     private String getPriceRange(String price){
         float tmpPrice = Float.valueOf(price);
-        price = String.format("%.1f",tmpPrice * 0.6 * 1.3) + " - " + String.format("%.1f", tmpPrice * 0.6 * 1.5); //price * unit(0.6kg) * profit
+        float unit = ToolsHelper.getUnit(this);
+        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); //price * unit * profit
         return price;
+    }
+
+    private String getPriceWithUnit(String price){
+        float tmpPrice = Float.valueOf(price);
+        float unit = ToolsHelper.getUnit(this);
+        return String.format("%.1f", tmpPrice * unit );
     }
 }
 

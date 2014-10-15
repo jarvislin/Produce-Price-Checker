@@ -1,7 +1,6 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Context;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.jsoup.Connection;
@@ -27,7 +26,7 @@ public class DataFetcher {
     public DataFetcher(int type, Context context) {
         mContext = context;
         do {
-            fetchData(Tools.getDate(mOffset), type);
+            fetchData(ToolsHelper.getDate(mOffset), type);
         } while(!mDataExist && mOffset < 5 && mRetryCount < 5);
     }
 
@@ -47,7 +46,7 @@ public class DataFetcher {
         String url = (type < 0) ? FRUIT_URL : VEGETABLE_URL;
         try {
             Connection.Response res = Jsoup.connect(url)
-                    .data("mkno", Tools.getMarketNumber(mContext), "myy", date[0], "mmm", date[1], "mdd", date[2])
+                    .data("mkno", ToolsHelper.getMarketNumber(mContext), "myy", date[0], "mmm", date[1], "mdd", date[2])
                     .method(Connection.Method.POST)
                     .execute();
 

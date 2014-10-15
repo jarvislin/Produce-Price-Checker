@@ -23,8 +23,8 @@ public class IndexActivity extends Activity {
         setNetwork();
         initViews();
 
-        if(!Tools.isNetworkAvailable(this))
-            Tools.showNetworkErrorMessage(this);
+        if(!ToolsHelper.isNetworkAvailable(this))
+            ToolsHelper.showNetworkErrorMessage(this);
 
     }
 
