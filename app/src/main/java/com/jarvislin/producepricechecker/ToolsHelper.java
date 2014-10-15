@@ -16,7 +16,7 @@ import java.util.HashMap;
 /**
  * Created by Jarvis Lin on 2014/10/11.
  */
-public class Tools {
+public class ToolsHelper {
 
     private static final HashMap<Integer, String> MARKET_MAP = new HashMap<Integer, String>(){{
         put(104, "中山區 台北二市");
@@ -67,7 +67,7 @@ public class Tools {
 
     public static void setActionBar(Activity activity, int stringId) {
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getActionBar().setDisplayShowHomeEnabled(true);
+        activity.getActionBar().setDisplayShowHomeEnabled(false);
         activity.getActionBar().setDisplayShowTitleEnabled(true);
         activity.getActionBar().setTitle(activity.getString(stringId));
     }

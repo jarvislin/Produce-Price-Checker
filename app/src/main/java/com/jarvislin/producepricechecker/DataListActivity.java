@@ -1,17 +1,13 @@
 package com.jarvislin.producepricechecker;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -32,29 +28,30 @@ public class DataListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(!Tools.isNetworkAvailable(this)) {
-            Tools.showNetworkErrorMessage(this);
+        if(!ToolsHelper.isNetworkAvailable(this)) {
+            ToolsHelper.showNetworkErrorMessage(this);
             this.finish();
         }
-
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        update();
+        ToolsHelper.setActionBar(this, R.string.title_activity_data_list);
+    }
 
+    private void update() {
         setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
-        mUpdateTask.execute(getType());
+        new UpdateTask(this).execute(getType());
         findViews();
-
-        Tools.setActionBar(this, R.string.title_activity_data_list);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search, menu);
+        inflater.inflate(R.menu.data_list_bar, menu);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -63,6 +60,9 @@ public class DataListActivity extends Activity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 DataListActivity.this.finish();
+                return true;
+            case R.id.action_refresh:
+                update();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -88,7 +88,7 @@ public class DataListActivity extends Activity {
     public void loadDataMap(DataFetcher dataFetcher){
         HashMap<Integer, ProduceData> dataMap = (dataFetcher.hasData()) ? dataFetcher.getProduceDataMap() : null;
         if(dataMap == null)
-            Tools.showSiteErrorMessage(this);//site error
+            ToolsHelper.showSiteErrorMessage(this);//site error
         else{
             editViewInfo(dataFetcher.getOffset());
             ProduceData tempProduceData;
@@ -106,13 +106,13 @@ public class DataListActivity extends Activity {
     }
 
     private void editViewInfo(int offset) {
-        String[] tempDate = Tools.getDate(0);
+        String[] tempDate = ToolsHelper.getDate(0);
         mCurrentDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
 
-        tempDate = Tools.getDate(offset);
+        tempDate = ToolsHelper.getDate(offset);
         mDataDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
 
-        mMarketName.setText(Tools.getMarketName(Integer.valueOf(Tools.getMarketNumber(this))));
+        mMarketName.setText(ToolsHelper.getMarketName(Integer.valueOf(ToolsHelper.getMarketNumber(this))));
     }
 
     private void addGeneralRow(View row, ProduceData produceData) {
