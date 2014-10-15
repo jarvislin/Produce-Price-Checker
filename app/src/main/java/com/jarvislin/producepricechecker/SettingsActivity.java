@@ -24,6 +24,7 @@ import java.lang.reflect.Method;
  * API Guide</a> for more information on developing a Settings UI.
  */
 public class SettingsActivity extends Activity {
+    private final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class SettingsActivity extends Activity {
                     m.invoke(menu, true);
                 }
                 catch(NoSuchMethodException e){
-                    Log.e("GG", "onMenuOpened", e);
+                    Log.e(TAG, "onMenuOpened", e);
                 }
                 catch(Exception e){
                     throw new RuntimeException(e);
