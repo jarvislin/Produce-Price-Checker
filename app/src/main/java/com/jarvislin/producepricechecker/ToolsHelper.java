@@ -65,6 +65,10 @@ public class ToolsHelper {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list","109");
     }
 
+    public static float getUnit(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context).getFloat("unit", 1);
+    }
+
     public static void setActionBar(Activity activity, int stringId) {
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getActionBar().setDisplayShowHomeEnabled(false);
