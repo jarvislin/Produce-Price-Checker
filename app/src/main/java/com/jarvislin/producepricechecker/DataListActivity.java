@@ -4,9 +4,10 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -45,7 +46,16 @@ public class DataListActivity extends Activity {
         setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
         mUpdateTask.execute(getType());
         findViews();
-        Tools.setActionBar(this);
+
+        Tools.setActionBar(this, R.string.title_activity_data_list);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.search, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override

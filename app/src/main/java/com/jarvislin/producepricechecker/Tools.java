@@ -65,8 +65,10 @@ public class Tools {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list","109");
     }
 
-    public static void setActionBar(Activity activity) {
+    public static void setActionBar(Activity activity, int stringId) {
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getActionBar().setDisplayShowHomeEnabled(true);
+        activity.getActionBar().setDisplayShowTitleEnabled(true);
+        activity.getActionBar().setTitle(activity.getString(stringId));
     }
 }
