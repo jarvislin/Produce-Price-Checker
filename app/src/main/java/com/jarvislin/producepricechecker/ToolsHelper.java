@@ -19,8 +19,8 @@ import java.util.HashMap;
 public class ToolsHelper {
 
     private static final HashMap<Integer, String> MARKET_MAP = new HashMap<Integer, String>(){{
-        put(104, "中山區 台北二市");
-        put(109, "萬華區 台北一市");
+        put(104, "台北二市");
+        put(109, "台北一市");
         put(241, "新北市 三重區");
         put(260, "宜蘭市");
         put(338, "桃園縣");
