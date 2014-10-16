@@ -7,5 +7,10 @@
     <string name="setting">設定</string>
     <string name="menu">選單</string>
     <string name="title_activity_data_list">行情表</string>
+    <string name="search">查詢</string>
+    <string name="current_setting">目前設定</string>
+    <string name="market">市場</string>
+    <string name="mode">模式</string>
+    <string name="leave">離開</string>
 
 </resources>
