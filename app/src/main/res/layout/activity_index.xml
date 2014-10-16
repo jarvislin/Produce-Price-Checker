@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#059e9e"
+    android:background="@drawable/fruits_vegetable_new"
     tools:context=".IndexActivity">
 
         <LinearLayout android:id="@+id/fullscreen_content_controls"
@@ -20,9 +20,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:keepScreenOn="true"
-                    android:textColor="#fff"
+                    android:textColor="#24374a"
                     android:textStyle="bold"
-                    android:textSize="50sp"
+                    android:textSize="50dp"
                     android:gravity="center"
                     android:text="@string/menu"
                     android:layout_gravity="center" />
@@ -37,7 +37,8 @@
                 <Button android:id="@+id/fruit"
                     style="@style/MenuButton"
                     android:layout_gravity="center"
-                    android:text="@string/fruit"/>
+                    android:text="@string/fruit"
+                    android:onClick="fruit"/>
 
             </FrameLayout>
 
@@ -49,7 +50,8 @@
                 <Button android:id="@+id/vegetable"
                     style="@style/MenuButton"
                     android:layout_gravity="center"
-                    android:text="@string/vegetable"/>
+                    android:text="@string/vegetable"
+                    android:onClick="vegetable"/>
 
             </FrameLayout>
 
@@ -58,12 +60,28 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <Button android:id="@+id/setting"
+                <Button android:id="@+id/settings"
                     style="@style/MenuButton"
                     android:layout_gravity="center"
-                    android:text="@string/setting"/>
+                    android:text="@string/setting"
+                    android:onClick="settings"/>
 
             </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/leave"
+                    style="@style/MenuButton"
+                    android:layout_gravity="center"
+                    android:text="@string/leave"
+                    android:onClick="leave"/>
+
+            </FrameLayout>
+
+
 
         </LinearLayout>
 

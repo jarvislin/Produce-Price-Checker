@@ -10,9 +10,6 @@ import android.widget.Button;
 
 
 public class IndexActivity extends Activity {
-    protected View mFruitButton;
-    protected View mVegetableButton;
-    protected View mSettingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,25 +18,11 @@ public class IndexActivity extends Activity {
         setContentView(R.layout.activity_index);
 
         setNetwork();
-        initViews();
 
         if(!ToolsHelper.isNetworkAvailable(this))
             ToolsHelper.showNetworkErrorMessage(this);
 
     }
-
-    private void initViews() {
-        //find views
-        mFruitButton = findViewById(R.id.fruit);
-        mVegetableButton = findViewById(R.id.vegetable);
-        mSettingButton = findViewById(R.id.setting);
-
-        //set listeners
-        mFruitButton.setOnClickListener(clickFruit());
-        mVegetableButton.setOnClickListener(clickVegetable());
-        mSettingButton.setOnClickListener(clickSetting());
-    }
-
 
     private void setNetwork(){
         StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
@@ -50,38 +33,25 @@ public class IndexActivity extends Activity {
                 .build());
     }
 
-
-
-    private Button.OnClickListener clickFruit(){
-        return new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IndexActivity.this,DataListActivity.class);
-                intent.putExtra("type", -1);
-                IndexActivity.this.startActivity(intent);
-            }
-        };
+    public void fruit(View view) {
+        Intent intent = new Intent(IndexActivity.this,DataListActivity.class);
+        intent.putExtra("type", -1);
+        IndexActivity.this.startActivity(intent);
     }
 
-    private Button.OnClickListener clickVegetable(){
-        return new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IndexActivity.this,DataListActivity.class);
-                intent.putExtra("type", 1);
-                IndexActivity.this.startActivity(intent);
-            }
-        };
+    public void vegetable(View view) {
+        Intent intent = new Intent(IndexActivity.this,DataListActivity.class);
+        intent.putExtra("type", 1);
+        IndexActivity.this.startActivity(intent);
     }
 
-    private Button.OnClickListener clickSetting(){
-        return new Button.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(IndexActivity.this,SettingsActivity.class);
-                IndexActivity.this.startActivity(intent);
-            }
-        };
+    public void settings(View view) {
+        Intent intent = new Intent(IndexActivity.this,SettingsActivity.class);
+        IndexActivity.this.startActivity(intent);
+    }
+
+    public void leave(View view) {
+        this.finish();
     }
 
 
