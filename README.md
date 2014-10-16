@@ -1,4 +1,4 @@
-Produce-Price-Checker
+蔬果市場行情 (Android application)
 =====================
 
-蔬果市場行情的即時查詢。
+蔬果行情價即時查詢。
