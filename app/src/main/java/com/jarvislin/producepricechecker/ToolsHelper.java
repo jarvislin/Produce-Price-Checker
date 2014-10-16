@@ -70,10 +70,9 @@ public class ToolsHelper {
         return Float.valueOf(temp);
     }
 
-    public static void setActionBar(Activity activity, int stringId) {
+    public static void setActionBar(Activity activity) {
         activity.getActionBar().setDisplayHomeAsUpEnabled(true);
         activity.getActionBar().setDisplayShowHomeEnabled(false);
         activity.getActionBar().setDisplayShowTitleEnabled(true);
-        activity.getActionBar().setTitle(activity.getString(stringId));
     }
 }

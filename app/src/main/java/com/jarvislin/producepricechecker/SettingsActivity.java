@@ -28,7 +28,7 @@ public class SettingsActivity extends Activity {
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();
 
-        ToolsHelper.setActionBar(this, R.string.setting);
+        ToolsHelper.setActionBar(this);
 
     }
 

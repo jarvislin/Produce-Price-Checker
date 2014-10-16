@@ -27,7 +27,7 @@ public class DataListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         update();
-        ToolsHelper.setActionBar(this, R.string.title_activity_data_list);
+        ToolsHelper.setActionBar(this);
     }
 
     private void update() {
