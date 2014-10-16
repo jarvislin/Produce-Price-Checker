@@ -4,6 +4,7 @@
         android:key="market_list"
         android:title="@string/pref_choose_market"
         android:defaultValue="104"
+        android:summary="%s"
         android:entries="@array/pref_market_titles"
         android:entryValues="@array/pref_market_values"
         android:negativeButtonText="@null"
@@ -13,6 +14,7 @@
         android:key="unit"
         android:title="@string/unit"
         android:defaultValue="1.0"
+        android:summary="%s"
         android:entries="@array/pref_unit_titles"
         android:entryValues="@array/pref_unit_values" />
 
