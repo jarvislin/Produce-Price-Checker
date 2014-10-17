@@ -4,9 +4,14 @@
     <string name="unit">重量單位</string>
     <string name="customer_mode">消費者模式</string>
     <string name="customer_mode_description">顯示利潤為3~5成的平均價格</string>
+    <string name="other_info">其他資訊</string>
+    <string name="about">關於</string>
+    <string name="contact">連絡作者</string>
+    <string name="rating">評分</string>
+
     <string-array name="pref_market_titles">
-        <item>中山區 台北二市</item>
         <item>萬華區 台北一市</item>
+        <item>中山區 台北二市</item>
         <item>新北市 三重區</item>
         <item>宜蘭市</item>
         <item>桃園縣</item>
@@ -19,8 +24,8 @@
         <item>台東市</item>
     </string-array>
     <string-array name="pref_market_values">
-        <item>104</item>
         <item>109</item>
+        <item>104</item>
         <item>241</item>
         <item>260</item>
         <item>338</item>
@@ -32,6 +37,7 @@
         <item>830</item>
         <item>930</item>
     </string-array>
+
     <string-array name="pref_unit_titles">
         <item>公斤</item>
         <item>台斤</item>
