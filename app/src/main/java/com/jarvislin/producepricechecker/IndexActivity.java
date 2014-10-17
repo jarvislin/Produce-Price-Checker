@@ -17,20 +17,9 @@ public class IndexActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_index);
 
-        setNetwork();
-
         if(!ToolsHelper.isNetworkAvailable(this))
             ToolsHelper.showNetworkErrorMessage(this);
 
-    }
-
-    private void setNetwork(){
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-                .detectDiskReads().detectDiskWrites().detectNetwork()
-                .penaltyLog().build());
-        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-                .detectLeakedSqlLiteObjects().penaltyLog().penaltyDeath()
-                .build());
     }
 
     public void fruit(View view) {
@@ -49,10 +38,4 @@ public class IndexActivity extends Activity {
         Intent intent = new Intent(IndexActivity.this,SettingsActivity.class);
         IndexActivity.this.startActivity(intent);
     }
-
-    public void leave(View view) {
-        this.finish();
-    }
-
-
 }

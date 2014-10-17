@@ -45,7 +45,7 @@ public class ToolsHelper {
     }
 
     public static void showSiteErrorMessage(Context context){
-        Toast.makeText(context, "連不上網站, 請稍候再試一次!", Toast.LENGTH_LONG).show();
+        Toast.makeText(context, "連不上網站, 請稍候再重新整理一次.", Toast.LENGTH_LONG).show();
     }
 
     public static String[] getDate(int offset) {
@@ -68,11 +68,5 @@ public class ToolsHelper {
     public static float getUnit(Context context) {
         String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
         return Float.valueOf(temp);
-    }
-
-    public static void setActionBar(Activity activity) {
-        activity.getActionBar().setDisplayHomeAsUpEnabled(true);
-        activity.getActionBar().setDisplayShowHomeEnabled(false);
-        activity.getActionBar().setDisplayShowTitleEnabled(true);
     }
 }

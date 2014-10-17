@@ -1,6 +1,8 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -19,55 +21,34 @@ public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
     private TableLayout mTable;
-    private TextView mCurrentDate;
-    private TextView mDataDate;
-    private TextView mMarketName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        update();
-        ToolsHelper.setActionBar(this);
+        setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
+        update(null);
+
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setCustomView(R.layout.actionbar_refresh);
     }
 
-    private void update() {
+    public void update(View view) {
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
             this.finish();
         } else {
-            setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
             new UpdateTask(this).execute(getType());
             findViews();
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.data_list_bar, menu);
-        return super.onCreateOptionsMenu(menu);
+    public void back(View view){
+        finish();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                DataListActivity.this.finish();
-                return true;
-            case R.id.action_refresh:
-                update();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
 
     private void findViews() {
         mTable = (TableLayout)findViewById(R.id.tableLayout);
-        mCurrentDate = (TextView)findViewById(R.id.currentDate);
-        mDataDate = (TextView)findViewById(R.id.dataDate);
-        mMarketName = (TextView)findViewById(R.id.marketName);
     }
 
     private boolean isCustomerMode(){
@@ -84,7 +65,6 @@ public class DataListActivity extends Activity {
         if(dataMap == null)
             ToolsHelper.showSiteErrorMessage(this);//site error
         else{
-            editViewInfo(dataFetcher.getOffset());
             ProduceData tempProduceData;
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
             View row;
@@ -97,16 +77,6 @@ public class DataListActivity extends Activity {
                     addGeneralRow(row, tempProduceData);
             }
         }
-    }
-
-    private void editViewInfo(int offset) {
-        String[] tempDate = ToolsHelper.getDate(0);
-        mCurrentDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
-
-        tempDate = ToolsHelper.getDate(offset);
-        mDataDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
-
-        mMarketName.setText(ToolsHelper.getMarketName(Integer.valueOf(ToolsHelper.getMarketNumber(this))));
     }
 
     private void addGeneralRow(View row, ProduceData produceData) {

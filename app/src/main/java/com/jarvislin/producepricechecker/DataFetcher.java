@@ -18,7 +18,7 @@ public class DataFetcher {
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
-    private int mOffset = 0;
+    private int mOffset = -1;
     private int mRetryCount = 0;
     private boolean mDataExist = false;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
@@ -27,7 +27,7 @@ public class DataFetcher {
         mContext = context;
         do {
             fetchData(ToolsHelper.getDate(mOffset), type);
-        } while(!mDataExist && mOffset < 5 && mRetryCount < 5);
+        } while(!mDataExist && mOffset < 5);
     }
 
     public boolean hasData(){
@@ -43,6 +43,7 @@ public class DataFetcher {
     }
 
     private void fetchData(String[] date, int type) {
+        mOffset++;
         String url = (type < 0) ? FRUIT_URL : VEGETABLE_URL;
         try {
             Connection.Response res = Jsoup.connect(url)
@@ -55,13 +56,11 @@ public class DataFetcher {
             if(mDataExist)
                 saveData(doc.select("td"));
             else {
-                mOffset++;
                 Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
+            ex.printStackTrace();
             Log.d(TAG,"Fetching data failed! Try again.");
-            fetchData(date, type); //retry
-            mRetryCount++;
         }
     }
 
