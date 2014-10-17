@@ -6,14 +6,12 @@
     </style>
 
     <style name="BlackActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:background">#24374a</item>
+        <item name="android:background">@color/actionbar_back</item>
         <item name="android:titleTextStyle">@style/BlackActionBarTitle</item>
     </style>
 
     <style name="BlackActionBarTitle" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:textColor">#fff</item>
+        <item name="android:textColor">@color/white</item>
         <item name="android:textSize">20sp</item>
     </style>
-
-
 </resources>
