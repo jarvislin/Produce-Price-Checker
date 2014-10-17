@@ -26,11 +26,10 @@
         android:layout_alignParentRight="true"
         android:onClick="update">
 
-        <ImageButton
+        <ImageView
             style="@style/ActionBarImage"
-            android:background="@drawable/ic_action_refresh"
-            android:layout_centerVertical="true"
-            android:onClick="update"/>
+            android:background="@drawable/ic_action_refresh"/>
 
     </RelativeLayout>
+
 </RelativeLayout>
