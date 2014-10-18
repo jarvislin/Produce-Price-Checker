@@ -12,7 +12,7 @@
         android:onClick="back">
         <ImageView
             style="@style/ActionBarImage"
-            android:background="@drawable/ic_action_back"/>
+            android:src="@drawable/ic_action_back"/>
         </RelativeLayout>
 
     <TextView
@@ -28,7 +28,7 @@
 
         <ImageView
             style="@style/ActionBarImage"
-            android:background="@drawable/ic_action_refresh"/>
+            android:src="@drawable/ic_action_refresh"/>
 
     </RelativeLayout>
 
@@ -42,7 +42,7 @@
 
         <ImageView
             style="@style/ActionBarImage"
-            android:background="@android:drawable/ic_menu_info_details"/>
+            android:src="@android:drawable/ic_menu_info_details"/>
 
     </RelativeLayout>
 
