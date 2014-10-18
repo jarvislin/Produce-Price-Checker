@@ -23,12 +23,26 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
-        android:layout_alignParentRight="true"
+        android:layout_toLeftOf="@+id/info"
         android:onClick="update">
 
         <ImageView
             style="@style/ActionBarImage"
             android:background="@drawable/ic_action_refresh"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/press_effect"
+        android:layout_alignParentRight="true"
+        android:onClick="openUrl">
+
+        <ImageView
+            style="@style/ActionBarImage"
+            android:background="@android:drawable/ic_menu_info_details"/>
 
     </RelativeLayout>
 
