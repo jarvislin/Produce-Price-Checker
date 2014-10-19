@@ -2,13 +2,11 @@ package com.jarvislin.producepricechecker;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.SharedPreferences;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -21,22 +19,24 @@ public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
     private TableLayout mTable;
+    private int mOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
+
         update(null);
 
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getActionBar().setCustomView(R.layout.actionbar_refresh);
+        getActionBar().setCustomView(R.layout.actionbar_data_table);
     }
 
     public void update(View view) {
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
-            this.finish();
+            finish();
         } else {
+            setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
             new UpdateTask(this).execute(getType());
             findViews();
         }
@@ -45,7 +45,6 @@ public class DataListActivity extends Activity {
     public void back(View view){
         finish();
     }
-
 
     private void findViews() {
         mTable = (TableLayout)findViewById(R.id.tableLayout);
@@ -62,8 +61,9 @@ public class DataListActivity extends Activity {
 
     public void loadDataMap(DataFetcher dataFetcher){
         HashMap<Integer, ProduceData> dataMap = (dataFetcher.hasData()) ? dataFetcher.getProduceDataMap() : null;
+        mOffset = dataFetcher.getOffset();
         if(dataMap == null)
-            ToolsHelper.showSiteErrorMessage(this);//site error
+            ToolsHelper.showSiteErrorMessage(this); //show error
         else{
             ProduceData tempProduceData;
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -124,6 +124,26 @@ public class DataListActivity extends Activity {
         float tmpPrice = Float.valueOf(price);
         float unit = ToolsHelper.getUnit(this);
         return String.format("%.1f", tmpPrice * unit );
+    }
+
+    public void info(View view) {
+        String[] date = ToolsHelper.getDate(mOffset);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("資訊");
+        builder.setMessage(
+                "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(mOffset) + "\n" +
+                "單位：" + ToolsHelper.getUnitInWords(ToolsHelper.getUnit(this)) + "\n" +
+                "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
+        );
+
+        builder.setNeutralButton("返回", new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+
+        builder.show();
     }
 }
 
