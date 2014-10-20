@@ -11,6 +11,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
 
     public UpdateTask(Context context){
         mContext = context;
+        mProgressDialog = new ProgressDialog(context);;
     }
 
     private Context mContext;
@@ -20,21 +21,23 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     @Override
     protected DataFetcher doInBackground(Integer... type) {
         // TODO Auto-generated method stub
-        //開始更新
+        //updating
         return new DataFetcher(type[0], mContext);
     }
 
     @Override
     protected void onPreExecute(){
-        //開啟更新畫面
-        mProgressDialog = ProgressDialog.show(mContext, "更新資料", "更新中，請稍候...");
+        //open ProgressDialog
+        mProgressDialog.setTitle("更新資料");
+        mProgressDialog.setMessage("更新中，請稍候...");
+        mProgressDialog.show();
     }
 
     @Override
     protected void onPostExecute(DataFetcher result){
         if(mContext instanceof DataListActivity)
             ((DataListActivity)mContext).loadDataMap(result);
-        //關掉更新畫面
+        //close ProgressDialog
         mProgressDialog.dismiss();
 
     }

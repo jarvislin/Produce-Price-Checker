@@ -2,8 +2,9 @@
 
     <ListPreference
         android:key="market_list"
-        android:title="@string/pref_choose_market"
-        android:defaultValue="104"
+        android:title="@string/choose_market"
+        android:defaultValue="109"
+        android:summary="%s"
         android:entries="@array/pref_market_titles"
         android:entryValues="@array/pref_market_values"
         android:negativeButtonText="@null"
@@ -13,6 +14,7 @@
         android:key="unit"
         android:title="@string/unit"
         android:defaultValue="1.0"
+        android:summary="%s"
         android:entries="@array/pref_unit_titles"
         android:entryValues="@array/pref_unit_values" />
 
@@ -21,5 +23,27 @@
         android:title="@string/customer_mode"
         android:summary="@string/customer_mode_description"
         android:defaultValue="false" />
+
+    <PreferenceCategory android:title="@string/other_info" />
+
+    <Preference
+        android:title="@string/about"
+        android:key="about"
+        android:summary="@string/about_description"/>
+
+    <Preference
+        android:title="@string/site"
+        android:key="visit"
+        android:summary="@string/visit_site" />
+
+    <Preference
+        android:title="@string/rating"
+        android:key="rating"
+        android:summary="@string/rating_for_app" />
+
+    <Preference
+        android:title="@string/contact"
+        android:key="contact"
+        android:summary="@string/provide_suggestion" />
 
 </PreferenceScreen>

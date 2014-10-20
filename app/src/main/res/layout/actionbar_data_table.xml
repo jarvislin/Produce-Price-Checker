@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/actionbar_back">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/press_effect"
+        android:layout_alignParentLeft="true"
+        android:onClick="back">
+        <ImageView
+            style="@style/ActionBarImage"
+            android:src="@drawable/ic_action_back"/>
+        </RelativeLayout>
+
+    <TextView
+        style="@style/ActionBarTitle"
+        android:text="@string/title_activity_data_list"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/press_effect"
+        android:layout_toLeftOf="@+id/info"
+        android:onClick="update">
+
+        <ImageView
+            style="@style/ActionBarImage"
+            android:src="@drawable/ic_action_refresh"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@drawable/press_effect"
+        android:layout_alignParentRight="true"
+        android:onClick="info">
+
+        <ImageView
+            style="@style/ActionBarImage"
+            android:src="@android:drawable/ic_menu_info_details"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
