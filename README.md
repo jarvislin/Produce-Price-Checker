@@ -22,7 +22,7 @@ https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker
 
 授權方式
 ---------
-https://github.com/jarvislin/Produce-Price-Checker/blob/develop/LICENSE
+https://github.com/jarvislin/Produce-Price-Checker/blob/master/LICENSE
 
 其他
 ---------
