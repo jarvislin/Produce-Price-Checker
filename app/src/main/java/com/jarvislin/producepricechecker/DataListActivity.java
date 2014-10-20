@@ -116,7 +116,7 @@ public class DataListActivity extends Activity {
     private String getPriceRange(String price){
         float tmpPrice = Float.valueOf(price);
         float unit = ToolsHelper.getUnit(this);
-        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); //price * unit * profit
+        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); // price * unit * profit
         return price;
     }
 
@@ -136,7 +136,7 @@ public class DataListActivity extends Activity {
                 "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
         );
 
-        builder.setNeutralButton("返回", new AlertDialog.OnClickListener(){
+        builder.setNeutralButton(getString(R.string.back), new AlertDialog.OnClickListener(){
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // do nothing

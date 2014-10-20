@@ -56,18 +56,18 @@ public class DataFetcher {
             if(mDataExist)
                 saveData(elements);
             else {
-                Log.d(TAG, "No data detected.");
+//                Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
             ex.printStackTrace();
             mOffset--;
             mRetryCount++;
-            Log.d(TAG, "Fetching data failed!");
+//            Log.d(TAG, "Fetching data failed!");
         }
     }
 
     private void saveData(Elements elements) {
-        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
+//        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();

@@ -38,7 +38,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_alignParentRight="true"
-        android:onClick="openUrl">
+        android:onClick="info">
 
         <ImageView
             style="@style/ActionBarImage"

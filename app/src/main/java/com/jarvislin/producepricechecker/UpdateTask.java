@@ -11,6 +11,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
 
     public UpdateTask(Context context){
         mContext = context;
+        mProgressDialog = new ProgressDialog(context);;
     }
 
     private Context mContext;
@@ -27,7 +28,9 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     @Override
     protected void onPreExecute(){
         //open ProgressDialog
-        mProgressDialog = ProgressDialog.show(mContext, "更新資料", "更新中，請稍候...");
+        mProgressDialog.setTitle("更新資料");
+        mProgressDialog.setMessage("更新中，請稍候...");
+        mProgressDialog.show();
     }
 
     @Override
