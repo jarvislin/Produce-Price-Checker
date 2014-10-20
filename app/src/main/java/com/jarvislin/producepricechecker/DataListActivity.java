@@ -1,12 +1,12 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,21 +19,22 @@ public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
     private TableLayout mTable;
-    private TextView mCurrentDate;
-    private TextView mDataDate;
-    private TextView mMarketName;
+    private int mOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        update();
-        ToolsHelper.setActionBar(this, R.string.title_activity_data_list);
+
+        update(null);
+
+        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getActionBar().setCustomView(R.layout.actionbar_data_table);
     }
 
-    private void update() {
+    public void update(View view) {
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
-            this.finish();
+            finish();
         } else {
             setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
             new UpdateTask(this).execute(getType());
@@ -41,33 +42,12 @@ public class DataListActivity extends Activity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu items for use in the action bar
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.data_list_bar, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                DataListActivity.this.finish();
-                return true;
-            case R.id.action_refresh:
-                update();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public void back(View view){
+        finish();
     }
 
     private void findViews() {
         mTable = (TableLayout)findViewById(R.id.tableLayout);
-        mCurrentDate = (TextView)findViewById(R.id.currentDate);
-        mDataDate = (TextView)findViewById(R.id.dataDate);
-        mMarketName = (TextView)findViewById(R.id.marketName);
     }
 
     private boolean isCustomerMode(){
@@ -81,10 +61,10 @@ public class DataListActivity extends Activity {
 
     public void loadDataMap(DataFetcher dataFetcher){
         HashMap<Integer, ProduceData> dataMap = (dataFetcher.hasData()) ? dataFetcher.getProduceDataMap() : null;
+        mOffset = dataFetcher.getOffset();
         if(dataMap == null)
-            ToolsHelper.showSiteErrorMessage(this);//site error
+            ToolsHelper.showSiteErrorMessage(this); //show error
         else{
-            editViewInfo(dataFetcher.getOffset());
             ProduceData tempProduceData;
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
             View row;
@@ -97,16 +77,6 @@ public class DataListActivity extends Activity {
                     addGeneralRow(row, tempProduceData);
             }
         }
-    }
-
-    private void editViewInfo(int offset) {
-        String[] tempDate = ToolsHelper.getDate(0);
-        mCurrentDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
-
-        tempDate = ToolsHelper.getDate(offset);
-        mDataDate.setText(tempDate[0] + "/" + tempDate[1]+ "/" + tempDate[2]);
-
-        mMarketName.setText(ToolsHelper.getMarketName(Integer.valueOf(ToolsHelper.getMarketNumber(this))));
     }
 
     private void addGeneralRow(View row, ProduceData produceData) {
@@ -146,7 +116,7 @@ public class DataListActivity extends Activity {
     private String getPriceRange(String price){
         float tmpPrice = Float.valueOf(price);
         float unit = ToolsHelper.getUnit(this);
-        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); //price * unit * profit
+        price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.5); // price * unit * profit
         return price;
     }
 
@@ -154,6 +124,26 @@ public class DataListActivity extends Activity {
         float tmpPrice = Float.valueOf(price);
         float unit = ToolsHelper.getUnit(this);
         return String.format("%.1f", tmpPrice * unit );
+    }
+
+    public void info(View view) {
+        String[] date = ToolsHelper.getDate(mOffset);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("資訊");
+        builder.setMessage(
+                "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(mOffset) + "\n" +
+                "單位：" + ToolsHelper.getUnitInWords(ToolsHelper.getUnit(this)) + "\n" +
+                "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
+        );
+
+        builder.setNeutralButton(getString(R.string.back), new AlertDialog.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // do nothing
+            }
+        });
+
+        builder.show();
     }
 }
 

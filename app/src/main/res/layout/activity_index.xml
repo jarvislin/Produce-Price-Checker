@@ -2,10 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#059e9e"
+    android:background="@drawable/index_background"
     tools:context=".IndexActivity">
 
-        <LinearLayout android:id="@+id/fullscreen_content_controls"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -16,55 +16,63 @@
                 android:layout_height="0dp"
                 android:layout_weight="1">
 
-                <TextView android:id="@+id/fullscreen_content"
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:keepScreenOn="true"
-                    android:textColor="#fff"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="50sp"
+                    android:textSize="50dp"
                     android:gravity="center"
-                    android:text="@string/menu"
+                    android:text="@string/app_name"
                     android:layout_gravity="center" />
 
-             </FrameLayout>
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
-
-                <Button android:id="@+id/fruit"
-                    style="@style/MenuButton"
-                    android:layout_gravity="center"
-                    android:text="@string/fruit"/>
-
             </FrameLayout>
 
-            <FrameLayout
+            <TableLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1">
+                android:layout_weight="2"
+                android:stretchColumns="*">
 
-                <Button android:id="@+id/vegetable"
-                    style="@style/MenuButton"
-                    android:layout_gravity="center"
-                    android:text="@string/vegetable"/>
+                <TableRow android:layout_weight="1">
+                    <Button
+                        android:id="@+id/vegetable"
+                        style="@style/MenuButton"
+                        android:background="@drawable/vegetable"
+                        android:onClick="vegetable"/>
 
-            </FrameLayout>
+                    <Button android:id="@+id/fruit"
+                        style="@style/MenuButton"
+                        android:background="@drawable/fruit"
+                        android:onClick="fruit"/>
+                </TableRow>
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1">
+                <TableRow android:layout_weight="1">
+                    <TextView
+                        style="@style/IndexText"
+                        android:text="@string/vegetable"/>
 
-                <Button android:id="@+id/setting"
-                    style="@style/MenuButton"
-                    android:layout_gravity="center"
-                    android:text="@string/setting"/>
+                    <TextView
+                        style="@style/IndexText"
+                        android:text="@string/fruit"/>
+                </TableRow>
 
-            </FrameLayout>
+                <TableRow android:layout_weight="1">
+                    <Button
+                        android:id="@+id/settings"
+                        style="@style/MenuButton"
+                        android:layout_span="2"
+                        android:background="@drawable/settings"
+                        android:onClick="settings" />
+                </TableRow>
+
+                <TableRow android:layout_weight="1">
+                    <TextView
+                        style="@style/IndexText"
+                        android:layout_span="2"
+                        android:text="@string/setting"/>
+                </TableRow>
+            </TableLayout>
 
         </LinearLayout>
-
 </FrameLayout>

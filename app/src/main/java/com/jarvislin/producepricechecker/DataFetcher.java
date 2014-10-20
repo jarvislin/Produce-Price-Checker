@@ -27,7 +27,7 @@ public class DataFetcher {
         mContext = context;
         do {
             fetchData(ToolsHelper.getDate(mOffset), type);
-        } while(!mDataExist && mOffset < 5 && mRetryCount < 5);
+        } while(!mDataExist && mOffset < 5 && mRetryCount < 3);
     }
 
     public boolean hasData(){
@@ -39,36 +39,35 @@ public class DataFetcher {
     }
 
     public int getOffset(){
-        return mOffset;
+        return mOffset - 1;
     }
 
     private void fetchData(String[] date, int type) {
+        mOffset++;
         String url = (type < 0) ? FRUIT_URL : VEGETABLE_URL;
         try {
             Connection.Response res = Jsoup.connect(url)
-                    .data("mkno", ToolsHelper.getMarketNumber(mContext), "myy", date[0], "mmm", date[1], "mdd", date[2])
+                    .data("mkno", String.valueOf(ToolsHelper.getMarketNumber(mContext)), "myy", date[0], "mmm", date[1], "mdd", date[2])
                     .method(Connection.Method.POST)
                     .execute();
 
-            Document doc = res.parse();
-            mDataExist = (doc.select("td").size() == 0) ? false : true ;
+            Elements elements = res.parse().select("td");
+            mDataExist = (elements.size() == 0) ? false : true ;
             if(mDataExist)
-                saveData(doc.select("td"));
+                saveData(elements);
             else {
-                mOffset++;
-                Log.d(TAG, "No data detected.");
+//                Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
-            Log.d(TAG,"Fetching data failed! Try again.");
-            fetchData(date, type); //retry
+            ex.printStackTrace();
+            mOffset--;
             mRetryCount++;
+//            Log.d(TAG, "Fetching data failed!");
         }
     }
 
-
-
     private void saveData(Elements elements) {
-        Log.d(TAG, "count = " + String.valueOf(elements.size()));
+//        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();
