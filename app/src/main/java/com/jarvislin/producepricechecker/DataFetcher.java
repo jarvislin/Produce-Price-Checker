@@ -1,11 +1,11 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
 import java.util.HashMap;
