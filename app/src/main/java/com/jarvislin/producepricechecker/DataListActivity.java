@@ -12,6 +12,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.jarvislin.producepricechecker.util.ToolsHelper;
+
 import java.util.HashMap;
 
 
