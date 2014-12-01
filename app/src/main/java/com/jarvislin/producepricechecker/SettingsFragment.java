@@ -93,12 +93,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(getString(R.string.about));
         builder.setMessage(getString(R.string.about_app));
-        builder.setNegativeButton(getString(R.string.back), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //do nothing
-            }
-        });
+        builder.setNegativeButton(getString(R.string.back), null);
         builder.setPositiveButton(getString(R.string.get_source_code), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

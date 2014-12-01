@@ -2,6 +2,7 @@ package com.jarvislin.producepricechecker;
 
 import android.content.Context;
 
+import com.jarvislin.producepricechecker.database.ProduceDAO;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.jsoup.Connection;
@@ -22,9 +23,11 @@ public class DataFetcher {
     private int mRetryCount = 0;
     private boolean mDataExist = false;
     private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
+    private ProduceDAO produceDAO;
 
     public DataFetcher(int type, Context context) {
         mContext = context;
+        produceDAO = new ProduceDAO(mContext);
         do {
             fetchData(ToolsHelper.getDate(mOffset), type);
         } while(!mDataExist && mOffset < 5 && mRetryCount < 3);
@@ -53,9 +56,9 @@ public class DataFetcher {
 
             Elements elements = res.parse().select("td");
             mDataExist = (elements.size() == 0) ? false : true ;
-            if(mDataExist)
-                saveData(elements);
-            else {
+            if(mDataExist) {
+//                saveData(elements);
+            } else {
 //                Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
@@ -68,6 +71,7 @@ public class DataFetcher {
 
     private void saveData(Elements elements) {
 //        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
+
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();
@@ -77,6 +81,7 @@ public class DataFetcher {
             data[4] = elements.get(i + 5).text();
             data[5] = elements.get(i + 6).text();
             mProduceDataMap.put(count, new ProduceData(data));
+            produceDAO.insert(new ProduceData(data));
             count++;
         }
     }

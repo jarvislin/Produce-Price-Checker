@@ -55,6 +55,15 @@ public class ToolsHelper {
         return date;
     }
 
+    public static String getCurrentDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 0);
+
+        String date = dateFormat.format(cal.getTime());
+        return date;
+    }
+
     public static String getOffsetInWords(int offset) {
         return (offset > 0) ? " (" + String.valueOf(offset) + "天前)" : "(今天)";
     }

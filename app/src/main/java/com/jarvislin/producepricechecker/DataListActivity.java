@@ -12,9 +12,11 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.jarvislin.producepricechecker.database.ProduceDAO;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.HashMap;
+import java.util.List;
 
 
 public class DataListActivity extends Activity {
@@ -70,13 +72,24 @@ public class DataListActivity extends Activity {
             ProduceData tempProduceData;
             LayoutInflater inflater = (LayoutInflater) this.getSystemService(LAYOUT_INFLATER_SERVICE);
             View row;
-            for(int i = 0 ; i < dataMap.size() ; i++ ){
+//            for(int i = 0 ; i < dataMap.size() ; i++ ){
+//                row = ( (i + 1) % 2 == 1) ? inflater.inflate(R.layout.odd_row, null) : inflater.inflate(R.layout.even_row, null) ;
+//                tempProduceData = dataMap.get(i);
+//                if(isCustomerMode())
+//                    addCustomerRow(row, tempProduceData);
+//                else
+//                    addGeneralRow(row, tempProduceData);
+//            }
+            ProduceDAO dao = new ProduceDAO(this);
+            List<ProduceData> list =  dao.getAll();
+            for(int i = 0; i<list.size();i++){
                 row = ( (i + 1) % 2 == 1) ? inflater.inflate(R.layout.odd_row, null) : inflater.inflate(R.layout.even_row, null) ;
-                tempProduceData = dataMap.get(i);
+                tempProduceData = list.get(i);
                 if(isCustomerMode())
                     addCustomerRow(row, tempProduceData);
                 else
                     addGeneralRow(row, tempProduceData);
+
             }
         }
     }
