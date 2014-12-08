@@ -36,7 +36,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     @Override
     protected void onPostExecute(DataFetcher result){
         if(mContext instanceof DataListActivity)
-            ((DataListActivity)mContext).loadDataMap(result);
+            ((DataListActivity)mContext).loadDataList(result);
         //close ProgressDialog
         mProgressDialog.dismiss();
 
