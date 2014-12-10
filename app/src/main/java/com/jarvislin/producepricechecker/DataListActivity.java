@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,7 +40,6 @@ public class DataListActivity extends Activity {
             initUI();
             update(null);
         }
-
     }
 
     private void initUI() {
@@ -144,6 +144,14 @@ public class DataListActivity extends Activity {
             mListView.setAdapter(new ProduceListAdapter(this, dataList, isCustomerMode()));
         }
     }
+
+    private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            //add to bookmark
+        }
+    };
 
     public void info(View view) {
         String[] date = ToolsHelper.getDate(mOffset);
