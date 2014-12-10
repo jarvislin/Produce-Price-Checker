@@ -41,9 +41,5 @@
         android:key="rating"
         android:summary="@string/rating_for_app" />
 
-    <Preference
-        android:title="@string/contact"
-        android:key="contact"
-        android:summary="@string/provide_suggestion" />
 
 </PreferenceScreen>

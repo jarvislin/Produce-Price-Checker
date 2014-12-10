@@ -6,36 +6,51 @@
     android:orientation="vertical"
     tools:context="com.jarvislin.producepricechecker.DataListActivity">
 
-
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:id="@+id/scrollView" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/main_blue">
 
-        <TableLayout
-            android:shrinkColumns="0"
-            android:stretchColumns="*"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/tableLayout">
+        <TextView
+            android:id="@+id/type_name"
+            android:text="品種及名稱"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/top"
+            android:text="100.0"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/mid"
+            android:text="100.0"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/low"
+            android:text="100.0"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/avg"
+            android:text="100.0"
+            android:layout_weight="1"
+            android:visibility="invisible"
+            style="@style/TableHeader"/>
 
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+    </LinearLayout>
+    <ListView
+        android:id="@+id/data_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-                    <TextView android:text="品種/名稱"
-                        style="@style/TableHeader"/>
-                    <TextView android:text="上價"
-                        style="@style/TableHeader"/>
-                    <TextView android:text="中價"
-                        style="@style/TableHeader"/>
-                    <TextView android:text="下價"
-                        style="@style/TableHeader"/>
-                    <TextView android:text="平均"
-                        style="@style/TableHeader"/>
-            </TableRow>
+     </ListView>
 
-        </TableLayout>
-    </ScrollView>
+
+
 </LinearLayout>

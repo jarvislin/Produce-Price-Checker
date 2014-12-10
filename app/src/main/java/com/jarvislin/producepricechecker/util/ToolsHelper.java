@@ -1,14 +1,18 @@
-package com.jarvislin.producepricechecker;
+package com.jarvislin.producepricechecker.util;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
+
+
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
+
 
 /**
  * Created by Jarvis Lin on 2014/10/11.
@@ -55,6 +59,15 @@ public class ToolsHelper {
         return date;
     }
 
+    public static String getCurrentDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, 0);
+
+        String date = dateFormat.format(cal.getTime());
+        return date;
+    }
+
     public static String getOffsetInWords(int offset) {
         return (offset > 0) ? " (" + String.valueOf(offset) + "天前)" : "(今天)";
     }
@@ -75,4 +88,6 @@ public class ToolsHelper {
     public static String getUnitInWords(float digit) {
         return (digit < 1) ? "台斤/元" : "公斤/元";
     }
+
+
 }
