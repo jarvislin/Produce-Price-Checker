@@ -16,7 +16,7 @@ import java.util.ArrayList;
  */
 public class ProduceListAdapter extends BaseAdapter {
 
-    private  ArrayList<ProduceData> mList;
+    private ArrayList<ProduceData> mList;
     private Context mContext;
     private boolean mIsCustomerMode;
 
@@ -66,9 +66,8 @@ public class ProduceListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.cell.setBackgroundColor(mContext.getResources().getColor((position % 2 == 0) ? R.color.white : R.color.odd_row));
-
         ProduceData data = mList.get(position);
+        holder.cell.setBackgroundColor(mContext.getResources().getColor((data.isBookmark()) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         if (mIsCustomerMode) {
 

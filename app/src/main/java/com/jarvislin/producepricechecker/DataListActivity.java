@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.ArrayList;
@@ -20,7 +21,9 @@ public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
     private ListView mListView;
+    private ProduceListAdapter mAdapter;
     private int mOffset;
+    private GoogleAnalyticsSender mSender;
     private boolean hasInitialized = false;
 
     @Override
@@ -29,6 +32,7 @@ public class DataListActivity extends Activity {
         setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_data_table);
+        mSender = new GoogleAnalyticsSender(this);
     }
 
     @Override
@@ -108,6 +112,8 @@ public class DataListActivity extends Activity {
     }
 
     public void update(View view) {
+        if(!view.equals(null))
+            mSender.send("click_update");
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
             finish();
@@ -141,7 +147,9 @@ public class DataListActivity extends Activity {
         if(dataList == null)
             ToolsHelper.showSiteErrorMessage(this); //show error
         else{
-            mListView.setAdapter(new ProduceListAdapter(this, dataList, isCustomerMode()));
+            mAdapter = new ProduceListAdapter(this, dataList, isCustomerMode());
+            mListView.setAdapter(mAdapter);
+            mListView.setOnItemClickListener(itemClickListener);
         }
     }
 
@@ -149,11 +157,15 @@ public class DataListActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //add to bookmark
+            //set bookmark status
+            ProduceData object = (ProduceData)mAdapter.getItem(position);
+            object.setBookmark((object.isBookmark() ? false : true));
+            mAdapter.notifyDataSetInvalidated();
         }
     };
 
     public void info(View view) {
+        mSender.send("click_info");
         String[] date = ToolsHelper.getDate(mOffset);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("資訊");

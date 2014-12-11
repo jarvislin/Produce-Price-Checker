@@ -19,7 +19,7 @@ public class PreferenceUtil {
 
     private static final String PREFERENCE_DATA = "preference_data";
     private static final String LAST_UPDATED_DATE = "last_updated_date";
-    private final static String FAVORITE_LIST = "favorite_list";
+    private final static String BOOKMARK_LIST = "bookmark_list";
 
     public static void updateLastDate(Context context){
 
@@ -35,7 +35,7 @@ public class PreferenceUtil {
         return PreferenceManager.getDefaultSharedPreferences(context).getString(LAST_UPDATED_DATE, "0");
     }
 
-    public static void saveFavorites(Context context, List<ProduceData> list) {
+    public static void saveBookmarks(Context context, List<ProduceData> list) {
         SharedPreferences settings;
         SharedPreferences.Editor editor;
 
@@ -43,7 +43,7 @@ public class PreferenceUtil {
         editor = settings.edit();
 
         Gson gson = new Gson();
-        String jsonFavorites = gson.toJson(list);
-        editor.putString(FAVORITE_LIST, jsonFavorites).commit();
+        String jsonBookmarks = gson.toJson(list);
+        editor.putString(BOOKMARK_LIST, jsonBookmarks).commit();
     }
 }
