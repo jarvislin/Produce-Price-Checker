@@ -4,7 +4,7 @@
     <color name="white">#ffffff</color>
     <color name="actionbar_back">#24374a</color>
     <color name="main_blue">#147585</color>
-    <color name="heightlight">#fffff466</color>
+    <color name="highlight">#fffff466</color>
     <color name="odd_row">#EAF2F4</color>
 
 </resources>
