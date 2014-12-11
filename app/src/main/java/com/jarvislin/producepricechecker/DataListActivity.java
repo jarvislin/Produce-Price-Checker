@@ -112,8 +112,7 @@ public class DataListActivity extends Activity {
     }
 
     public void update(View view) {
-        if(!view.equals(null))
-            mSender.send("click_update");
+        mSender.send("update");
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
             finish();
