@@ -6,6 +6,8 @@ package com.jarvislin.producepricechecker;
 public class ProduceData {
     private String[] mData;
     private boolean mBookmark = false;
+    private String mDate = "0000/00/00";
+
     public ProduceData(String[] data){
         mData = data;
     }
@@ -32,5 +34,11 @@ public class ProduceData {
     }
     public boolean isBookmark() {
         return mBookmark;
+    }
+    public void setDate(String date) {
+        mDate = date;
+    }
+    public String getDate() {
+        return mDate;
     }
 }
