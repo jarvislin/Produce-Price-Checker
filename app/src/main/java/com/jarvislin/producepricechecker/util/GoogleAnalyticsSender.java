@@ -16,6 +16,7 @@ public class GoogleAnalyticsSender {
     public GoogleAnalyticsSender(Context context){
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
         mTracker = analytics.newTracker(PROPERTY_ID);
+        mTracker.enableAdvertisingIdCollection(true);
     }
 
     public void send(String path){

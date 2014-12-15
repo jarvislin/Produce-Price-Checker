@@ -2,7 +2,7 @@ package com.jarvislin.producepricechecker;
 
 import android.content.Context;
 
-import com.jarvislin.producepricechecker.database.ProduceDAO;
+import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.jsoup.Connection;
@@ -10,7 +10,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Jarvis Lin on 2014/10/10.
@@ -20,6 +19,7 @@ public class DataFetcher {
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
+    private int mType;
     private int mOffset = 0;
     private int mRetryCount = 0;
     private boolean mDataExist = false;
@@ -28,6 +28,7 @@ public class DataFetcher {
 
     public DataFetcher(int type, Context context) {
         mContext = context;
+        mType = type;
 //        produceDAO = new ProduceDAO(mContext);
         do {
             fetchData(ToolsHelper.getDate(mOffset), type);
@@ -81,9 +82,26 @@ public class DataFetcher {
             data[3] = elements.get(i + 4).text();
             data[4] = elements.get(i + 5).text();
             data[5] = elements.get(i + 6).text();
-            mProduceDataList.add(count, new ProduceData(data));
+
+            ProduceData produceData = new ProduceData(data);
+            produceData.setDate(ToolsHelper.getFullDate(getOffset()));
+            checkBookmark(produceData);
+
+            mProduceDataList.add(count, produceData);
 //            produceDAO.insert(new ProduceData(data));
             count++;
+        }
+    }
+
+    private void checkBookmark(ProduceData produceData) {
+        ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(mContext, mType);
+        for (int i = 0 ; i < bookmarkList.size() ; i ++) {
+            if(bookmarkList.get(i).getType().equals(produceData.getType()) &&
+                    bookmarkList.get(i).getName().equals(produceData.getName()) &&
+                    !bookmarkList.get(i).getDate().equals(produceData.getDate())) {
+                PreferenceUtil.updateBookmarks(mContext, bookmarkList, produceData, i, mType);
+                break;
+            }
         }
     }
 }

@@ -8,4 +8,5 @@ public class GlobalVariable {
     public static int fiveCharsWidth = 0; // 五個字寬度
     public static int rangeWidth = 0; // 100.0 - 100.0
     public static int fourDigitsWidth = 0; // 100.0
+    public static int isEditMode = -1;
 }

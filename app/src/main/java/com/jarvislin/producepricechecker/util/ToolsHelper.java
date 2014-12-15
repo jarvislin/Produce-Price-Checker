@@ -4,13 +4,16 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -59,6 +62,14 @@ public class ToolsHelper {
         return date;
     }
 
+    public static String getFullDate(int offset) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -offset);
+
+        return dateFormat.format(cal.getTime());
+    }
+
     public static String getCurrentDate(){
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
@@ -69,7 +80,19 @@ public class ToolsHelper {
     }
 
     public static String getOffsetInWords(int offset) {
-        return (offset > 0) ? " (" + String.valueOf(offset) + "天前)" : "(今天)";
+        return (offset > 0) ? "(" + String.valueOf(offset) + "天前)" : "(今天)";
+    }
+
+    public static int getOffset(String date) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date beginDate= dateFormat.parse(date);
+            Date endDate= dateFormat.parse(getCurrentDate());
+            return (int)(endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 
     public static String getMarketName(String key){
@@ -89,5 +112,25 @@ public class ToolsHelper {
         return (digit < 1) ? "台斤/元" : "公斤/元";
     }
 
+    public static String getPriceRange(String price, Context context){
+        float tmpPrice = Float.valueOf(price);
+        float unit = ToolsHelper.getUnit(context);
 
+        if(tmpPrice * unit * 1.6 > 1000)
+            price = String.format("%.0f", tmpPrice * unit * 1.3) + " - " + String.format("%.0f", tmpPrice * unit * 1.6); // price * unit * profit
+        else
+            price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.6); // price * unit * profit
+
+        return price;
+    }
+
+    public static String getPriceWithUnit(String price, Context context){
+        float tmpPrice = Float.valueOf(price);
+        float unit = ToolsHelper.getUnit(context);
+
+        if(tmpPrice * unit > 1000)
+            return String.format("%.0f", tmpPrice * unit );
+        else
+            return String.format("%.1f", tmpPrice * unit );
+    }
 }

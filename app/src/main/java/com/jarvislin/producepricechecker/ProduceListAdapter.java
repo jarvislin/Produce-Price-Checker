@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.ArrayList;
@@ -16,14 +17,14 @@ import java.util.ArrayList;
  */
 public class ProduceListAdapter extends BaseAdapter {
 
-    private  ArrayList<ProduceData> mList;
+    private ArrayList<ProduceData> mList;
     private Context mContext;
-    private boolean mIsCustomerMode;
+    private int mType;
 
-    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, boolean isCustomerMode)  {
+    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
         mList = list;
         mContext = context;
-        mIsCustomerMode = isCustomerMode;
+        mType = type;
     }
 
     @Override
@@ -66,16 +67,16 @@ public class ProduceListAdapter extends BaseAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        holder.cell.setBackgroundColor(mContext.getResources().getColor((position % 2 == 0) ? R.color.white : R.color.odd_row));
-
         ProduceData data = mList.get(position);
 
-        if (mIsCustomerMode) {
+        holder.cell.setBackgroundColor(mContext.getResources().getColor(PreferenceUtil.isBookmark(mContext, mType, data) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+
+        if (PreferenceUtil.isCustomerMode(mContext)) {
 
             //set views
             holder.type.setText(data.getType());
             holder.name.setText(data.getName());
-            holder.avgPrice.setText(getPriceRange(data.getAvgPrice()));
+            holder.avgPrice.setText(ToolsHelper.getPriceRange(data.getAvgPrice(), mContext));
 
             //hide views
             holder.topPrice.setVisibility(View.GONE);
@@ -94,10 +95,10 @@ public class ProduceListAdapter extends BaseAdapter {
             //set views
             String completedName = (data.getType().length() <= 1) ? data.getName() : data.getType() + "\n" + data.getName();
             holder.name.setText(completedName);
-            holder.topPrice.setText(getPriceWithUnit(data.getTopPrice()));
-            holder.midPrice.setText(getPriceWithUnit(data.getMidPrice()));
-            holder.lowPrice.setText(getPriceWithUnit(data.getLowPrice()));
-            holder.avgPrice.setText(getPriceWithUnit(data.getAvgPrice()));
+            holder.topPrice.setText(ToolsHelper.getPriceWithUnit(data.getTopPrice(), mContext));
+            holder.midPrice.setText(ToolsHelper.getPriceWithUnit(data.getMidPrice(), mContext));
+            holder.lowPrice.setText(ToolsHelper.getPriceWithUnit(data.getLowPrice(), mContext));
+            holder.avgPrice.setText(ToolsHelper.getPriceWithUnit(data.getAvgPrice(), mContext));
 
             //hide views
             holder.type.setVisibility(View.GONE);
@@ -116,27 +117,9 @@ public class ProduceListAdapter extends BaseAdapter {
         return view;
     }
 
-    private String getPriceRange(String price){
-        float tmpPrice = Float.valueOf(price);
-        float unit = ToolsHelper.getUnit(mContext);
 
-        if(tmpPrice * unit * 1.6 > 1000)
-            price = String.format("%.0f", tmpPrice * unit * 1.3) + " - " + String.format("%.0f", tmpPrice * unit * 1.6); // price * unit * profit
-        else
-            price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.6); // price * unit * profit
 
-        return price;
-    }
 
-    private String getPriceWithUnit(String price){
-        float tmpPrice = Float.valueOf(price);
-        float unit = ToolsHelper.getUnit(mContext);
-
-        if(tmpPrice * unit > 1000)
-            return String.format("%.0f", tmpPrice * unit );
-        else
-            return String.format("%.1f", tmpPrice * unit );
-    }
 
     private class ViewHolder {
         LinearLayout cell;

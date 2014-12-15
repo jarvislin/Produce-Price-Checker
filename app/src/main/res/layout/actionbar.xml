@@ -5,7 +5,7 @@
     android:background="@color/actionbar_back">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_alignParentLeft="true"

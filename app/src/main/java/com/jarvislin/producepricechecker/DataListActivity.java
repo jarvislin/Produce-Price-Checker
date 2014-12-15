@@ -3,14 +3,21 @@ package com.jarvislin.producepricechecker;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
+import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.ArrayList;
@@ -20,15 +27,18 @@ public class DataListActivity extends Activity {
 
     private final String TAG = this.getClass().getSimpleName();
     private ListView mListView;
+    private ProduceListAdapter mAdapter;
     private int mOffset;
+    private GoogleAnalyticsSender mSender;
     private boolean hasInitialized = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView((isCustomerMode()) ? R.layout.customer_data_list : R.layout.general_data_list);
+        setContentView((PreferenceUtil.isCustomerMode(this)) ? R.layout.customer_data_list : R.layout.general_data_list);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_data_table);
+        mSender = new GoogleAnalyticsSender(this);
     }
 
     @Override
@@ -42,8 +52,13 @@ public class DataListActivity extends Activity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        mAdapter.notifyDataSetChanged();
+    }
+
     private void initUI() {
-        if(isCustomerMode()){
+        if(PreferenceUtil.isCustomerMode(this)){
             //find views
             TextView type = (TextView)findViewById(R.id.type);
             TextView name = (TextView)findViewById(R.id.name);
@@ -107,7 +122,16 @@ public class DataListActivity extends Activity {
         }
     }
 
+    public void bookmark(View view) {
+        mSender.send("click_bookmark");
+        Intent intent = new Intent();
+        intent.putExtra("type", getType());
+        intent.setClass(this, BookmarkActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
     public void update(View view) {
+        mSender.send("update");
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
             finish();
@@ -126,11 +150,6 @@ public class DataListActivity extends Activity {
         mListView = (ListView)findViewById(R.id.data_list);
     }
 
-    private boolean isCustomerMode(){
-//        Log.d(TAG, "CustomerMode = " + String.valueOf(PreferenceManager.getDefaultSharedPreferences(this).getBoolean("role", false)));
-        return PreferenceManager.getDefaultSharedPreferences(this).getBoolean("role", false);
-    }
-
     private int getType() {
         return getIntent().getIntExtra("type", -1);
     }
@@ -141,7 +160,9 @@ public class DataListActivity extends Activity {
         if(dataList == null)
             ToolsHelper.showSiteErrorMessage(this); //show error
         else{
-            mListView.setAdapter(new ProduceListAdapter(this, dataList, isCustomerMode()));
+            mAdapter = new ProduceListAdapter(this, dataList, getType());
+            mListView.setAdapter(mAdapter);
+            mListView.setOnItemClickListener(itemClickListener);
         }
     }
 
@@ -149,11 +170,25 @@ public class DataListActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            //add to bookmark
+            //set bookmark status
+            ProduceData object = (ProduceData)mAdapter.getItem(position);
+            ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(DataListActivity.this, getType());
+            ColorDrawable color = (ColorDrawable)view.getBackground();
+
+            if(getResources().getColor(R.color.highlight) == color.getColor()) {
+                PreferenceUtil.removeBookmark(DataListActivity.this, bookmarkList, object, getType());
+                Toast.makeText(DataListActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
+            } else {
+                PreferenceUtil.addBookmark(DataListActivity.this, bookmarkList, object, getType());
+                Toast.makeText(DataListActivity.this, "已將項目加入清單", Toast.LENGTH_SHORT).show();
+            }
+
+            mAdapter.notifyDataSetChanged();
         }
     };
 
     public void info(View view) {
+        mSender.send("click_info");
         String[] date = ToolsHelper.getDate(mOffset);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("資訊");
