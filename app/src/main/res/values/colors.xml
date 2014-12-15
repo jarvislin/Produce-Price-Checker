@@ -6,5 +6,6 @@
     <color name="main_blue">#147585</color>
     <color name="highlight">#fffff466</color>
     <color name="odd_row">#EAF2F4</color>
+    <color name="light_grey">#ffeaeaea</color>
 
 </resources>
