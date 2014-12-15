@@ -16,6 +16,10 @@ https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker
 
 版本
 ---------
+* ver 1.1.0
+ * 自訂清單功能
+* ver 1.0.1
+ * 重點標示功能
 * ver 1.0.0
  * 基本查詢功能
  * 顯示利潤
