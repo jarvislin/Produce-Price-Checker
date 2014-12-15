@@ -5,6 +5,9 @@ package com.jarvislin.producepricechecker;
  */
 public class ProduceData {
     private String[] mData;
+    private boolean mBookmark = false;
+    private String mDate = "0000/00/00";
+
     public ProduceData(String[] data){
         mData = data;
     }
@@ -25,5 +28,17 @@ public class ProduceData {
     }
     public String getAvgPrice(){
         return mData[5];
+    }
+    public void setBookmark(boolean status){
+        mBookmark = status;
+    }
+    public boolean isBookmark() {
+        return mBookmark;
+    }
+    public void setDate(String date) {
+        mDate = date;
+    }
+    public String getDate() {
+        return mDate;
     }
 }

@@ -1,14 +1,15 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Context;
-import android.util.Log;
+
+import com.jarvislin.producepricechecker.util.PreferenceUtil;
+import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
 /**
  * Created by Jarvis Lin on 2014/10/10.
@@ -18,24 +19,28 @@ public class DataFetcher {
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
+    private int mType;
     private int mOffset = 0;
     private int mRetryCount = 0;
     private boolean mDataExist = false;
-    private HashMap<Integer, ProduceData> mProduceDataMap = new HashMap<Integer, ProduceData>();
+    private ArrayList<ProduceData> mProduceDataList = new ArrayList<ProduceData>();
+//    private ProduceDAO produceDAO;
 
     public DataFetcher(int type, Context context) {
         mContext = context;
+        mType = type;
+//        produceDAO = new ProduceDAO(mContext);
         do {
             fetchData(ToolsHelper.getDate(mOffset), type);
-        } while(!mDataExist && mOffset < 5 && mRetryCount < 3);
+        } while(!mDataExist && mOffset < 7 && mRetryCount < 3);
     }
 
     public boolean hasData(){
         return mDataExist;
     }
 
-    public HashMap getProduceDataMap(){
-        return mProduceDataMap;
+    public ArrayList<ProduceData> getProduceDataList(){
+        return mProduceDataList;
     }
 
     public int getOffset(){
@@ -53,9 +58,9 @@ public class DataFetcher {
 
             Elements elements = res.parse().select("td");
             mDataExist = (elements.size() == 0) ? false : true ;
-            if(mDataExist)
+            if(mDataExist) {
                 saveData(elements);
-            else {
+            } else {
 //                Log.d(TAG, "No data detected.");
             }
         }catch (Exception ex){
@@ -68,6 +73,7 @@ public class DataFetcher {
 
     private void saveData(Elements elements) {
 //        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
+
         for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
             String[] data = new String[6];
             data[0] = elements.get(i).text();
@@ -76,8 +82,26 @@ public class DataFetcher {
             data[3] = elements.get(i + 4).text();
             data[4] = elements.get(i + 5).text();
             data[5] = elements.get(i + 6).text();
-            mProduceDataMap.put(count, new ProduceData(data));
+
+            ProduceData produceData = new ProduceData(data);
+            produceData.setDate(ToolsHelper.getFullDate(getOffset()));
+            checkBookmark(produceData);
+
+            mProduceDataList.add(count, produceData);
+//            produceDAO.insert(new ProduceData(data));
             count++;
+        }
+    }
+
+    private void checkBookmark(ProduceData produceData) {
+        ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(mContext, mType);
+        for (int i = 0 ; i < bookmarkList.size() ; i ++) {
+            if(bookmarkList.get(i).getType().equals(produceData.getType()) &&
+                    bookmarkList.get(i).getName().equals(produceData.getName()) &&
+                    !bookmarkList.get(i).getDate().equals(produceData.getDate())) {
+                PreferenceUtil.updateBookmarks(mContext, bookmarkList, produceData, i, mType);
+                break;
+            }
         }
     }
 }

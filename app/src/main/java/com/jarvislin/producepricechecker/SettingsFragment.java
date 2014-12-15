@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -20,11 +22,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     private static final String HOMEPAGE = "http://jarvislin.com";
     private static final String SOURCE_CODE = "https://github.com/jarvislin/Produce-Price-Checker";
     private static final String PLAY_STORE = "http://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker";
-    private static final HashMap<Integer, String> PREFERENCE_ITEM = new HashMap<Integer, String>(){{
-        put(0, "about");
-        put(1, "contact");
-        put(2, "rating");
-        put(3, "visit");
+    private static final ArrayList<String> PREFERENCE_ITEM = new ArrayList<String>(){{
+        add(0, "about");
+        add(1, "rating");
+        add(2, "visit");
     }};
 
     @Override
@@ -59,7 +60,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
     }
 
     private void initPreference(final Context context) {
-        for(int i = 0 ; i < 4 ; i ++){
+        for(int i = 0 ; i < 3 ; i ++){
             Preference preference = (Preference) findPreference(PREFERENCE_ITEM.get(i));
             preference.setOnPreferenceClickListener(clickPref(i, context));
         }
@@ -73,12 +74,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                         setAbout(context);
                         break;
                     case 1:
-                        sendMail();
-                        break;
-                    case 2:
                         openUrl(PLAY_STORE);
                         break;
-                    case 3:
+                    case 2:
                         openUrl(HOMEPAGE);
                         break;
                     default:
@@ -93,12 +91,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(getString(R.string.about));
         builder.setMessage(getString(R.string.about_app));
-        builder.setNegativeButton(getString(R.string.back), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //do nothing
-            }
-        });
+        builder.setNegativeButton(getString(R.string.back), null);
         builder.setPositiveButton(getString(R.string.get_source_code), new AlertDialog.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -106,13 +99,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             }
         });
         builder.show();
-    }
-
-    public void sendMail() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", "jarvislin0202@gmail.com", null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.mail_subject));
-        startActivity(Intent.createChooser(emailIntent, getString(R.string.contact)));
     }
 
     public void openUrl(String url) {

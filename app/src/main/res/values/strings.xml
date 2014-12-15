@@ -7,6 +7,7 @@
     <string name="setting">設定</string>
     <string name="menu">選單</string>
     <string name="title_activity_data_list">行情表</string>
+    <string name="my_list">我的清單</string>
     <string name="search">查詢</string>
     <string name="market">市場</string>
     <string name="mode">模式</string>
@@ -16,7 +17,7 @@
     <string name="choose_service">選擇開啟方式</string>
     <string name="unit">重量單位</string>
     <string name="customer_mode">消費者模式</string>
-    <string name="customer_mode_description">顯示利潤為3~5成的平均價格</string>
+    <string name="customer_mode_description">顯示利潤為3~6成的平均價格</string>
     <string name="other_info">其他資訊</string>
     <string name="about">關於</string>
     <string name="contact">連絡作者</string>

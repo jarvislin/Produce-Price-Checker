@@ -14,37 +14,11 @@
         <ImageView
             style="@style/ActionBarImage"
             android:src="@drawable/ic_action_back"/>
-        </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
-        android:layout_toRightOf="@+id/back"
-        android:onClick="bookmark">
-
-        <ImageView
-            style="@style/ActionBarImage"
-            android:src="@drawable/ic_list"/>
-
     </RelativeLayout>
 
     <TextView
         style="@style/ActionBarTitle"
-        android:text="@string/title_activity_data_list"/>
-
-    <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
-        android:layout_toLeftOf="@+id/info"
-        android:onClick="update">
-
-        <ImageView
-            style="@style/ActionBarImage"
-            android:src="@drawable/ic_action_refresh"/>
-
-    </RelativeLayout>
+        android:text="@string/my_list"/>
 
     <RelativeLayout
         android:id="@+id/info"
@@ -52,11 +26,11 @@
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_alignParentRight="true"
-        android:onClick="info">
+        android:onClick="edit">
 
         <ImageView
             style="@style/ActionBarImage"
-            android:src="@drawable/ic_info"/>
+            android:src="@drawable/ic_delete"/>
 
     </RelativeLayout>
 
