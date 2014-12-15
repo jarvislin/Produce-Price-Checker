@@ -1,5 +1,7 @@
 蔬果行情站 - Android
 ==========
+<img src="https://lh6.ggpht.com/GCDvi_WtOavfDC074RsXM3JdABUsLjWLEbKVrNGxxm7XAQUb5d7oTg1a7qylOsOQ1Q=h900-rw" width="253" height="450">
+
 透過農委會的農產品交易行情站取得蔬菜、水果的批發價格，
 
 並根據設定顯示資料，提供使用者蔬果的參考價格。
@@ -12,7 +14,7 @@
 
 下載
 ---------
-https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker
+[<img src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png">](https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker)
 
 版本
 ---------
