@@ -5,7 +5,8 @@
     android:background="@color/actionbar_back">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/back"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_alignParentLeft="true"
@@ -15,12 +16,25 @@
             android:src="@drawable/ic_action_back"/>
         </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="50dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/press_effect"
+        android:layout_toRightOf="@+id/back"
+        android:onClick="bookmark">
+
+        <ImageView
+            style="@style/ActionBarImage"
+            android:src="@drawable/ic_list"/>
+
+    </RelativeLayout>
+
     <TextView
         style="@style/ActionBarTitle"
         android:text="@string/title_activity_data_list"/>
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_toLeftOf="@+id/info"
@@ -34,7 +48,7 @@
 
     <RelativeLayout
         android:id="@+id/info"
-        android:layout_width="wrap_content"
+        android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect"
         android:layout_alignParentRight="true"
@@ -42,7 +56,7 @@
 
         <ImageView
             style="@style/ActionBarImage"
-            android:src="@android:drawable/ic_menu_info_details"/>
+            android:src="@drawable/ic_info"/>
 
     </RelativeLayout>
 
