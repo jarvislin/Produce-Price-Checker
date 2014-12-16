@@ -13,7 +13,6 @@ public class BookmarkActivity extends Activity {
 
     private ListView mListView;
     private BookmarkListAdapter mAdapter;
-    private boolean isTurnOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
