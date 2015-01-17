@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:gravity="center"
+    android:layout_gravity="center"
+    android:orientation="vertical" android:layout_width="300dp"
+    android:layout_height="160dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:text="更新資料"
+        android:textColor="@color/main_blue"
+        android:textSize="22sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/light_blue"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <ProgressBar
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:indeterminateDrawable="@drawable/blue_progressbar"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="8dp"
+            android:text="更新中, 請稍候..."
+            android:textColor="@color/main_blue"
+            android:textSize="16sp"/>
+
+        </LinearLayout>
+
+
+
+
+
+</LinearLayout>

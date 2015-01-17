@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -14,7 +15,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     }
 
     private Context mContext;
-    private ProgressDialog mProgressDialog;
+    private Dialog mProgressDialog;
 
 
     @Override
@@ -27,9 +28,8 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     @Override
     protected void onPreExecute(){
         //open ProgressDialog
-        mProgressDialog = new ProgressDialog(mContext);;
-        mProgressDialog.setTitle("更新資料");
-        mProgressDialog.setMessage("更新中，請稍候...");
+        mProgressDialog = new Dialog(mContext, R.style.alertDialog);;
+        mProgressDialog.setContentView(R.layout.dialog_update);
         mProgressDialog.show();
     }
 
@@ -37,7 +37,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
     protected void onPostExecute(DataFetcher result){
         if(mContext instanceof DataListActivity)
             ((DataListActivity)mContext).loadDataList(result);
-        //close ProgressDialog
+        //close Dialog
         if(mProgressDialog != null && mProgressDialog.isShowing())
             mProgressDialog.dismiss();
 

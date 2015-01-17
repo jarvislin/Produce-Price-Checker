@@ -3,6 +3,7 @@ package com.jarvislin.producepricechecker;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -11,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -190,17 +192,31 @@ public class DataListActivity extends Activity {
     public void info(View view) {
         mSender.send("click_info");
         String[] date = ToolsHelper.getDate(mOffset);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("資訊");
-        builder.setMessage(
+
+        final Dialog dialog = new Dialog(this, R.style.alertDialog);
+        dialog.setContentView(R.layout.dialog_info);
+
+        TextView message = (TextView) dialog.findViewById(R.id.info_text);
+        message.setText(
                 "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(mOffset) + "\n" +
                 "單位：" + ToolsHelper.getUnitInWords(ToolsHelper.getUnit(this)) + "\n" +
                 "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
         );
 
-        builder.setNeutralButton(getString(R.string.back), null);
+        Button dismiss = (Button) dialog.findViewById(R.id.info_dismiss);
+        dismiss.setOnClickListener(closeDialog(dialog));
 
-        builder.show();
+        dialog.show();
+    }
+
+    private View.OnClickListener closeDialog(final Dialog dialog){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialog.isShowing())
+                    dialog.dismiss();
+            }
+        };
     }
 }
 

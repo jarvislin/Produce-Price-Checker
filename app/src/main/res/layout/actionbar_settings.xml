@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
+        android:background="@drawable/press_effect_with_alpha"
         android:layout_alignParentLeft="true"
         android:onClick="back">
         <ImageView
