@@ -2,6 +2,7 @@ package com.jarvislin.producepricechecker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,10 @@ import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +31,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         add(0, "about");
         add(1, "rating");
         add(2, "visit");
+        add(3, "profit");
     }};
+
+    private EditText mLowProfit;
+    private EditText mHighProfit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -34,7 +43,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         // Load the preferences from an XML resource
         addPreferencesFromResource(R.xml.pref_general);
-        initPreference(getActivity());
+        initPreference();
     }
 
     @Override
@@ -59,10 +68,10 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         super.onPause();
     }
 
-    private void initPreference(final Context context) {
-        for(int i = 0 ; i < 3 ; i ++){
+    private void initPreference() {
+        for(int i = 0 ; i < PREFERENCE_ITEM.size() ; i ++){
             Preference preference = (Preference) findPreference(PREFERENCE_ITEM.get(i));
-            preference.setOnPreferenceClickListener(clickPref(i, context));
+            preference.setOnPreferenceClickListener(clickPref(i, getActivity()));
         }
     }
 
@@ -79,10 +88,61 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
                     case 2:
                         openUrl(HOMEPAGE);
                         break;
+                    case 3:
+                        showProfit();
+                        break;
                     default:
                         break;
                 }
                 return true;
+            }
+        };
+    }
+
+    private void showProfit() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String[] profit = prefs.getString("profit", "30,50").split(",");
+
+        final Dialog dialog = new Dialog(getActivity(), R.style.alertDialog);
+        dialog.setContentView(R.layout.dialog_profit);
+
+        Button cancel = (Button)dialog.findViewById(R.id.profit_dismiss);
+        Button submit = (Button)dialog.findViewById(R.id.profit_submit);
+        cancel.setOnClickListener(clickCancel(dialog));
+        submit.setOnClickListener(clickSubmit(dialog));
+
+        mLowProfit = (EditText)dialog.findViewById(R.id.profit_low);
+        mHighProfit = (EditText)dialog.findViewById(R.id.profit_high);
+        mLowProfit.setText(profit[0]);
+        mHighProfit.setText(profit[1]);
+
+
+
+        dialog.show();
+
+    }
+
+    private View.OnClickListener clickCancel(final Dialog dialog){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(dialog.isShowing())
+                    dialog.dismiss();
+            }
+        };
+    }
+
+    private View.OnClickListener clickSubmit(final Dialog dialog){
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String low = mLowProfit.getText().toString();
+                String high = mHighProfit.getText().toString();
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                prefs.edit().putString("profit",low + "," + high).commit();
+
+                if(dialog.isShowing())
+                    dialog.dismiss();
             }
         };
     }

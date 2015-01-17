@@ -24,6 +24,13 @@
         android:summary="@string/customer_mode_description"
         android:defaultValue="false" />
 
+    <Preference
+        android:key="profit"
+        android:dependency="role"
+        android:title="利潤範圍"
+        android:defaultValue="30,50"/>
+
+
     <PreferenceCategory android:title="@string/other_info" />
 
     <Preference
