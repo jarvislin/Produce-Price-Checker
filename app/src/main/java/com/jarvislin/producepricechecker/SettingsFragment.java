@@ -1,6 +1,5 @@
 package com.jarvislin.producepricechecker;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -17,8 +16,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.jarvislin.producepricechecker.util.PreferenceUtil;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Jarvis Lin on 2014/10/13.
@@ -54,6 +54,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
             ListPreference listPref = (ListPreference) pref;
             pref.setSummary(listPref.getEntry());
         }
+
+        if(key.equals("profit"))
+            showProfitSummary(pref);
     }
 
     @Override
@@ -72,7 +75,16 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         for(int i = 0 ; i < PREFERENCE_ITEM.size() ; i ++){
             Preference preference = (Preference) findPreference(PREFERENCE_ITEM.get(i));
             preference.setOnPreferenceClickListener(clickPref(i, getActivity()));
+            if( i == 3) {
+                showProfitSummary(preference);
+            }
         }
+    }
+
+    private void showProfitSummary(Preference preference){
+        float[] profit = PreferenceUtil.getProfitRange(getActivity());
+        String range = String.format("%.0f", profit[0] *100 -100) + "％ ~ " + String.format("%.0f", profit[1] *100 -100) + "％";
+        preference.setSummary(range);
     }
 
     private Preference.OnPreferenceClickListener clickPref(final int key, final Context context){
@@ -116,10 +128,7 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         mLowProfit.setText(profit[0]);
         mHighProfit.setText(profit[1]);
 
-
-
         dialog.show();
-
     }
 
     private View.OnClickListener clickCancel(final Dialog dialog){

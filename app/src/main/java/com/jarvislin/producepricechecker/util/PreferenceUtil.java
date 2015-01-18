@@ -112,4 +112,11 @@ public class PreferenceUtil {
         } else
             return new ArrayList<ProduceData>();
     }
+
+    public static float[] getProfitRange(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String[] profit = prefs.getString("profit", "30,50").split(",");
+
+        return new float[]{(Float.valueOf(profit[0]) + 100) / 100, (Float.valueOf(profit[1]) + 100) / 100};
+    }
 }

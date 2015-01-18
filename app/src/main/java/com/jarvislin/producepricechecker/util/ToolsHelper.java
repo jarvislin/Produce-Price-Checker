@@ -115,11 +115,12 @@ public class ToolsHelper {
     public static String getPriceRange(String price, Context context){
         float tmpPrice = Float.valueOf(price);
         float unit = ToolsHelper.getUnit(context);
+        float[] profit = PreferenceUtil.getProfitRange(context);
 
-        if(tmpPrice * unit * 1.6 > 1000)
-            price = String.format("%.0f", tmpPrice * unit * 1.3) + " - " + String.format("%.0f", tmpPrice * unit * 1.6); // price * unit * profit
+        if(tmpPrice * unit * profit[1] > 1000)
+            price = String.format("%.0f", tmpPrice * unit * profit[0]) + " - " + String.format("%.0f", tmpPrice * unit * profit[1]); // price * unit * profit
         else
-            price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.6); // price * unit * profit
+            price = String.format("%.1f", tmpPrice * unit * profit[0]) + " - " + String.format("%.1f", tmpPrice * unit * profit[1]); // price * unit * profit
 
         return price;
     }
