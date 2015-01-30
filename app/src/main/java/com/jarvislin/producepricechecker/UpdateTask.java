@@ -27,7 +27,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
 
     @Override
     protected void onPreExecute(){
-        //open ProgressDialog
+        //show ProgressDialog
         mProgressDialog = new Dialog(mContext, R.style.alertDialog);;
         mProgressDialog.setContentView(R.layout.dialog_update);
         mProgressDialog.show();
