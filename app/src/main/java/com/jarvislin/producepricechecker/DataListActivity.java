@@ -31,7 +31,6 @@ public class DataListActivity extends Activity {
     private ListView mListView;
     private ProduceListAdapter mAdapter;
     private int mOffset;
-    private GoogleAnalyticsSender mSender;
     private boolean hasInitialized = false;
 
     @Override
@@ -40,7 +39,7 @@ public class DataListActivity extends Activity {
         setContentView((PreferenceUtil.isCustomerMode(this)) ? R.layout.customer_data_list : R.layout.general_data_list);
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getActionBar().setCustomView(R.layout.actionbar_data_table);
-        mSender = new GoogleAnalyticsSender(this);
+
     }
 
     @Override
@@ -125,7 +124,7 @@ public class DataListActivity extends Activity {
     }
 
     public void bookmark(View view) {
-        mSender.send("click_bookmark");
+        GoogleAnalyticsSender.getInstance(this).send("click_bookmark");
         Intent intent = new Intent();
         intent.putExtra("type", getType());
         intent.setClass(this, BookmarkActivity.class);
@@ -133,7 +132,7 @@ public class DataListActivity extends Activity {
     }
 
     public void update(View view) {
-        mSender.send("update");
+        GoogleAnalyticsSender.getInstance(this).send("update");
         if(!ToolsHelper.isNetworkAvailable(this)) {
             ToolsHelper.showNetworkErrorMessage(this);
             finish();
@@ -190,7 +189,7 @@ public class DataListActivity extends Activity {
     };
 
     public void info(View view) {
-        mSender.send("click_info");
+        GoogleAnalyticsSender.getInstance(this).send("click_info");
         String[] date = ToolsHelper.getDate(mOffset);
 
         final Dialog dialog = new Dialog(this, R.style.alertDialog);
