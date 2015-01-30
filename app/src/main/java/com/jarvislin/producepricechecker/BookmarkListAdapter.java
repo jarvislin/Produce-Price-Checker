@@ -23,11 +23,18 @@ public class BookmarkListAdapter extends BaseAdapter {
     private ArrayList<ProduceData> mList;
     private Context mContext;
     private int mType;
+    private int isEditing = -1;
 
     public BookmarkListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
         mList = list;
         mContext = context;
         mType = type;
+    }
+
+    @Override
+    public void notifyDataSetInvalidated() {
+        isEditing *= -1;
+        super.notifyDataSetInvalidated();
     }
 
     @Override
@@ -78,7 +85,7 @@ public class BookmarkListAdapter extends BaseAdapter {
         //set views
         holder.cell.setBackgroundColor(mContext.getResources().getColor((position % 2 == 0) ? R.color.white : R.color.odd_row));
         holder.typeName.setText((data.getType().length() <= 1) ? data.getName() : data.getType() + "\n" + data.getName());
-        holder.delete.setVisibility(GlobalVariable.isEditMode > 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.delete.setVisibility(isEditing > 0 ? View.VISIBLE : View.INVISIBLE);
         holder.delete.setOnClickListener(clickDelete(position));
 
         if(PreferenceUtil.isCustomerMode(mContext)){
@@ -87,7 +94,7 @@ public class BookmarkListAdapter extends BaseAdapter {
             holder.topMid.setText(data.getTopPrice() + "\n" + data.getMidPrice());
             holder.lowAvg.setText(data.getLowPrice() + "\n" + data.getAvgPrice());
             holder.date.setText(ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(data.getDate())));
-            holder.date.setVisibility(GlobalVariable.isEditMode > 0 ? View.INVISIBLE : View.VISIBLE);
+            holder.date.setVisibility(isEditing > 0 ? View.INVISIBLE : View.VISIBLE);
         }
 
         return view;

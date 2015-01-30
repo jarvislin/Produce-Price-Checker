@@ -25,12 +25,6 @@ public class BookmarkActivity extends Activity {
         init();
     }
 
-    @Override
-    protected void onDestroy (){
-        super.onDestroy();
-        GlobalVariable.isEditMode = -1;
-    }
-
     private void findView() {
         mListView = (ListView)findViewById(R.id.bookmark_list);
     }
@@ -49,11 +43,7 @@ public class BookmarkActivity extends Activity {
     }
 
     public void edit(View v){
-        GlobalVariable.isEditMode *= -1;
         mAdapter.notifyDataSetInvalidated();
     }
-
-
-
 
 }
