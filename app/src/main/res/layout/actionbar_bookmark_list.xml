@@ -21,7 +21,7 @@
         android:text="@string/my_list"/>
 
     <RelativeLayout
-        android:id="@+id/info"
+        android:id="@+id/edit"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect_with_alpha"
