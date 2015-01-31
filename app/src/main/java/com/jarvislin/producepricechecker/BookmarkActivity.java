@@ -13,7 +13,6 @@ public class BookmarkActivity extends Activity {
 
     private ListView mListView;
     private BookmarkListAdapter mAdapter;
-    private boolean isTurnOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,12 +23,6 @@ public class BookmarkActivity extends Activity {
 
         findView();
         init();
-    }
-
-    @Override
-    protected void onDestroy (){
-        super.onDestroy();
-        GlobalVariable.isEditMode = -1;
     }
 
     private void findView() {
@@ -50,11 +43,7 @@ public class BookmarkActivity extends Activity {
     }
 
     public void edit(View v){
-        GlobalVariable.isEditMode *= -1;
         mAdapter.notifyDataSetInvalidated();
     }
-
-
-
 
 }

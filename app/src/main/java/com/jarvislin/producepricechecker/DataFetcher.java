@@ -74,7 +74,8 @@ public class DataFetcher {
     private void saveData(Elements elements) {
 //        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
 
-        for(int i = 16, count = 0 ; i < elements.size() ; i += 10){
+        for(int i = 16 ; i < elements.size() ; i += 10){
+
             String[] data = new String[6];
             data[0] = elements.get(i).text();
             data[1] = elements.get(i + 1).text();
@@ -87,9 +88,9 @@ public class DataFetcher {
             produceData.setDate(ToolsHelper.getFullDate(getOffset()));
             checkBookmark(produceData);
 
-            mProduceDataList.add(count, produceData);
+            mProduceDataList.add(produceData);
 //            produceDAO.insert(new ProduceData(data));
-            count++;
+
         }
     }
 

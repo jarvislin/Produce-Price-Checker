@@ -7,5 +7,6 @@
     <color name="highlight">#fffff466</color>
     <color name="odd_row">#EAF2F4</color>
     <color name="light_grey">#ffeaeaea</color>
+    <color name="light_blue">#ff09b4bc</color>
 
 </resources>

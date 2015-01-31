@@ -18,7 +18,7 @@ public class SettingsActivity extends Activity {
                 .commit();
 
         getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getActionBar().setCustomView(R.layout.actionbar);
+        getActionBar().setCustomView(R.layout.actionbar_settings);
 
     }
 

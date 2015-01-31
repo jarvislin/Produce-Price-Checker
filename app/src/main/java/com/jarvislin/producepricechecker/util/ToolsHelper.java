@@ -103,10 +103,7 @@ public class ToolsHelper {
         return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list", "109");
     }
 
-    public static float getUnit(Context context) {
-        String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
-        return Float.valueOf(temp);
-    }
+
 
     public static String getUnitInWords(float digit) {
         return (digit < 1) ? "台斤/元" : "公斤/元";
@@ -114,19 +111,20 @@ public class ToolsHelper {
 
     public static String getPriceRange(String price, Context context){
         float tmpPrice = Float.valueOf(price);
-        float unit = ToolsHelper.getUnit(context);
+        float unit = PreferenceUtil.getUnit(context);
+        float[] profit = PreferenceUtil.getProfitRange(context);
 
-        if(tmpPrice * unit * 1.6 > 1000)
-            price = String.format("%.0f", tmpPrice * unit * 1.3) + " - " + String.format("%.0f", tmpPrice * unit * 1.6); // price * unit * profit
+        if(tmpPrice * unit * profit[1] > 1000)
+            price = String.format("%.0f", tmpPrice * unit * profit[0]) + " - " + String.format("%.0f", tmpPrice * unit * profit[1]); // price * unit * profit
         else
-            price = String.format("%.1f", tmpPrice * unit * 1.3) + " - " + String.format("%.1f", tmpPrice * unit * 1.6); // price * unit * profit
+            price = String.format("%.1f", tmpPrice * unit * profit[0]) + " - " + String.format("%.1f", tmpPrice * unit * profit[1]); // price * unit * profit
 
         return price;
     }
 
     public static String getPriceWithUnit(String price, Context context){
         float tmpPrice = Float.valueOf(price);
-        float unit = ToolsHelper.getUnit(context);
+        float unit = PreferenceUtil.getUnit(context);
 
         if(tmpPrice * unit > 1000)
             return String.format("%.0f", tmpPrice * unit );

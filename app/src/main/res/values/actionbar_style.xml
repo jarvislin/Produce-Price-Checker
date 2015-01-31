@@ -3,7 +3,7 @@
     <style name="ActionBarImage">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_margin">8dp</item>
+        <item name="android:padding">12dp</item>
         <item name="android:layout_centerInParent">true</item>
     </style>
 

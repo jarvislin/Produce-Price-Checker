@@ -8,7 +8,7 @@
         android:id="@+id/back"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
+        android:background="@drawable/press_effect_with_alpha"
         android:layout_alignParentLeft="true"
         android:onClick="back">
         <ImageView
@@ -19,7 +19,7 @@
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
+        android:background="@drawable/press_effect_with_alpha"
         android:layout_toRightOf="@+id/back"
         android:onClick="bookmark">
 
@@ -36,28 +36,39 @@
     <RelativeLayout
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
+        android:background="@drawable/press_effect_with_alpha"
         android:layout_toLeftOf="@+id/info"
         android:onClick="update">
 
         <ImageView
             style="@style/ActionBarImage"
-            android:src="@drawable/ic_action_refresh"/>
+            android:src="@drawable/ic_refresh_blue_36dp"/>
 
     </RelativeLayout>
 
     <RelativeLayout
+        android:visibility="invisible"
         android:id="@+id/info"
         android:layout_width="50dp"
         android:layout_height="match_parent"
-        android:background="@drawable/press_effect"
+        android:background="@drawable/press_effect_with_alpha"
         android:layout_alignParentRight="true"
         android:onClick="info">
 
         <ImageView
             style="@style/ActionBarImage"
-            android:src="@drawable/ic_info"/>
+            android:src="@drawable/ic_info_outline_blue_36dp"/>
 
     </RelativeLayout>
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:layoutDirection="rtl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        </SearchView>
 
 </RelativeLayout>

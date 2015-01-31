@@ -7,12 +7,8 @@ import android.preference.PreferenceManager;
 import com.google.gson.Gson;
 import com.jarvislin.producepricechecker.ProduceData;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
 
 /**
  * Created by JarvisLin on 14/11/22.
@@ -20,25 +16,25 @@ import java.util.List;
 public class PreferenceUtil {
 
     private static final String PREFERENCE_DATA = "preference_data";
-    private static final String LAST_UPDATED_DATE = "last_updated_date";
+    private static final String LAST_UPDATE_DATE = "last_updated_date";
     private static final String BOOKMARK_LIST = "bookmark_list";
     private static final String BOOKMARK_LIST_FRUIT = "bookmark_list_fruit";
     private static final String BOOKMARK_LIST_VEGETABLE = "bookmark_list_vegetable";
     private static final int FRUIT = -1;
     private static final int VEGETABLE = 1;
 
-    public static void updateLastDate(Context context){
+    public static void setUpdateDate(Context context){
 
         String current = ToolsHelper.getCurrentDate();
 
         SharedPreferences preferences = context.getSharedPreferences(PREFERENCE_DATA, 0);
         preferences.edit()
-                .putString(LAST_UPDATED_DATE, current)
+                .putString(LAST_UPDATE_DATE, current)
                 .commit();
 
     }
-    public static String getLastUpdatedDate(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getString(LAST_UPDATED_DATE, "0");
+    public static String getUpdateDate(Context context){
+        return PreferenceManager.getDefaultSharedPreferences(context).getString(LAST_UPDATE_DATE, "0");
     }
 
     public static boolean isCustomerMode(Context context){
@@ -111,5 +107,21 @@ public class PreferenceUtil {
             return new ArrayList<ProduceData>(Arrays.asList(data));
         } else
             return new ArrayList<ProduceData>();
+    }
+
+    public static float[] getProfitRange(Context context) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String[] profit = prefs.getString("profit", "30,50").split(",");
+
+        return new float[]{(Float.valueOf(profit[0]) + 100) / 100, (Float.valueOf(profit[1]) + 100) / 100};
+    }
+
+    public static float getUnit(Context context) {
+        String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
+        return Float.valueOf(temp);
+    }
+
+    public static void setUnit(Context context, String value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("unit", value).commit();
     }
 }

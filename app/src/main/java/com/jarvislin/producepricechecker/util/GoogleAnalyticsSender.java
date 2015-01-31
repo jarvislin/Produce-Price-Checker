@@ -11,13 +11,20 @@ import com.google.android.gms.analytics.Tracker;
  */
 public class GoogleAnalyticsSender {
     private static final String PROPERTY_ID = "";
-    private Tracker mTracker;
+    private static GoogleAnalyticsSender mSender;
+    private static Tracker mTracker;
 
-    public GoogleAnalyticsSender(Context context){
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
-        mTracker = analytics.newTracker(PROPERTY_ID);
-        mTracker.enableAdvertisingIdCollection(true);
+    public static GoogleAnalyticsSender getInstance(Context context){
+        if(null == mSender){
+            GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+            mTracker = analytics.newTracker(PROPERTY_ID);
+            mTracker.enableAdvertisingIdCollection(true);
+            mSender = new GoogleAnalyticsSender();
+        }
+        return mSender;
     }
+
+    private GoogleAnalyticsSender(){}
 
     public void send(String path){
         mTracker.setScreenName(path);

@@ -23,8 +23,13 @@ ADDED from AndroidManifest.xml:6:5
 		ADDED from AndroidManifest.xml:6:22
 application
 ADDED from AndroidManifest.xml:8:5
-MERGED from com.google.android.gms:play-services:6.1.71:16:5
-MERGED from com.android.support:support-v4:20.0.0:17:5
+MERGED from com.yalantis:contextmenu:1.0.1:11:5
+MERGED from com.android.support:appcompat-v7:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.google.android.gms:play-services-base:6.5.87:20:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
+MERGED from com.android.support:appcompat-v7:21.0.3:16:5
+MERGED from com.android.support:support-v4:21.0.3:16:5
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:12:9
 	android:label
@@ -37,51 +42,70 @@ MERGED from com.android.support:support-v4:20.0.0:17:5
 		ADDED from AndroidManifest.xml:13:9
 activity#com.jarvislin.producepricechecker.IndexActivity
 ADDED from AndroidManifest.xml:14:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:17:13
 	android:label
 		ADDED from AndroidManifest.xml:16:13
 	android:theme
-		ADDED from AndroidManifest.xml:17:13
+		ADDED from AndroidManifest.xml:18:13
 	android:name
 		ADDED from AndroidManifest.xml:15:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:18:13
+ADDED from AndroidManifest.xml:19:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:19:17
+ADDED from AndroidManifest.xml:20:17
 	android:name
-		ADDED from AndroidManifest.xml:19:25
+		ADDED from AndroidManifest.xml:20:25
 category#android.intent.category.LAUNCHER
 ADDED from AndroidManifest.xml:21:17
 	android:name
 		ADDED from AndroidManifest.xml:21:27
 activity#com.jarvislin.producepricechecker.DataListActivity
 ADDED from AndroidManifest.xml:24:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:27:13
 	android:label
 		ADDED from AndroidManifest.xml:26:13
 	android:theme
-		ADDED from AndroidManifest.xml:27:13
+		ADDED from AndroidManifest.xml:28:13
 	android:name
 		ADDED from AndroidManifest.xml:25:13
 activity#com.jarvislin.producepricechecker.SettingsActivity
-ADDED from AndroidManifest.xml:29:9
+ADDED from AndroidManifest.xml:30:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:33:13
 	android:label
-		ADDED from AndroidManifest.xml:31:13
-	android:theme
 		ADDED from AndroidManifest.xml:32:13
+	android:theme
+		ADDED from AndroidManifest.xml:34:13
 	android:name
-		ADDED from AndroidManifest.xml:30:13
+		ADDED from AndroidManifest.xml:31:13
 activity#com.jarvislin.producepricechecker.BookmarkActivity
-ADDED from AndroidManifest.xml:34:9
+ADDED from AndroidManifest.xml:36:9
+	android:screenOrientation
+		ADDED from AndroidManifest.xml:39:13
 	android:label
-		ADDED from AndroidManifest.xml:36:13
+		ADDED from AndroidManifest.xml:38:13
 	android:name
-		ADDED from AndroidManifest.xml:35:13
+		ADDED from AndroidManifest.xml:37:13
 uses-sdk
 INJECTED from AndroidManifest.xml:0:0 reason: use-sdk injection requested
-MERGED from com.google.android.gms:play-services:6.1.71:15:5
-MERGED from com.android.support:support-v4:20.0.0:16:5
+MERGED from com.yalantis:contextmenu:1.0.1:7:5
+MERGED from com.android.support:appcompat-v7:21.0.3:15:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.google.android.gms:play-services-base:6.5.87:18:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
+MERGED from com.android.support:appcompat-v7:21.0.3:15:5
+MERGED from com.android.support:support-v4:21.0.3:15:5
 	android:targetSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
 	android:minSdkVersion
 		INJECTED from AndroidManifest.xml:0:0
 		INJECTED from AndroidManifest.xml:0:0
+meta-data#com.google.android.gms.version
+ADDED from com.google.android.gms:play-services-base:6.5.87:21:9
+	android:name
+		ADDED from com.google.android.gms:play-services-base:6.5.87:22:13
+	android:value
+		ADDED from com.google.android.gms:play-services-base:6.5.87:23:13
