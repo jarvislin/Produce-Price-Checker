@@ -18,6 +18,11 @@
 
 版本
 ---------
+* ver 1.2.0
+ * 搜尋
+ * 同頁面切換重量單位
+* ver 1.1.1
+ * 自訂利潤範圍
 * ver 1.1.0
  * 自訂清單功能
 * ver 1.0.1
@@ -36,3 +41,7 @@ https://github.com/jarvislin/Produce-Price-Checker/blob/master/LICENSE
 - http://www.freepik.com
 - http://www.flaticon.com
 - http://creativecommons.org/licenses/by/3.0
+
+選單功能使用Yalantis的ContextMenu，
+其授權方式為Apache License, Version 2.0。
+- https://github.com/Yalantis/Context-Menu.Android
