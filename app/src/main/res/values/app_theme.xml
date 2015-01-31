@@ -15,4 +15,9 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
 </resources>

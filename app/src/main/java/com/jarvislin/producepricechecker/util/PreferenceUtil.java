@@ -115,4 +115,13 @@ public class PreferenceUtil {
 
         return new float[]{(Float.valueOf(profit[0]) + 100) / 100, (Float.valueOf(profit[1]) + 100) / 100};
     }
+
+    public static float getUnit(Context context) {
+        String temp = PreferenceManager.getDefaultSharedPreferences(context).getString("unit", "1.0");
+        return Float.valueOf(temp);
+    }
+
+    public static void setUnit(Context context, String value) {
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString("unit", value).commit();
+    }
 }
