@@ -124,7 +124,9 @@ public class DataListActivity extends ActionBarActivity implements SearchView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        mAdapter.notifyDataSetChanged();
+        if(null != mAdapter) {
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     private void initUI() {
@@ -296,9 +298,13 @@ public class DataListActivity extends ActionBarActivity implements SearchView.On
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        ArrayList<ProduceData> searchList = getSearchList(newText);
-        mAdapter = new ProduceListAdapter(this, searchList, getType());
-        mListView.setAdapter(mAdapter);
+        if(null == mDataList) {
+            Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
+        } else {
+            ArrayList<ProduceData> searchList = getSearchList(newText);
+            mAdapter = new ProduceListAdapter(this, searchList, getType());
+            mListView.setAdapter(mAdapter);
+        }
 
         return false;
     }
