@@ -20,6 +20,8 @@ import com.jarvislin.producepricechecker.util.PreferenceUtil;
 
 import java.util.ArrayList;
 
+import database.DatabaseController;
+
 /**
  * Created by Jarvis Lin on 2014/10/13.
  */
@@ -57,6 +59,11 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
 
         if(key.equals("profit"))
             showProfitSummary(pref);
+
+        if(key.equals("market_list")) {
+            DatabaseController.clearTable();
+            PreferenceUtil.resetUpdateTime(getActivity());
+        }
     }
 
     @Override

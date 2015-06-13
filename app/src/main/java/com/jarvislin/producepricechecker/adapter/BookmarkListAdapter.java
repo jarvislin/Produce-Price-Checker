@@ -1,4 +1,4 @@
-package com.jarvislin.producepricechecker;
+package com.jarvislin.producepricechecker.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.ProduceData;
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -22,10 +24,10 @@ public class BookmarkListAdapter extends BaseAdapter {
 
     private ArrayList<ProduceData> mList;
     private Context mContext;
-    private int mType;
+    private String mType;
     private int isEditing = -1;
 
-    public BookmarkListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
+    public BookmarkListAdapter(Context context, ArrayList<ProduceData> list, String type)  {
         mList = list;
         mContext = context;
         mType = type;
