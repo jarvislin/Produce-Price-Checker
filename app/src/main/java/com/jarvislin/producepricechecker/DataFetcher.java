@@ -2,6 +2,7 @@ package com.jarvislin.producepricechecker;
 
 import android.content.Context;
 
+import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -19,14 +20,14 @@ public class DataFetcher {
     private final String VEGETABLE_URL = "http://amis.afa.gov.tw/v-asp/v102r.asp";
     private final String TAG = this.getClass().getSimpleName();
     private Context mContext;
-    private int mType;
+    private String mType;
     private int mOffset = 0;
     private int mRetryCount = 0;
     private boolean mDataExist = false;
     private ArrayList<ProduceData> mProduceDataList = new ArrayList<ProduceData>();
 //    private ProduceDAO produceDAO;
 
-    public DataFetcher(int type, Context context) {
+    public DataFetcher(String type, Context context) {
         mContext = context;
         mType = type;
 //        produceDAO = new ProduceDAO(mContext);
@@ -47,9 +48,9 @@ public class DataFetcher {
         return mOffset - 1;
     }
 
-    private void fetchData(String[] date, int type) {
+    private void fetchData(String[] date, String type) {
         mOffset++;
-        String url = (type < 0) ? FRUIT_URL : VEGETABLE_URL;
+        String url = (type.equals(Constants.FRUIT)) ? FRUIT_URL : VEGETABLE_URL;
         try {
             Connection.Response res = Jsoup.connect(url)
                     .data("mkno", String.valueOf(ToolsHelper.getMarketNumber(mContext)), "myy", date[0], "mmm", date[1], "mdd", date[2])
@@ -74,9 +75,11 @@ public class DataFetcher {
     private void saveData(Elements elements) {
 //        Log.d(TAG, "Size = " + String.valueOf(elements.size()));
 
+        String[] data;
+
         for(int i = 16 ; i < elements.size() ; i += 10){
 
-            String[] data = new String[6];
+            data = new String[6];
             data[0] = elements.get(i).text();
             data[1] = elements.get(i + 1).text();
             data[2] = elements.get(i + 3).text();

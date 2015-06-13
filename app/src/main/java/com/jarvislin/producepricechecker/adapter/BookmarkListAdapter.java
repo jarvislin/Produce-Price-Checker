@@ -24,10 +24,10 @@ public class BookmarkListAdapter extends BaseAdapter {
 
     private ArrayList<ProduceData> mList;
     private Context mContext;
-    private int mType;
+    private String mType;
     private int isEditing = -1;
 
-    public BookmarkListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
+    public BookmarkListAdapter(Context context, ArrayList<ProduceData> list, String type)  {
         mList = list;
         mContext = context;
         mType = type;

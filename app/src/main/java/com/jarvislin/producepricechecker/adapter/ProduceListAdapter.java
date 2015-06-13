@@ -22,9 +22,9 @@ public class ProduceListAdapter extends BaseAdapter {
 
     private ArrayList<ProduceData> mList;
     private Context mContext;
-    private int mType;
+    private String mType;
 
-    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
+    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, String type)  {
         mList = list;
         mContext = context;
         mType = type;

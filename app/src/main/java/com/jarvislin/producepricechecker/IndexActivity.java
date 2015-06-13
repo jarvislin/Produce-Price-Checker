@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 
+import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -26,14 +27,14 @@ public class IndexActivity extends Activity {
     public void fruit(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_fruit");
         Intent intent = new Intent(IndexActivity.this, DataListActivity.class);
-        intent.putExtra("type", -1);
+        intent.putExtra("type", Constants.FRUIT);
         IndexActivity.this.startActivity(intent);
     }
 
     public void vegetable(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_vegetable");
         Intent intent = new Intent(IndexActivity.this, DataListActivity.class);
-        intent.putExtra("type", 1);
+        intent.putExtra("type", Constants.VEGETABLE);
         IndexActivity.this.startActivity(intent);
     }
 

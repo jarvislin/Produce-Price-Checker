@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +21,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.adapter.ProduceListAdapter;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -30,6 +33,8 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import database.DatabaseController;
 
 
 public class DataListActivity extends AppCompatActivity implements SearchView.OnQueryTextListener, OnMenuItemClickListener, OnMenuItemLongClickListener {
@@ -45,6 +50,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
     private TextView mTitle;
     private SearchView mSearch;
     private ImageView mMenu;
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +59,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
 
         mFragmentManager = getSupportFragmentManager();
         mMenuDialogFragment = ContextMenuDialogFragment.newInstance((int) getResources().getDimension(R.dimen.tool_bar_height), getMenuObjects());
-        initToolbar();
+        init();
 
     }
 
@@ -67,13 +73,16 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
         return menuObjects;
     }
 
-    private void initToolbar() {
+    private void init() {
+        HandlerThread handlerThread = new HandlerThread("background");
+        handlerThread.start();
+        mHandler = new Handler(handlerThread.getLooper());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mTitle =  (TextView)findViewById(R.id.title);
+        mTitle = (TextView) findViewById(R.id.title);
 
-        mMenu = (ImageView)findViewById(R.id.menu);
+        mMenu = (ImageView) findViewById(R.id.menu);
         mMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +90,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
             }
         });
 
-        mSearch = (SearchView)findViewById(R.id.search);
+        mSearch = (SearchView) findViewById(R.id.search);
         mSearch.addOnLayoutChangeListener(searchExpandHandler);
         mSearch.setOnQueryTextListener(this);
         mSearch.setOnCloseListener(new SearchView.OnCloseListener() {
@@ -103,8 +112,8 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
         @Override
         public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight,
                                    int oldBottom) {
-            SearchView searchView = (SearchView)v;
-            if (searchView.isIconfiedByDefault() && !searchView.isIconified())            {
+            SearchView searchView = (SearchView) v;
+            if (searchView.isIconfiedByDefault() && !searchView.isIconified()) {
                 // search got expanded from icon to search box, hide tabs to make space
                 mTitle.setVisibility(View.GONE);
                 mMenu.setVisibility(View.GONE);
@@ -116,27 +125,37 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
     public void onWindowFocusChanged(boolean focus) {
         super.onWindowFocusChanged(focus);
         // ContentView has loaded
-        if(!isInitialized){
+        if (!isInitialized) {
             isInitialized = true;
             initUI();
-            update(null);
+            findViews();
+            if (PreferenceUtil.getUpdateTime(this, getType()).equals(ToolsHelper.getCurrentDate())) {
+                loadClientData();
+            } else if (ToolsHelper.isNetworkAvailable(this)) {
+                update(null);
+            } else if (DatabaseController.getProduces(getType()).size() > 0) {
+                loadClientData();
+            } else {
+                ToolsHelper.showNetworkErrorMessage(this);
+                finish();
+            }
         }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(null != mAdapter) {
+        if (null != mAdapter) {
             mAdapter.notifyDataSetChanged();
         }
     }
 
     private void initUI() {
 
-        if(PreferenceUtil.isCustomerMode(this)){
+        if (PreferenceUtil.isCustomerMode(this)) {
             //find views
-            TextView type = (TextView)findViewById(R.id.type);
-            TextView name = (TextView)findViewById(R.id.name);
-            TextView avg = (TextView)findViewById(R.id.range);
+            TextView type = (TextView) findViewById(R.id.type);
+            TextView name = (TextView) findViewById(R.id.name);
+            TextView avg = (TextView) findViewById(R.id.range);
 
             //save width
             GlobalVariable.fiveCharsWidth = type.getWidth();
@@ -159,13 +178,13 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
             params = new LinearLayout.LayoutParams(GlobalVariable.rangeWidth, LinearLayout.LayoutParams.MATCH_PARENT);
             avg.setLayoutParams(params);
 
-        } else{
+        } else {
             //find views
-            TextView name = (TextView)findViewById(R.id.type_name);
-            TextView top = (TextView)findViewById(R.id.top);
-            TextView mid = (TextView)findViewById(R.id.mid);
-            TextView low = (TextView)findViewById(R.id.low);
-            TextView avg = (TextView)findViewById(R.id.avg);
+            TextView name = (TextView) findViewById(R.id.type_name);
+            TextView top = (TextView) findViewById(R.id.top);
+            TextView mid = (TextView) findViewById(R.id.mid);
+            TextView low = (TextView) findViewById(R.id.low);
+            TextView avg = (TextView) findViewById(R.id.avg);
 
             //save width
             GlobalVariable.fiveCharsWidth = name.getWidth();
@@ -205,39 +224,54 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void update(View view) {
-        GoogleAnalyticsSender.getInstance(this).send("update");
-        if(!ToolsHelper.isNetworkAvailable(this)) {
-            ToolsHelper.showNetworkErrorMessage(this);
-            finish();
-        } else {
-
-            new UpdateTask(this).execute(getType());
-            findViews();
-        }
+        if (isInitialized)
+            GoogleAnalyticsSender.getInstance(this).send("click_update");
+        new UpdateTask(this).execute(getType());
     }
 
-    public void back(View view){
+    public void back(View view) {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        mHandler.removeCallbacksAndMessages(null);
+        super.onDestroy();
+    }
+
     private void findViews() {
-        mListView = (ListView)findViewById(R.id.data_list);
+        mListView = (ListView) findViewById(R.id.data_list);
     }
 
-    private int getType() {
-        return getIntent().getIntExtra("type", -1);
+    private String getType() {
+        return getIntent().getStringExtra("type");
     }
 
-    public void loadDataList(DataFetcher dataFetcher){
+    public void loadDataList(DataFetcher dataFetcher) {
         mDataList = (dataFetcher.hasData()) ? dataFetcher.getProduceDataList() : null;
         mOffset = dataFetcher.getOffset();
-        if(mDataList == null)
+        if (mDataList == null)
             ToolsHelper.showSiteErrorMessage(this); //show error
-        else{
+        else {
             mAdapter = new ProduceListAdapter(this, mDataList, getType());
             mListView.setAdapter(mAdapter);
             mListView.setOnItemClickListener(itemClickListener);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    DatabaseController.clearTable(getType());
+                    DatabaseController.insert(mDataList, getType());
+                    PreferenceUtil.setUpdateTime(DataListActivity.this, getType());
+                }
+            });
         }
+    }
+
+    public void loadClientData() {
+        mDataList = DatabaseController.getProduces(getType());
+        mAdapter = new ProduceListAdapter(this, mDataList, getType());
+        mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(itemClickListener);
     }
 
     private AdapterView.OnItemClickListener itemClickListener = new AdapterView.OnItemClickListener() {
@@ -245,11 +279,11 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             //set bookmark status
-            ProduceData object = (ProduceData)mAdapter.getItem(position);
+            ProduceData object = (ProduceData) mAdapter.getItem(position);
             ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(DataListActivity.this, getType());
-            ColorDrawable color = (ColorDrawable)view.getBackground();
+            ColorDrawable color = (ColorDrawable) view.getBackground();
 
-            if(getResources().getColor(R.color.highlight) == color.getColor()) {
+            if (getResources().getColor(R.color.highlight) == color.getColor()) {
                 PreferenceUtil.removeBookmark(DataListActivity.this, bookmarkList, object, getType());
                 Toast.makeText(DataListActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
             } else {
@@ -271,8 +305,8 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
         TextView message = (TextView) dialog.findViewById(R.id.info_text);
         message.setText(
                 "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(mOffset) + "\n" +
-                "單位：" + ToolsHelper.getUnitInWords(PreferenceUtil.getUnit(this)) + "\n" +
-                "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
+                        "單位：" + ToolsHelper.getUnitInWords(PreferenceUtil.getUnit(this)) + "\n" +
+                        "市場：" + ToolsHelper.getMarketName(ToolsHelper.getMarketNumber(this))
         );
 
         Button dismiss = (Button) dialog.findViewById(R.id.info_dismiss);
@@ -281,11 +315,11 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
         dialog.show();
     }
 
-    private View.OnClickListener closeDialog(final Dialog dialog){
+    private View.OnClickListener closeDialog(final Dialog dialog) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(dialog.isShowing())
+                if (dialog.isShowing())
                     dialog.dismiss();
             }
         };
@@ -299,7 +333,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
     @Override
     public boolean onQueryTextChange(String newText) {
 
-        if(null == mDataList) {
+        if (null == mDataList) {
             Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<ProduceData> searchList = getSearchList(newText);
@@ -312,8 +346,8 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
 
     private ArrayList<ProduceData> getSearchList(String newText) {
         ArrayList<ProduceData> list = new ArrayList<ProduceData>();
-        for(ProduceData data : mDataList){
-            if(data.getName().contains(newText) || data.getType().contains(newText))
+        for (ProduceData data : mDataList) {
+            if (data.getName().contains(newText) || data.getType().contains(newText))
                 list.add(data);
         }
         return list;
