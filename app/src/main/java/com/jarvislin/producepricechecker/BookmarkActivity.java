@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
+import com.jarvislin.producepricechecker.adapter.BookmarkListAdapter;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 
 
@@ -34,8 +35,8 @@ public class BookmarkActivity extends Activity {
         mListView.setAdapter(mAdapter);
     }
 
-    private int getType() {
-        return getIntent().getIntExtra("type", -1);
+    private String getType() {
+        return getIntent().getStringExtra("type");
     }
 
     public void back(View v){

@@ -1,4 +1,4 @@
-package com.jarvislin.producepricechecker;
+package com.jarvislin.producepricechecker.adapter;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.jarvislin.producepricechecker.GlobalVariable;
+import com.jarvislin.producepricechecker.ProduceData;
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -19,9 +22,9 @@ public class ProduceListAdapter extends BaseAdapter {
 
     private ArrayList<ProduceData> mList;
     private Context mContext;
-    private int mType;
+    private String mType;
 
-    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, int type)  {
+    public ProduceListAdapter(Context context, ArrayList<ProduceData> list, String type)  {
         mList = list;
         mContext = context;
         mType = type;

@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 /**
  * Created by Jarvis Lin on 2014/10/10.
  */
-public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
+public class UpdateTask extends AsyncTask<String, Void, DataFetcher> {
 
     public UpdateTask(Context context){
         mContext = context;
@@ -19,7 +19,7 @@ public class UpdateTask extends AsyncTask<Integer, Void, DataFetcher> {
 
 
     @Override
-    protected DataFetcher doInBackground(Integer... type) {
+    protected DataFetcher doInBackground(String... type) {
         // TODO Auto-generated method stub
         //updating
         return new DataFetcher(type[0], mContext);
