@@ -52,7 +52,7 @@ public class ToolsHelper {
         Toast.makeText(context, "連不上網站, 請稍候再重新整理一次.", Toast.LENGTH_LONG).show();
     }
 
-    public static String[] getDate(int offset) {
+    public static String[] getDateParam(int offset) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -offset);

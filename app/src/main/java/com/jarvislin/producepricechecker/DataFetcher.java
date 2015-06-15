@@ -25,14 +25,12 @@ public class DataFetcher {
     private int mRetryCount = 0;
     private boolean mDataExist = false;
     private ArrayList<ProduceData> mProduceDataList = new ArrayList<ProduceData>();
-//    private ProduceDAO produceDAO;
 
     public DataFetcher(String type, Context context) {
         mContext = context;
         mType = type;
-//        produceDAO = new ProduceDAO(mContext);
         do {
-            fetchData(ToolsHelper.getDate(mOffset), type);
+            fetchData(ToolsHelper.getDateParam(mOffset), type);
         } while(!mDataExist && mOffset < 7 && mRetryCount < 3);
     }
 
@@ -92,8 +90,6 @@ public class DataFetcher {
             checkBookmark(produceData);
 
             mProduceDataList.add(produceData);
-//            produceDAO.insert(new ProduceData(data));
-
         }
     }
 

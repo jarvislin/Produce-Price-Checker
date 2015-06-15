@@ -10,7 +10,6 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -298,7 +297,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
 
     public void info(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_info");
-        String[] date = ToolsHelper.getDate(mOffset);
+        String[] date = ToolsHelper.getDateParam(mOffset);
 
         final Dialog dialog = new Dialog(this, R.style.alertDialog);
         dialog.setContentView(R.layout.dialog_info);
