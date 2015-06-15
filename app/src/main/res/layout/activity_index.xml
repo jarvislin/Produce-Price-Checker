@@ -38,13 +38,11 @@
                     <Button
                         android:id="@+id/vegetable"
                         style="@style/MenuButton"
-                        android:background="@drawable/vegetable"
-                        android:onClick="vegetable"/>
+                        android:background="@drawable/vegetable"/>
 
                     <Button android:id="@+id/fruit"
                         style="@style/MenuButton"
-                        android:background="@drawable/fruit"
-                        android:onClick="fruit"/>
+                        android:background="@drawable/fruit"/>
                 </TableRow>
 
                 <TableRow android:layout_weight="1">
@@ -62,8 +60,7 @@
                         android:id="@+id/settings"
                         style="@style/MenuButton"
                         android:layout_span="2"
-                        android:background="@drawable/settings"
-                        android:onClick="settings" />
+                        android:background="@drawable/settings"/>
                 </TableRow>
 
                 <TableRow android:layout_weight="1">

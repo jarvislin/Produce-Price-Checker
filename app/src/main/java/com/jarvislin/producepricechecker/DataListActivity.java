@@ -117,6 +117,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
                 // search got expanded from icon to search box, hide tabs to make space
                 mTitle.setVisibility(View.GONE);
                 mMenu.setVisibility(View.GONE);
+                GoogleAnalyticsSender.getInstance(DataListActivity.this).send("click_search");
             }
         }
     };
@@ -375,6 +376,7 @@ public class DataListActivity extends AppCompatActivity implements SearchView.On
                 this.update(null);
                 break;
             case 3:
+                GoogleAnalyticsSender.getInstance(this).send("click_convert_unit");
                 float unit = PreferenceUtil.getUnit(this);
                 PreferenceUtil.setUnit(this, unit < 1 ? "1.0" : "0.6");
                 mAdapter.notifyDataSetInvalidated();

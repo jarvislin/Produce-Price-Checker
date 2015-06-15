@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light">
-        <item name="android:actionBarStyle">@style/BlackActionBar</item>
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="android:actionBarStyle">@style/BlackActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
     </style>
 
@@ -17,7 +17,7 @@
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionBar">false</item>
+    <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
     </style>
 
