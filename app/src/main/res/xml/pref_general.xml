@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="marketList"
+        android:key="@string/pref_key_market"
         android:title="@string/choose_market"
         android:defaultValue="109"
         android:summary="%s"
@@ -19,13 +19,14 @@
         android:entryValues="@array/pref_unit_values" />
 
     <CheckBoxPreference
-        android:key="@string/pref_key_is_merchant"
-        android:title="@string/merchant_mode"
-        android:summary="@string/merchant_mode_description"
-        android:defaultValue="false" />
+        android:key="@string/pref_key_is_customer"
+        android:title="@string/customer_mode"
+        android:summary="@string/customer_mode_description"
+        android:defaultValue="true" />
 
     <Preference
         android:key="@string/pref_key_profit"
+        android:dependency="@string/pref_key_is_customer"
         android:title="利潤範圍"/>
 
 

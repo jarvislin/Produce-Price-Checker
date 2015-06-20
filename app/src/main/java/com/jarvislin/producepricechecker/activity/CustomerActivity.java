@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker.activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +15,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.jarvislin.producepricechecker.NewDataFetcher;
+import com.jarvislin.producepricechecker.DataFetcher;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.util.Constants;
@@ -55,7 +56,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @ViewById
     ListView dataList;
     @Bean
-    NewDataFetcher dataFetcher;
+    DataFetcher dataFetcher;
 
     @Pref
     Preferences_ prefs;
@@ -106,7 +107,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         } else if (DatabaseController.getProduces(getType()).size() > 0) {
             loadClientData();
         } else {
-            finish();
+            handleData(null);
         }
         ToolsHelper.closeProgressDialog(false);
     }
@@ -125,10 +126,11 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @UiThread
     protected void handleData(ArrayList<Produce> list) {
         if (list == null) {
+            ToolsHelper.showNetworkErrorMessage(this);
             finish();
         } else {
             produces = list;
-            adapter = new CustomerAdapter(this, list, prefs);
+            adapter = new CustomerAdapter(this, list, prefs, getBookmarkKind());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener);
         }
@@ -141,14 +143,17 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             for (Produce produce : produces) {
                 produce.save();
             }
-            if (getType().equals(Constants.FRUIT))
+            if (getType().equals(Constants.FRUIT)) {
                 prefs.fruitUpdateDate().put(ToolsHelper.getCurrentDate());
-            else
+                DatabaseController.updateBookmark(produces, Constants.FRUIT_BOOKMARK);
+                prefs.fruitUpdateDate().put(produces.get(0).date);
+            } else {
                 prefs.vegetableUpdateDate().put(ToolsHelper.getCurrentDate());
-            DatabaseController.updateBookmark(produces);
+                DatabaseController.updateBookmark(produces, Constants.VEGETABLE_BOOKMARK);
+                prefs.vegetableUpdateDate().put(produces.get(0).date);
+            }
         }
     }
-
 
     @Override
     public void onMenuItemClick(View view, int position) {
@@ -171,7 +176,8 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
                 Toast.makeText(this, "目前重量單位為：" + (prefs.unit().get() < 1 ? "台斤" : "公斤"), Toast.LENGTH_SHORT).show();
                 break;
             case 4:
-//                this.bookmark(null);
+                GoogleAnalyticsSender.getInstance(this).send("click_bookmark");
+                openBookmark();
                 break;
         }
     }
@@ -201,6 +207,20 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         dialog.show();
     }
 
+    protected void openBookmark() {
+        Intent intent = new Intent();
+        intent.putExtra("type", getType());
+        intent.setClass(this, CustomerBookmarkActivity_.class);
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (null != adapter) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onMenuItemLongClick(View view, int i) {
 
@@ -217,7 +237,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<Produce> searchList = getSearchList(newText);
-            adapter = new CustomerAdapter(this, searchList, prefs);
+            adapter = new CustomerAdapter(this, searchList, prefs, getBookmarkKind());
             dataList.setAdapter(adapter);
         }
         return false;
@@ -255,10 +275,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             ColorDrawable color = (ColorDrawable) view.getBackground();
 
             if (getResources().getColor(R.color.highlight) == color.getColor()) {
-                DatabaseController.deleteBookMark(object.name, object.type);
+                DatabaseController.delete(object.name, object.type, getBookmarkKind());
                 Toast.makeText(CustomerActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
             } else {
-                DatabaseController.insertBookmark(object);
+                DatabaseController.insertBookmark(object, getBookmarkKind());
                 Toast.makeText(CustomerActivity.this, "已將項目加入清單", Toast.LENGTH_SHORT).show();
             }
 
@@ -275,7 +295,11 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         return list;
     }
 
-    private String getType() {
+    protected String getType() {
         return getIntent().getStringExtra("type");
+    }
+
+    protected String getBookmarkKind() {
+        return getType().equals(Constants.FRUIT) ? Constants.FRUIT_BOOKMARK : Constants.VEGETABLE_BOOKMARK;
     }
 }

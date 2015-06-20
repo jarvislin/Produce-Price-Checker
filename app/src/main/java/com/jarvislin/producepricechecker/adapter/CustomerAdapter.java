@@ -10,9 +10,6 @@ import android.widget.TextView;
 
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.util.Preferences_;
-import com.jarvislin.producepricechecker.util.ToolsHelper;
-
-import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
 
@@ -24,14 +21,16 @@ import database.Produce;
  */
 public class CustomerAdapter extends BaseAdapter {
 
-    private ArrayList<Produce> list;
-    private Context mContext;
-    private Preferences_ prefs;
+    protected ArrayList<Produce> list;
+    protected Context context;
+    protected Preferences_ prefs;
+    protected String kind;
 
-    public CustomerAdapter(Context context, ArrayList<Produce> list, Preferences_ pref) {
+    public CustomerAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String kind) {
         this.list = list;
         prefs = pref;
-        mContext = context;
+        this.context = context;
+        this.kind = kind;
     }
 
 
@@ -56,7 +55,7 @@ public class CustomerAdapter extends BaseAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.cell_data_customer, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.cell_data_customer, parent, false);
             holder = new ViewHolder();
             holder.cell = (LinearLayout) view.findViewById(R.id.cell);
             holder.type = (TextView) view.findViewById(R.id.type);
@@ -69,8 +68,8 @@ public class CustomerAdapter extends BaseAdapter {
 
         Produce data = list.get(position);
 
-        holder.cell.setBackgroundColor(mContext.getResources().getColor(
-                DatabaseController.isBookmark(data.name, data.type) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+        holder.cell.setBackgroundColor(context.getResources().getColor(
+                DatabaseController.isBookmark(data.name, data.type, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
         holder.type.setText(data.type);

@@ -108,37 +108,10 @@ public class ToolsHelper {
         return MARKET_MAP.get(key);
     }
 
-    public static String getMarketNumber(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list", "109");
-    }
-
 
 
     public static String getUnitInWords(float digit) {
         return (digit < 1) ? "台斤/元" : "公斤/元";
-    }
-
-    public static String getPriceRange(String price, Context context){
-        float tmpPrice = Float.valueOf(price);
-        float unit = PreferenceUtil.getUnit(context);
-        float[] profit = PreferenceUtil.getProfitRange(context);
-
-        if(tmpPrice * unit * profit[1] > 1000)
-            price = String.format("%.0f", tmpPrice * unit * profit[0]) + " - " + String.format("%.0f", tmpPrice * unit * profit[1]); // price * unit * profit
-        else
-            price = String.format("%.1f", tmpPrice * unit * profit[0]) + " - " + String.format("%.1f", tmpPrice * unit * profit[1]); // price * unit * profit
-
-        return price;
-    }
-
-    public static String getPriceWithUnit(String price, Context context){
-        float tmpPrice = Float.valueOf(price);
-        float unit = PreferenceUtil.getUnit(context);
-
-        if(tmpPrice * unit > 1000)
-            return String.format("%.0f", tmpPrice * unit );
-        else
-            return String.format("%.1f", tmpPrice * unit );
     }
 
     public static void showProgressDialog(final Context context, boolean isNowOnUiThread) {

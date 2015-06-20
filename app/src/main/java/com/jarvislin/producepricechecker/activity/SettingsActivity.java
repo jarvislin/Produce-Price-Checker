@@ -1,13 +1,11 @@
 package com.jarvislin.producepricechecker.activity;
 
-import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +27,8 @@ import org.androidannotations.annotations.PreferenceByKey;
 import org.androidannotations.annotations.PreferenceChange;
 import org.androidannotations.annotations.PreferenceClick;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import database.DatabaseController;
 
 /**
  * Created by Jarvis Lin on 2015/6/19.
@@ -67,7 +67,7 @@ public class SettingsActivity extends PreferenceActivity {
         setUnitSummary();
 
         LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
-        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.settings_toolbar, root, false);
+        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, root, false);
         root.addView(bar, 0); // insert at top
     }
 
@@ -78,25 +78,19 @@ public class SettingsActivity extends PreferenceActivity {
         openUrl(PLAY_STORE);
     }
 
-    @PreferenceChange(R.string.pref_key_is_merchant)
-    void roleChanged(boolean isMerchant, Preference preference) {
-        String role = isMerchant ? Constants.MERCHANT : Constants.CUSTOMER;
+    @PreferenceChange(R.string.pref_key_market)
+    void marketChanged() {
+        DatabaseController.clearTable();
+        prefs.edit()
+                .fruitUpdateDate().put("")
+                .vegetableUpdateDate().put("")
+                .apply();
+    }
+
+    @PreferenceChange(R.string.pref_key_is_customer)
+    void roleChanged(boolean isCustomer, Preference preference) {
+        String role = isCustomer ? Constants.CUSTOMER : Constants.MERCHANT;
         prefs.userMode().put(role);
-        if (isMerchant) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage(getString(R.string.set_zero_profit));
-            builder.setNegativeButton(getString(R.string.no), null);
-            builder.setPositiveButton(getString(R.string.yes), new AlertDialog.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    prefs.edit()
-                            .lowProfit().put(0)
-                            .hightProfit().put(0)
-                            .apply();
-                    setProfitSummary();
-                }
-            });
-        }
     }
 
     @PreferenceChange(R.string.pref_key_unit)

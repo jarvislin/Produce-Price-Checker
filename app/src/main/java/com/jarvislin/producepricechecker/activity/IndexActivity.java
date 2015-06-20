@@ -5,16 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
-import com.jarvislin.producepricechecker.NewDataFetcher;
-import com.jarvislin.producepricechecker.NewDataFetcher_;
+import com.jarvislin.producepricechecker.DataFetcher;
 import com.jarvislin.producepricechecker.R;
-import com.jarvislin.producepricechecker.SettingsActivity;
 import com.jarvislin.producepricechecker.util.Constants;
-import com.jarvislin.producepricechecker.activity.CustomerActivity;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
-import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
@@ -24,7 +20,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 @EActivity(R.layout.activity_index)
 public class IndexActivity extends AppCompatActivity {
     @Bean
-    NewDataFetcher fetcher;
+    DataFetcher fetcher;
     @Pref
     Preferences_ prefs;
     @ViewById
@@ -37,7 +33,7 @@ public class IndexActivity extends AppCompatActivity {
     @Click
     protected void fruit() {
         GoogleAnalyticsSender.getInstance(this).send("click_fruit");
-        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER)?CustomerActivity_.class:MerchantActivity_.class));
+        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER) ? CustomerActivity_.class : MerchantActivity_.class));
         intent.putExtra("type", Constants.FRUIT);
         startActivity(intent);
     }
@@ -45,7 +41,7 @@ public class IndexActivity extends AppCompatActivity {
     @Click
     public void vegetable(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_vegetable");
-        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER)?CustomerActivity_.class:MerchantActivity_.class));
+        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER) ? CustomerActivity_.class : MerchantActivity_.class));
         intent.putExtra("type", Constants.VEGETABLE);
         IndexActivity.this.startActivity(intent);
     }

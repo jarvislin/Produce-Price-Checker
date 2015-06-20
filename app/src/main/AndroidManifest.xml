@@ -41,9 +41,16 @@
             android:theme="@style/MyAppTheme" >
         </activity>
         <activity
-            android:name=".BookmarkActivity"
+            android:name=".activity.CustomerBookmarkActivity_"
             android:label="@string/my_list"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base">
+        </activity>
+        <activity
+            android:name=".activity.MerchantBookmarkActivity_"
+            android:label="@string/my_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base">
         </activity>
     </application>
 

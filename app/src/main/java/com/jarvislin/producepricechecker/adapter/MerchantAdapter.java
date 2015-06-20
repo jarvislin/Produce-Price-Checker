@@ -20,25 +20,19 @@ import database.Produce;
  */
 public class MerchantAdapter extends CustomerAdapter {
 
-    private ArrayList<Produce> mList;
-    private Context mContext;
-    private Preferences_ prefs;
+    public MerchantAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String kind) {
+        super(context, list, pref, kind);
 
-    public MerchantAdapter(Context context, ArrayList<Produce> list, Preferences_ pref) {
-        super(context, list, pref);
-        mList = list;
-        mContext = context;
-        prefs = pref;
     }
 
     @Override
     public int getCount() {
-        return mList.size();
+        return list.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mList.get(position);
+        return list.get(position);
     }
 
     @Override
@@ -52,7 +46,7 @@ public class MerchantAdapter extends CustomerAdapter {
         ViewHolder holder;
 
         if (convertView == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.cell_data_merchant, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.cell_data_merchant, parent, false);
             holder = new ViewHolder();
 
             //find views
@@ -69,9 +63,9 @@ public class MerchantAdapter extends CustomerAdapter {
             holder = (ViewHolder) view.getTag();
         }
 
-        Produce data = mList.get(position);
+        Produce data = list.get(position);
 
-        holder.cell.setBackgroundColor(mContext.getResources().getColor(DatabaseController.isBookmark(data.name, data.type) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+        holder.cell.setBackgroundColor(context.getResources().getColor(DatabaseController.isBookmark(data.name, data.type, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
         if(data.type.length() <= 1)

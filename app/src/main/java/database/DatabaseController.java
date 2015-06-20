@@ -1,15 +1,12 @@
 package database;
 
 
-import com.jarvislin.producepricechecker.ProduceData;
-import com.jarvislin.producepricechecker.util.Constants;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Jarvis Lin on 2015/6/13.
@@ -21,12 +18,18 @@ public class DatabaseController {
 
     }
 
-    public static boolean isBookmark(String name, String type) {
+    public static boolean isBookmark(String name, String type, String kind) {
         return !new ArrayList<Produce>(new Select().from(Produce.class)
                 .where(Condition.column(Produce$Table.NAME).is(name))
                 .and(Condition.column(Produce$Table.TYPE).is(type))
-                .and(Condition.column(Produce$Table.KIND).is(Constants.BOOKMARK))
+                .and(Condition.column(Produce$Table.KIND).is(kind))
                 .queryList()).isEmpty();
+    }
+
+    public static ArrayList<Produce> getBookmarks(String kind) {
+        return new ArrayList<Produce>(new Select().from(Produce.class)
+                .where(Condition.column(Produce$Table.KIND).is(kind))
+                .queryList());
     }
 
     public static void clearTable() {
@@ -39,16 +42,16 @@ public class DatabaseController {
                 .where(Condition.column(Produce$Table.KIND).is(kind)).query();
     }
 
-    public static void deleteBookMark(String name, String type) {
+    public static void delete(String name, String type, String kind) {
         new Delete()
                 .from(Produce.class)
                 .where(Condition.column(Produce$Table.NAME).is(name))
                 .and(Condition.column(Produce$Table.TYPE).is(type))
-                .and(Condition.column(Produce$Table.KIND).is(Constants.BOOKMARK))
+                .and(Condition.column(Produce$Table.KIND).is(kind))
                 .query();
     }
 
-    public static void insertBookmark(Produce object) {
+    public static void insertBookmark(Produce object, String kind) {
         Produce bookmark = new Produce();
         bookmark.name = object.name;
         bookmark.type = object.type;
@@ -57,12 +60,12 @@ public class DatabaseController {
         bookmark.lowPrice = object.lowPrice;
         bookmark.averagePrice = object.averagePrice;
         bookmark.date = object.date;
-        bookmark.kind = Constants.BOOKMARK;
+        bookmark.kind = kind;
         bookmark.save();
     }
 
-    public static void updateBookmark(ArrayList<Produce> produces) {
-        ArrayList<Produce> bookmarks = getProduces(Constants.BOOKMARK);
+    public static void updateBookmark(ArrayList<Produce> produces, String kind) {
+        ArrayList<Produce> bookmarks = getProduces(kind);
         for(Produce bookmark : bookmarks){
             for(Produce produce : produces){
                 if(bookmark.name.equals(produce.name) && bookmark.type.equals(produce.type)){
@@ -78,7 +81,7 @@ public class DatabaseController {
                             .set(conditions)
                             .where(Condition.column(Produce$Table.TYPE).is(produce.type))
                             .and(Condition.column(Produce$Table.NAME).is(produce.name))
-                            .and(Condition.column(Produce$Table.KIND).is(Constants.BOOKMARK))
+                            .and(Condition.column(Produce$Table.KIND).is(kind))
                             .queryClose();
                 }
             }

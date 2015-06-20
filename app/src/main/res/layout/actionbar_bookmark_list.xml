@@ -2,15 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/actionbar_back">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/actionbar_back"
+    app:contentInsetStart="0dp">
 
     <RelativeLayout
         android:id="@+id/back"
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect_with_alpha"
-        android:layout_alignParentLeft="true"
-        android:onClick="back">
+        android:layout_alignParentLeft="true">
         <ImageView
             style="@style/ActionBarImage"
             android:src="@drawable/ic_action_back"/>
@@ -25,8 +26,7 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:background="@drawable/press_effect_with_alpha"
-        android:layout_alignParentRight="true"
-        android:onClick="edit">
+        android:layout_alignParentRight="true">
 
         <ImageView
             style="@style/ActionBarImage"

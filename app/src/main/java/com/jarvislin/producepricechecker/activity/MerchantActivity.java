@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker.activity;
 
+import android.content.Intent;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.R;
@@ -23,11 +24,19 @@ public class MerchantActivity extends CustomerActivity {
                 finish();
             } else {
                 produces = list;
-                adapter = new MerchantAdapter(this, list, prefs);
+                adapter = new MerchantAdapter(this, list, prefs, getBookmarkKind());
                 dataList.setAdapter(adapter);
                 dataList.setOnItemClickListener(itemClickListener);
             }
         }
+
+    @Override
+    protected void openBookmark() {
+        Intent intent = new Intent();
+        intent.putExtra("type", getType());
+        intent.setClass(this, MerchantBookmarkActivity_.class);
+        startActivityForResult(intent, 0);
+    }
 
     @Override
     public boolean onQueryTextChange(String newText) {
@@ -35,7 +44,7 @@ public class MerchantActivity extends CustomerActivity {
             Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<Produce> searchList = getSearchList(newText);
-            adapter = new MerchantAdapter(this, searchList, prefs);
+            adapter = new MerchantAdapter(this, searchList, prefs, getBookmarkKind());
             dataList.setAdapter(adapter);
         }
         return false;
