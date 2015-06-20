@@ -11,9 +11,9 @@
         android:icon="@drawable/tomato"
         android:label="@string/app_name"
         android:screenOrientation="portrait"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/MyAppTheme" >
         <activity
-            android:name=".IndexActivity"
+            android:name=".activity.IndexActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" >
@@ -23,21 +23,34 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DataListActivity"
+            android:name=".activity.MerchantActivity_"
             android:label="@string/title_activity_data_list"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base" >
         </activity>
         <activity
-            android:name=".SettingsActivity"
-            android:label="@string/setting"
+            android:name=".activity.CustomerActivity_"
+            android:label="@string/title_activity_data_list"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme.Base" >
         </activity>
         <activity
-            android:name=".BookmarkActivity"
+            android:name=".activity.SettingsActivity_"
+            android:label="@string/setting"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyAppTheme" >
+        </activity>
+        <activity
+            android:name=".activity.CustomerBookmarkActivity_"
             android:label="@string/my_list"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base">
+        </activity>
+        <activity
+            android:name=".activity.MerchantBookmarkActivity_"
+            android:label="@string/my_list"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base">
         </activity>
     </application>
 

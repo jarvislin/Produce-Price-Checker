@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,26 +20,29 @@ public class Produce extends BaseModel {
 
     @PrimaryKey(autoincrement = true)
     @Column
-    int id;
+    public int id;
 
     @Column
-    String name;
+    public String name;
 
     @Column
-    String type;
+    public String type;
 
     @Column
-    String topPrice;
+    public String topPrice;
 
     @Column
-    String mediumPrice;
+    public String mediumPrice;
 
     @Column
-    String lowPrice;
+    public String lowPrice;
 
     @Column
-    String averagePrice;
+    public String averagePrice;
 
     @Column
-    String kind;
+    public String kind;
+
+    @Column
+    public String date;
 }

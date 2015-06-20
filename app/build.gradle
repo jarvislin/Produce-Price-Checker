@@ -1,9 +1,11 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'android-apt'
 
 buildscript {
     repositories {
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         // replace with the current version of the Android plugin
@@ -15,16 +17,28 @@ buildscript {
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+def AAVersion = '3.3.1'
+
+apt {
+    arguments {
+        androidManifestFile variant.outputs[0].processResources.manifestFile
+        // if you have multiple outputs (when using splits), you may want to have other index than 0
+
+        // You can set optional annotation processing options here, like these commented options:
+        // logLevel 'INFO'
+        // logFile '/var/log/aa.log'
+    }
+}
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion "19.1.0"
     defaultConfig {
         applicationId "com.jarvislin.producepricechecker"
         minSdkVersion 11
         targetSdkVersion 22
-        versionCode 7
-        versionName '1.2.5'
+        versionCode 8
+        versionName '1.2.8'
     }
     buildTypes {
         release {
@@ -45,4 +59,6 @@ dependencies {
     apt 'com.raizlabs.android:DBFlow-Compiler:2.1.0'
     compile 'com.raizlabs.android:DBFlow-Core:2.1.0'
     compile 'com.raizlabs.android:DBFlow:2.1.0'
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
 }

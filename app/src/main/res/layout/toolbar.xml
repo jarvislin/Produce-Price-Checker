@@ -7,7 +7,7 @@
     android:background="@color/actionbar_back"
     android:minHeight="?attr/actionBarSize"
     app:contentInsetStart="0dp"
-    app:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+    app:theme="@style/ToolBarStyle">
 
     <RelativeLayout
         android:layout_width="match_parent"

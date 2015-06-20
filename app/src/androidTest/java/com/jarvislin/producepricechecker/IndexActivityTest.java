@@ -1,11 +1,9 @@
 package com.jarvislin.producepricechecker;
 
-import android.app.Application;
 import android.test.ActivityInstrumentationTestCase2;
-import android.test.ApplicationTestCase;
 import android.widget.Button;
 
-import com.jarvislin.producepricechecker.IndexActivity;
+import com.jarvislin.producepricechecker.activity.IndexActivity;
 
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
