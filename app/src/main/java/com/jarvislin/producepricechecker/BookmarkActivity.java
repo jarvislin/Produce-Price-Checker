@@ -3,6 +3,7 @@ package com.jarvislin.producepricechecker;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ListView;
 
@@ -10,7 +11,7 @@ import com.jarvislin.producepricechecker.adapter.BookmarkListAdapter;
 import com.jarvislin.producepricechecker.util.PreferenceUtil;
 
 
-public class BookmarkActivity extends Activity {
+public class BookmarkActivity extends AppCompatActivity {
 
     private ListView mListView;
     private BookmarkListAdapter mAdapter;
@@ -19,8 +20,8 @@ public class BookmarkActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView((PreferenceUtil.isCustomerMode(this)) ? R.layout.activity_bookmark_customer : R.layout.activity_bookmark_general);
-        getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getActionBar().setCustomView(R.layout.actionbar_bookmark_list);
+//        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.actionbar_bookmark_list);
 
         findView();
         init();

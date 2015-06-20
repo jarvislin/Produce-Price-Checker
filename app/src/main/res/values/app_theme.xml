@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-    <item name="android:actionBarStyle">@style/BlackActionBar</item>
+    <style name="MyAppTheme" parent="Theme.AppCompat.Light">
+        <item name="android:actionBarStyle">@style/BlackActionBar</item>
         <item name="android:homeAsUpIndicator">@drawable/ic_action_back</item>
     </style>
 
-    <style name="BlackActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+    <style name="BlackActionBar" parent="Theme.AppCompat.Light">
         <item name="android:background">@color/actionbar_back</item>
         <item name="android:titleTextStyle">@style/BlackActionBarTitle</item>
     </style>
@@ -17,8 +17,61 @@
     </style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
-    <item name="windowActionBar">false</item>
+        <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ToolBarStyle" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textColorPrimary">@android:color/white</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+        <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textColorTertiary">@android:color/white</item>
+    </style>
+
+    <style name="NewAppTheme" parent="AppTheme.Base" />
+
+    <style name="NewAppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <!-- colorPrimary is used, for instance, for the default ActionBar
+             (but not Toolbar) background.
+              We specify the same color for the toolbar background in
+              toolbar.xml.. -->
+        <item name="colorPrimary">@color/actionbar_back</item>
+
+        <!-- colorPrimaryDark is used for the status bar (with the
+             battery, clock, etc). -->
+        <item name="colorPrimaryDark">@color/actionbar_back</item>
+
+        <!-- colorAccent is used as the default value for
+             colorControlActivated which is used to tint widgets. -->
+        <item name="colorAccent">@color/actionbar_back</item>
+    </style>
+
+    <style name="GalaxyZooThemeToolbarDarkOverflow" parent="Theme.AppCompat.NoActionBar">
+        <!-- android:textColorPrimary is the  color of the title text
+             in the Toolbar, in the Theme.AppCompat theme:  -->
+        <item name="android:textColorPrimary">@color/background_material_light</item>
+
+        <!-- android:textColorPrimaryInverse is the  color of the title
+             text in the Toolbar, in the Theme.AppCompat.Light theme:  -->
+        <!-- <item name="android:textColorPrimaryInverse">@color/abc_primary_text_material_light</item> -->
+
+        <!-- android:actionMenuTextColor is the color of the text of
+              action (menu) items in the Toolbar, at least in the
+              Theme.AppCompat theme.
+              For some reason, they already get the textColorPrimary
+              when running on API 21, but not on older versions of
+              Android, so this is only necessary to support older
+              Android versions.-->
+        <item name="actionMenuTextColor">@color/background_material_light</item>
+        <!-- android:textColorSecondary is the color of the menu
+             overflow icon (three vertical dots) -->
+        <item name="android:textColorSecondary">@color/background_material_light</item>
+
+        <!-- This would set the toolbar's background color,
+              but setting this also changes the popup menu's background,
+              even if we define popupTheme for our <Toolbar> -->
+        <!-- <item name="android:background">@color/color_primary</item> -->
     </style>
 
 </resources>

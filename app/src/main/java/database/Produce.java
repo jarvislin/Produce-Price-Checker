@@ -8,6 +8,7 @@ import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.structure.BaseModel;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class Produce extends BaseModel {
 
     @PrimaryKey(autoincrement = true)
     @Column
-    int id;
+    public int id;
 
     @Column
     public String name;
@@ -41,4 +42,7 @@ public class Produce extends BaseModel {
 
     @Column
     public String kind;
+
+    @Column
+    public String date;
 }

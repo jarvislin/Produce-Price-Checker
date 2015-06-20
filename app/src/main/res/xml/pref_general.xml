@@ -1,7 +1,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="market_list"
+        android:key="marketList"
         android:title="@string/choose_market"
         android:defaultValue="109"
         android:summary="%s"
@@ -11,42 +11,39 @@
         android:positiveButtonText="@null" />
 
     <ListPreference
-        android:key="unit"
+        android:key="@string/pref_key_unit"
         android:title="@string/unit"
-        android:defaultValue="1.0"
+        android:defaultValue="0.6"
         android:summary="%s"
         android:entries="@array/pref_unit_titles"
         android:entryValues="@array/pref_unit_values" />
 
     <CheckBoxPreference
-        android:key="role"
-        android:title="@string/customer_mode"
-        android:summary="@string/customer_mode_description"
+        android:key="@string/pref_key_is_merchant"
+        android:title="@string/merchant_mode"
+        android:summary="@string/merchant_mode_description"
         android:defaultValue="false" />
 
     <Preference
-        android:key="profit"
-        android:dependency="role"
-        android:title="利潤範圍"
-        android:defaultValue="30,50"/>
+        android:key="@string/pref_key_profit"
+        android:title="利潤範圍"/>
 
 
     <PreferenceCategory android:title="@string/other_info" />
 
     <Preference
         android:title="@string/about"
-        android:key="about"
+        android:key="@string/pref_key_about"
         android:summary="@string/about_description"/>
 
     <Preference
         android:title="@string/site"
-        android:key="visit"
+        android:key="@string/pref_key_visit"
         android:summary="@string/visit_site" />
 
     <Preference
         android:title="@string/rating"
-        android:key="rating"
+        android:key="@string/pref_key_rating"
         android:summary="@string/rating_for_app" />
-
 
 </PreferenceScreen>

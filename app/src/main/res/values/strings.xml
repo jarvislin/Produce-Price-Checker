@@ -30,4 +30,16 @@
     <string name="about_description">本應用程式之簡介</string>
     <string name="visit_site">拜訪作者網站</string>
     <string name="site">網站</string>
+    <string name="pref_key_rating">rating</string>
+    <string name="pref_key_about">about</string>
+    <string name="pref_key_visit">visit</string>
+    <string name="pref_key_profit">profitRange</string>
+    <string name="merchant_mode">批發模式</string>
+    <string name="merchant_mode_description">顯示市場詳細價格</string>
+    <string name="pref_key_is_merchant">isMerchant</string>
+    <string name="set_zero_profit">是否檢視不包含利潤之批發價格？</string>
+    <string name="no">否</string>
+    <string name="yes">是</string>
+    <string name="loading">讀取中......</string>
+    <string name="pref_key_unit">gravity_unit</string>
 </resources>

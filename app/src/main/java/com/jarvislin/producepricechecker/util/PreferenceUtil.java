@@ -11,6 +11,8 @@ import com.jarvislin.producepricechecker.ProduceData;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import database.Produce;
+
 /**
  * Created by JarvisLin on 14/11/22.
  */
@@ -48,6 +50,16 @@ public class PreferenceUtil {
         ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(context, type);
         for (int i = 0; i < bookmarkList.size(); i++) {
             if (bookmarkList.get(i).getType().equals(data.getType()) && bookmarkList.get(i).getName().equals(data.getName())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isBookmark(Context context, String type, Produce data) {
+        ArrayList<ProduceData> bookmarkList = PreferenceUtil.getBookmarkList(context, type);
+        for (int i = 0; i < bookmarkList.size(); i++) {
+            if (bookmarkList.get(i).getType().equals(data.type) && bookmarkList.get(i).getName().equals(data.name)) {
                 return true;
             }
         }

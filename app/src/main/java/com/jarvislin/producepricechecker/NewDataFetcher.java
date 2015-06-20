@@ -1,10 +1,10 @@
 package com.jarvislin.producepricechecker;
 
-import android.content.Context;
-
+import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.select.Elements;
@@ -18,38 +18,38 @@ import database.Produce;
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class NewDataFetcher extends Fetcher {
-    Context context;
-    int offset = 0;
 
-    public NewDataFetcher build(Context context) {
-        this.context = context;
-        return this;
-    }
+    @Pref
+    Preferences_ pref;
+
+    private int offset = 0;
+    private String kind;
 
     @Override
-    public ArrayList<Produce> getProduces(String url) {
+    public ArrayList<Produce> getProduces(String url, String kind) {
+        this.kind = kind;
         return fetch(url);
     }
 
     private ArrayList<Produce> fetch(String url) {
         try {
             String[] date = ToolsHelper.getDateParam(offset);
+            String market = pref.marketList().get();
             Connection.Response res = Jsoup.connect(url)
-                    .data("mkno", String.valueOf(ToolsHelper.getMarketNumber(context)), "myy", date[0], "mmm", date[1], "mdd", date[2])
+                    .data("mkno", market, "myy", date[0], "mmm", date[1], "mdd", date[2])
                     .method(Connection.Method.POST)
                     .execute();
             Elements elements = res.parse().select("td");
             if (elements.size() > 0) {
                 return save(elements);
-            } else if (offset > -7) {
-                offset--;
-                fetch(url);
+            } else if (offset < 7) {
+                offset++;
+                return fetch(url);
             } else {
                 return null;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
-        } finally {
             return null;
         }
     }
@@ -65,6 +65,8 @@ public class NewDataFetcher extends Fetcher {
             produce.mediumPrice = elements.get(i + 4).text();
             produce.lowPrice = elements.get(i + 5).text();
             produce.averagePrice = elements.get(i + 6).text();
+            produce.date = ToolsHelper.getDateWithOffset(offset);
+            produce.kind = kind;
             list.add(produce);
         }
         return list;

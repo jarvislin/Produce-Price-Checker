@@ -125,9 +125,9 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         final Dialog dialog = new Dialog(getActivity(), R.style.alertDialog);
         dialog.setContentView(R.layout.dialog_profit);
 
-        Button cancel = (Button)dialog.findViewById(R.id.profit_dismiss);
+
         Button submit = (Button)dialog.findViewById(R.id.profit_submit);
-        cancel.setOnClickListener(clickCancel(dialog));
+
         submit.setOnClickListener(clickSubmit(dialog));
 
         mLowProfit = (EditText)dialog.findViewById(R.id.profit_low);
@@ -138,15 +138,6 @@ public class SettingsFragment extends PreferenceFragment implements SharedPrefer
         dialog.show();
     }
 
-    private View.OnClickListener clickCancel(final Dialog dialog){
-        return new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(dialog.isShowing())
-                    dialog.dismiss();
-            }
-        };
-    }
 
     private View.OnClickListener clickSubmit(final Dialog dialog){
         return new View.OnClickListener() {
