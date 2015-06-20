@@ -21,7 +21,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/press_effect_with_alpha"
         android:layout_toRightOf="@+id/back"
-        android:onClick="bookmark">
+        android:onClick="openBookmark">
 
         <ImageView
             style="@style/ActionBarImage"

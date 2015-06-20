@@ -1,13 +1,19 @@
 package com.jarvislin.producepricechecker.util;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
 
+import com.jarvislin.producepricechecker.R;
+
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -21,6 +27,9 @@ import java.util.HashMap;
  * Created by Jarvis Lin on 2014/10/11.
  */
 public class ToolsHelper {
+
+    private static Handler handler = new Handler(Looper.getMainLooper());
+    private static ProgressDialog progressDialog;
 
     private static final HashMap<String, String> MARKET_MAP = new HashMap<String, String>(){{
         put("104", "中山區 台北二市");
@@ -52,7 +61,7 @@ public class ToolsHelper {
         Toast.makeText(context, "連不上網站, 請稍候再重新整理一次.", Toast.LENGTH_LONG).show();
     }
 
-    public static String[] getDate(int offset) {
+    public static String[] getDateParam(int offset) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -offset);
@@ -62,7 +71,7 @@ public class ToolsHelper {
         return date;
     }
 
-    public static String getFullDate(int offset) {
+    public static String getDateWithOffset(int offset) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -offset);
@@ -99,36 +108,55 @@ public class ToolsHelper {
         return MARKET_MAP.get(key);
     }
 
-    public static String getMarketNumber(Context context) {
-        return PreferenceManager.getDefaultSharedPreferences(context).getString("market_list", "109");
-    }
-
 
 
     public static String getUnitInWords(float digit) {
         return (digit < 1) ? "台斤/元" : "公斤/元";
     }
 
-    public static String getPriceRange(String price, Context context){
-        float tmpPrice = Float.valueOf(price);
-        float unit = PreferenceUtil.getUnit(context);
-        float[] profit = PreferenceUtil.getProfitRange(context);
-
-        if(tmpPrice * unit * profit[1] > 1000)
-            price = String.format("%.0f", tmpPrice * unit * profit[0]) + " - " + String.format("%.0f", tmpPrice * unit * profit[1]); // price * unit * profit
-        else
-            price = String.format("%.1f", tmpPrice * unit * profit[0]) + " - " + String.format("%.1f", tmpPrice * unit * profit[1]); // price * unit * profit
-
-        return price;
+    public static void showProgressDialog(final Context context, boolean isNowOnUiThread) {
+        if (isNowOnUiThread) {
+            showProgressDialog(context);
+        } else {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    showProgressDialog(context);
+                }
+            });
+        }
     }
 
-    public static String getPriceWithUnit(String price, Context context){
-        float tmpPrice = Float.valueOf(price);
-        float unit = PreferenceUtil.getUnit(context);
+    private static void showProgressDialog(Context context) {
+        closeProgressDialog();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.setMessage(context.getString(R.string.loading));
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(false);
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
+    }
 
-        if(tmpPrice * unit > 1000)
-            return String.format("%.0f", tmpPrice * unit );
-        else
-            return String.format("%.1f", tmpPrice * unit );
+    public static void closeProgressDialog(boolean isNowOnUiThread) {
+        if (isNowOnUiThread) {
+            closeProgressDialog();
+        } else {
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    closeProgressDialog();
+                }
+            });
+        }
+    }
+
+    private static void closeProgressDialog() {
+        if (progressDialog != null && progressDialog.isShowing()) {
+            try {
+                progressDialog.dismiss();
+            } catch (Exception e) {
+            }
+        }
     }
 }

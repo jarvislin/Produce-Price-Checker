@@ -1,10 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey"
-    android:orientation="vertical"
-    tools:context="com.jarvislin.producepricechecker.DataListActivity">
+    android:orientation="vertical">
 
     <include layout="@layout/toolbar" />
 
@@ -16,21 +14,18 @@
 
         <TextView
             android:id="@+id/type"
-            android:text="品種及名稱"
-            android:layout_weight="1"
-            android:visibility="invisible"
+            android:text="品種"
+            android:layout_weight="5"
             style="@style/TableHeader"/>
         <TextView
             android:id="@+id/name"
-            android:text="品種及名稱"
-            android:layout_weight="1"
-            android:visibility="invisible"
+            android:text="名稱"
+            android:layout_weight="5"
             style="@style/TableHeader"/>
         <TextView
             android:id="@+id/range"
-            android:text="100.0 - 100.0"
-            android:visibility="invisible"
-            android:layout_weight="1"
+            android:text="平均價格區間"
+            android:layout_weight="6.5"
             style="@style/TableHeader"/>
 
     </LinearLayout>
@@ -38,7 +33,6 @@
         android:id="@+id/data_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
     </ListView>
 
 </LinearLayout>
