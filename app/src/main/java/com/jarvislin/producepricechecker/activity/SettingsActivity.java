@@ -10,6 +10,7 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -17,16 +18,22 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
 import org.androidannotations.annotations.AfterPreferences;
+import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.PreferenceByKey;
 import org.androidannotations.annotations.PreferenceChange;
 import org.androidannotations.annotations.PreferenceClick;
+import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+
+import java.util.ArrayList;
 
 import database.DatabaseController;
 
@@ -38,6 +45,9 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Pref
     Preferences_ prefs;
+
+    @RestService
+    ApiClient client;
 
     private static final String PREF_NAME = "Preferences";
     private static final String PLAY_STORE = "http://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker";
@@ -59,7 +69,6 @@ public class SettingsActivity extends PreferenceActivity {
         getPreferenceManager().setSharedPreferencesName(PREF_NAME);
         addPreferencesFromResource(R.xml.pref_general);
     }
-
 
     @AfterPreferences
     void initPrefs() {
