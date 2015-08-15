@@ -1,5 +1,7 @@
 package com.jarvislin.producepricechecker.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 /**
@@ -8,21 +10,27 @@ import java.io.Serializable;
 public class ApiProduce implements Serializable {
     private String transactionAmount;
 
-    private String averagePrice;
-
-    private String marketName;
-
-    private String marketNumber;
-
-    private String topPrice;
-
     private String lowPrice;
 
     private String transactionDate;
 
-    private String middlePrice;
+    @SerializedName("main_category")
+    private String mainCategory;
 
     private String produceName;
+
+    private String middlePrice;
+
+    private String averagePrice;
+
+    private String marketNumber;
+
+    private String marketName;
+
+    private String topPrice;
+
+    @SerializedName("sub_category")
+    private String subCategory;
 
     private String produceNumber;
 
@@ -32,38 +40,6 @@ public class ApiProduce implements Serializable {
 
     public void setTransactionAmount(String transactionAmount) {
         this.transactionAmount = transactionAmount;
-    }
-
-    public String getAveragePrice() {
-        return averagePrice;
-    }
-
-    public void setAveragePrice(String averagePrice) {
-        this.averagePrice = averagePrice;
-    }
-
-    public String getMarketName() {
-        return marketName;
-    }
-
-    public void setMarketName(String marketName) {
-        this.marketName = marketName;
-    }
-
-    public String getMarketNumber() {
-        return marketNumber;
-    }
-
-    public void setMarketNumber(String marketNumber) {
-        this.marketNumber = marketNumber;
-    }
-
-    public String getTopPrice() {
-        return topPrice;
-    }
-
-    public void setTopPrice(String topPrice) {
-        this.topPrice = topPrice;
     }
 
     public String getLowPrice() {
@@ -82,12 +58,12 @@ public class ApiProduce implements Serializable {
         this.transactionDate = transactionDate;
     }
 
-    public String getMiddlePrice() {
-        return middlePrice;
+    public String getMainCategory() {
+        return mainCategory;
     }
 
-    public void setMiddlePrice(String middlePrice) {
-        this.middlePrice = middlePrice;
+    public void setMainCategory(String main_category) {
+        this.mainCategory = main_category;
     }
 
     public String getProduceName() {
@@ -96,6 +72,54 @@ public class ApiProduce implements Serializable {
 
     public void setProduceName(String produceName) {
         this.produceName = produceName;
+    }
+
+    public String getMiddlePrice() {
+        return middlePrice;
+    }
+
+    public void setMiddlePrice(String middlePrice) {
+        this.middlePrice = middlePrice;
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice;
+    }
+
+    public String getMarketNumber() {
+        return marketNumber;
+    }
+
+    public void setMarketNumber(String marketNumber) {
+        this.marketNumber = marketNumber;
+    }
+
+    public String getMarketName() {
+        return marketName;
+    }
+
+    public void setMarketName(String marketName) {
+        this.marketName = marketName;
+    }
+
+    public String getTopPrice() {
+        return topPrice;
+    }
+
+    public void setTopPrice(String topPrice) {
+        this.topPrice = topPrice;
+    }
+
+    public String getSubCategory() {
+        return subCategory;
+    }
+
+    public void setSubCategory(String sub_category) {
+        this.subCategory = sub_category;
     }
 
     public String getProduceNumber() {
@@ -108,6 +132,6 @@ public class ApiProduce implements Serializable {
 
     @Override
     public String toString() {
-        return "ClassPojo [transactionAmount = " + transactionAmount + ", averagePrice = " + averagePrice + ", marketName = " + marketName + ", marketNumber = " + marketNumber + ", topPrice = " + topPrice + ", lowPrice = " + lowPrice + ", transactionDate = " + transactionDate + ", middlePrice = " + middlePrice + ", produceName = " + produceName + ", produceNumber = " + produceNumber + "]";
+        return "ClassPojo [transactionAmount = " + transactionAmount + ", lowPrice = " + lowPrice + ", transactionDate = " + transactionDate + ", main_category = " + mainCategory + ", produceName = " + produceName + ", middlePrice = " + middlePrice + ", averagePrice = " + averagePrice + ", marketNumber = " + marketNumber + ", marketName = " + marketName + ", topPrice = " + topPrice + ", sub_category = " + subCategory + ", produceNumber = " + produceNumber + "]";
     }
 }
