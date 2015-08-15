@@ -44,7 +44,7 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     }
 
     protected void initListView() {
-        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
+//        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
         bookmarkList.setAdapter(adapter);
     }
 

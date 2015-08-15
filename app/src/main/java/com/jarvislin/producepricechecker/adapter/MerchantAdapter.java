@@ -65,15 +65,12 @@ public class MerchantAdapter extends CustomerAdapter {
 
         Produce data = list.get(position);
 
-        holder.cell.setBackgroundColor(context.getResources().getColor(DatabaseController.isBookmark(data.name, data.type, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+//        holder.cell.setBackgroundColor(context.getResources().getColor(DatabaseController.isBookmark(data.produceName, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
-        if(data.type.length() <= 1)
-            holder.name.setText(data.name);
-        else
-            holder.name.setText(data.type + "\n" +data.name);
+        holder.name.setText(data.produceName.replace("-","\n"));
         holder.topPrice.setText(String.valueOf(Math.round(Float.valueOf(data.topPrice) * prefs.unit().get())));
-        holder.midPrice.setText(String.valueOf(Math.round(Float.valueOf(data.mediumPrice) * prefs.unit().get())));
+        holder.midPrice.setText(String.valueOf(Math.round(Float.valueOf(data.middlePrice) * prefs.unit().get())));
         holder.lowPrice.setText(String.valueOf(Math.round(Float.valueOf(data.lowPrice) * prefs.unit().get())));
         holder.avgPrice.setText(String.valueOf(Math.round(Float.valueOf(data.averagePrice) * prefs.unit().get())));
 

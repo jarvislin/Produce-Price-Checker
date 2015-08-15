@@ -41,4 +41,5 @@
     <string name="loading">讀取中......</string>
     <string name="pref_key_unit">gravity_unit</string>
     <string name="pref_key_market">marketList</string>
+    <string name="token">c14f554a72062efdef37e29d9ab7fe15</string>
 </resources>

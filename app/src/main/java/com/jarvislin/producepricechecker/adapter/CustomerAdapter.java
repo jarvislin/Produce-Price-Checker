@@ -68,12 +68,11 @@ public class CustomerAdapter extends BaseAdapter {
 
         Produce data = list.get(position);
 
-        holder.cell.setBackgroundColor(context.getResources().getColor(
-                DatabaseController.isBookmark(data.name, data.type, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+//        holder.cell.setBackgroundColor(context.getResources().getColor(
+//                DatabaseController.isBookmark(data.produceName, data.type, category) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
-        holder.type.setText(data.type);
-        holder.name.setText(data.name);
+        holder.name.setText(data.produceName);
 
         float avg = Float.valueOf(data.averagePrice);
         int low = Math.round(avg * prefs.unit().get() * (1 + prefs.lowProfit().get()));

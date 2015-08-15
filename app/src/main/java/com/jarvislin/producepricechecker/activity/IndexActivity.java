@@ -19,8 +19,7 @@ import org.androidannotations.annotations.sharedpreferences.Pref;
 
 @EActivity(R.layout.activity_index)
 public class IndexActivity extends AppCompatActivity {
-    @Bean
-    DataFetcher fetcher;
+
     @Pref
     Preferences_ prefs;
     @ViewById

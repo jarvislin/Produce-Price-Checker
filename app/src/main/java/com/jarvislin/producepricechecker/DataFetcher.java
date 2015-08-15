@@ -58,16 +58,16 @@ public class DataFetcher extends Fetcher {
         Produce produce;
         ArrayList<Produce> list = new ArrayList<>();
         for (int i = 16; i < elements.size(); i += 10) {
-            produce = new Produce();
-            produce.name = elements.get(i).text();
-            produce.type = elements.get(i + 1).text();
-            produce.topPrice = elements.get(i + 3).text();
-            produce.mediumPrice = elements.get(i + 4).text();
-            produce.lowPrice = elements.get(i + 5).text();
-            produce.averagePrice = elements.get(i + 6).text();
-            produce.date = ToolsHelper.getDateWithOffset(offset);
-            produce.kind = kind;
-            list.add(produce);
+//            produce = new Produce();
+//            produce.produceName = elements.get(i).text();
+//            produce.type = elements.get(i + 1).text();
+//            produce.topPrice = elements.get(i + 3).text();
+//            produce.mediumPrice = elements.get(i + 4).text();
+//            produce.lowPrice = elements.get(i + 5).text();
+//            produce.averagePrice = elements.get(i + 6).text();
+//            produce.date = ToolsHelper.getDateWithOffset(offset);
+//            produce.category = category;
+//            list.add(produce);
         }
         return list;
     }

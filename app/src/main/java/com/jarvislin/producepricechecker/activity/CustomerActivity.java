@@ -15,9 +15,12 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.DataFetcher;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
+import com.jarvislin.producepricechecker.model.ApiProduce;
+import com.jarvislin.producepricechecker.util.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
@@ -33,7 +36,10 @@ import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +63,9 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     ListView dataList;
     @Bean
     DataFetcher dataFetcher;
+
+    @RestService
+    ApiClient client;
 
     @Pref
     Preferences_ prefs;
@@ -99,27 +108,30 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     protected void loadData() {
         ToolsHelper.showProgressDialog(this, false);
         //show
-        String updateDate = getType().equals(Constants.FRUIT) ? prefs.fruitUpdateDate().get() : prefs.vegetableUpdateDate().get();
-        if (updateDate.equals(ToolsHelper.getCurrentDate())) {
-            loadClientData();
-        } else if (ToolsHelper.isNetworkAvailable(this)) {
+     if (ToolsHelper.isNetworkAvailable(this)) {
             downloadData();
-        } else if (DatabaseController.getProduces(getType()).size() > 0) {
-            loadClientData();
+//        } else if (DatabaseController.getProduces(getType()).size() > 0) {
+//            loadClientData();
         } else {
             handleData(null);
         }
         ToolsHelper.closeProgressDialog(false);
     }
 
+    @Background
     protected void downloadData() {
-        String url = (getType().equals(Constants.FRUIT)) ? Constants.FRUIT_URL : Constants.VEGETABLE_URL;
-        handleData(dataFetcher.getProduces(url, getType()));
+        MultiValueMap params = new LinkedMultiValueMap<String, String>();
+        params.add("token", getString(R.string.token));
+        params.add("market", "104");
+        params.add("category", getType());
+        ArrayList<ApiProduce> list = client.getData(params);
+        ApiDataAdapter adapter = new ApiDataAdapter(list);
+        handleData(adapter.getDataList());
         updateDatabase();
     }
 
     public void loadClientData() {
-        produces = DatabaseController.getProduces(getType());
+//        produces = DatabaseController.getProduces(getType());
         handleData(produces);
     }
 
@@ -139,18 +151,18 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @Background
     protected void updateDatabase() {
         if (produces != null && !produces.isEmpty()) {
-            DatabaseController.clearTable(getType());
+//            DatabaseController.clearTable(getType());
             for (Produce produce : produces) {
                 produce.save();
             }
             if (getType().equals(Constants.FRUIT)) {
                 prefs.fruitUpdateDate().put(ToolsHelper.getCurrentDate());
-                DatabaseController.updateBookmark(produces, Constants.FRUIT_BOOKMARK);
-                prefs.fruitUpdateDate().put(produces.get(0).date);
+//                DatabaseController.updateBookmark(produces, Constants.FRUIT_BOOKMARK);
+                prefs.fruitUpdateDate().put(produces.get(0).transactionDate);
             } else {
                 prefs.vegetableUpdateDate().put(ToolsHelper.getCurrentDate());
-                DatabaseController.updateBookmark(produces, Constants.VEGETABLE_BOOKMARK);
-                prefs.vegetableUpdateDate().put(produces.get(0).date);
+//                DatabaseController.updateBookmark(produces, Constants.VEGETABLE_BOOKMARK);
+                prefs.vegetableUpdateDate().put(produces.get(0).transactionDate);
             }
         }
     }
@@ -183,14 +195,14 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void showInfo() {
-        String[] date = ToolsHelper.getDateParam(ToolsHelper.getOffset(produces.get(0).date));
+        String[] date = ToolsHelper.getDateParam(ToolsHelper.getOffset(produces.get(0).transactionDate));
 
         final Dialog dialog = new Dialog(this, R.style.alertDialog);
         dialog.setContentView(R.layout.dialog_info);
 
         TextView message = (TextView) dialog.findViewById(R.id.info_text);
         message.setText(
-                "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(produces.get(0).date)) + "\n" +
+                "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(produces.get(0).transactionDate)) + "\n" +
                         "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
                         "市場：" + ToolsHelper.getMarketName(prefs.marketList().get())
         );
@@ -275,10 +287,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             ColorDrawable color = (ColorDrawable) view.getBackground();
 
             if (getResources().getColor(R.color.highlight) == color.getColor()) {
-                DatabaseController.delete(object.name, object.type, getBookmarkKind());
+//                DatabaseController.delete(object.produceName, object.type, getBookmarkKind());
                 Toast.makeText(CustomerActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
             } else {
-                DatabaseController.insertBookmark(object, getBookmarkKind());
+//                DatabaseController.insertBookmark(object, getBookmarkKind());
                 Toast.makeText(CustomerActivity.this, "已將項目加入清單", Toast.LENGTH_SHORT).show();
             }
 
@@ -289,7 +301,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     protected ArrayList<Produce> getSearchList(String newText) {
         ArrayList<Produce> list = new ArrayList<>();
         for (Produce data : produces) {
-            if (data.name.contains(newText) || data.type.contains(newText))
+            if (data.produceName.contains(newText))
                 list.add(data);
         }
         return list;
