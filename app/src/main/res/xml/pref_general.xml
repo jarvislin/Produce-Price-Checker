@@ -1,12 +1,22 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ListPreference
-        android:key="@string/pref_key_market"
-        android:title="@string/choose_market"
+        android:key="@string/pref_key_fruit_market"
+        android:title="@string/choose_fruit_market"
         android:defaultValue="109"
         android:summary="%s"
-        android:entries="@array/pref_market_titles"
-        android:entryValues="@array/pref_market_values"
+        android:entries="@array/pref_fruit_market_titles"
+        android:entryValues="@array/pref_fruit_market_values"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <ListPreference
+        android:key="@string/pref_key_vegetable_market"
+        android:title="@string/choose_vegetable_market"
+        android:defaultValue="109"
+        android:summary="%s"
+        android:entries="@array/pref_vegetable_market_titles"
+        android:entryValues="@array/pref_vegetable_market_values"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null" />
 

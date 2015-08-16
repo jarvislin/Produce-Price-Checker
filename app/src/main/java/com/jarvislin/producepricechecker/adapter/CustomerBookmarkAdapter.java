@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -26,14 +27,14 @@ public class CustomerBookmarkAdapter extends BaseAdapter {
 
     protected ArrayList<Produce> list;
     protected Context context;
-    protected String kind;
+    protected String category;
     protected int isEditing = -1;
     protected Preferences_ prefs;
 
-    public CustomerBookmarkAdapter(Context context, ArrayList<Produce> list, String kind, Preferences_ pref) {
+    public CustomerBookmarkAdapter(Context context, ArrayList<Produce> list, String category, Preferences_ pref) {
         this.list = list;
         this.context = context;
-        this.kind = kind;
+        this.category = category;
         prefs = pref;
     }
 
@@ -82,13 +83,13 @@ public class CustomerBookmarkAdapter extends BaseAdapter {
 
         //set views
         holder.cell.setBackgroundColor(context.getResources().getColor((position % 2 == 0) ? R.color.white : R.color.odd_row));
-        holder.typeName.setText((data.type.length() <= 1) ? data.name : data.type + "\n" + data.name);
+        holder.typeName.setText(data.produceName.replace("-", "\n"));
         holder.delete.setVisibility(isEditing > 0 ? View.VISIBLE : View.INVISIBLE);
         holder.delete.setOnClickListener(clickDelete(position));
         float avg = Float.valueOf(data.averagePrice);
         int low = Math.round(avg * prefs.unit().get() * (1 + prefs.lowProfit().get()));
         int high = Math.round(avg * prefs.unit().get() * (1 + prefs.hightProfit().get()));
-        holder.rangeDate.setText(low + " - " + high + "\n" + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(data.date)));
+        holder.rangeDate.setText(low + " - " + high + "\n" + DateUtil.getOffsetInWords(DateUtil.getOffset(data.transactionDate)));
 
         return view;
     }
@@ -98,7 +99,7 @@ public class CustomerBookmarkAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Produce data = list.get(position);
-                DatabaseController.delete(data.name, data.type, kind);
+                DatabaseController.delete(data.produceName, category);
                 list.remove(position);
                 Toast.makeText(context, "移除成功", Toast.LENGTH_SHORT).show();
                 CustomerBookmarkAdapter.this.notifyDataSetChanged();

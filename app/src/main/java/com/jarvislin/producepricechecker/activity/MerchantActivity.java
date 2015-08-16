@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.MerchantAdapter;
+import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.EActivity;
 
@@ -20,15 +21,16 @@ public class MerchantActivity extends CustomerActivity {
 
     @Override
     protected void handleData(ArrayList<Produce> list) {
-            if (list == null) {
-                finish();
-            } else {
-                produces = list;
-                adapter = new MerchantAdapter(this, list, prefs, getBookmarkKind());
-                dataList.setAdapter(adapter);
-                dataList.setOnItemClickListener(itemClickListener);
-            }
+        if (list == null || list.size() == 0) {
+            ToolsHelper.showToast(this, R.string.error_network);
+            finish();
+        } else {
+            produces = list;
+            adapter = new MerchantAdapter(this, list, prefs, shareContent.getBookmarkCategory());
+            dataList.setAdapter(adapter);
+            dataList.setOnItemClickListener(itemClickListener);
         }
+    }
 
     @Override
     protected void openBookmark() {
@@ -44,7 +46,7 @@ public class MerchantActivity extends CustomerActivity {
             Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<Produce> searchList = getSearchList(newText);
-            adapter = new MerchantAdapter(this, searchList, prefs, getBookmarkKind());
+            adapter = new MerchantAdapter(this, searchList, prefs, shareContent.getBookmarkCategory());
             dataList.setAdapter(adapter);
         }
         return false;

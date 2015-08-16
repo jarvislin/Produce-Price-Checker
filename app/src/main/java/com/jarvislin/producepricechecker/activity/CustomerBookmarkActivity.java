@@ -35,7 +35,6 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     ImageView edit;
 
     protected CustomerBookmarkAdapter adapter;
-//    protected ImageView back, edit;
 
     @AfterViews
     protected void init() {

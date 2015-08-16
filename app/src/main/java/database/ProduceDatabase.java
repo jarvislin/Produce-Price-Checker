@@ -12,5 +12,5 @@ import com.raizlabs.android.dbflow.sql.migration.BaseMigration;
 @Database(name = ProduceDatabase.NAME, version = ProduceDatabase.VERSION)
 public class ProduceDatabase {
         public static final String NAME = "Produces";
-        public static final int VERSION = 2;
+        public static final int VERSION = 3;
 }
