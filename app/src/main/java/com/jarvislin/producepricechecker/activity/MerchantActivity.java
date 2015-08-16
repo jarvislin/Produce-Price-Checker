@@ -35,7 +35,7 @@ public class MerchantActivity extends CustomerActivity {
     @Override
     protected void openBookmark() {
         Intent intent = new Intent();
-        intent.putExtra("type", getType());
+        intent.putExtra("category", getCategory());
         intent.setClass(this, MerchantBookmarkActivity_.class);
         startActivityForResult(intent, 0);
     }

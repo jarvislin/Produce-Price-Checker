@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker.util;
 
 import org.androidannotations.annotations.sharedpreferences.DefaultFloat;
+import org.androidannotations.annotations.sharedpreferences.DefaultInt;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
@@ -36,5 +37,8 @@ public interface Preferences {
 
     @DefaultFloat(0.5f)
     float hightProfit();
+
+    @DefaultInt(1)
+    int versionCode();
 
 }

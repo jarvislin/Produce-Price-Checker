@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker.util;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -8,6 +9,9 @@ import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -40,6 +44,27 @@ public class ToolsHelper {
 
     public static void showToast(Context context, int resId) {
         Toast.makeText(context, context.getString(resId), Toast.LENGTH_LONG).show();
+    }
+
+    public static void showDialog(Context context, String titleText, String messageText){
+        final Dialog dialog = new Dialog(context, R.style.alertDialog);
+        dialog.setContentView(R.layout.dialog_info);
+        TextView title = (TextView) dialog.findViewById(R.id.title);
+        TextView message = (TextView) dialog.findViewById(R.id.info_text);
+
+        title.setText(titleText);
+        message.setText(messageText);
+
+        Button dismiss = (Button) dialog.findViewById(R.id.info_dismiss);
+        dismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog.isShowing())
+                    dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     public static String getUnitInWords(float digit) {

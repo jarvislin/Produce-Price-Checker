@@ -9,11 +9,12 @@
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:gravity="center_vertical"
         android:padding="16dp"
-        android:text="資訊"
+        tools:text="資訊"
         android:textColor="@color/main_blue"
         android:textSize="22sp" />
 
@@ -29,6 +30,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="16dp"
+        android:lineSpacingExtra="6dp"
         tools:text="資料日期：104/10/01\n市場：台北\n單位：台斤"
         android:textColor="@color/actionbar_back"
         android:textSize="16sp" />

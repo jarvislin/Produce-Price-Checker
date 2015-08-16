@@ -1,6 +1,5 @@
 package com.jarvislin.producepricechecker.activity;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v4.app.DialogFragment;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -99,7 +97,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         ImageView v = (ImageView) searchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search_white_36dp);
 
-        shareContent = getType().equals(Constants.FRUIT) ? new Fruit(this) : new Vegetable(this);
+        shareContent = getCategory().equals(Constants.FRUIT) ? new Fruit(this) : new Vegetable(this);
 
         loadData();
     }
@@ -113,7 +111,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             loadClientData();
         } else if (ToolsHelper.isNetworkAvailable(this)) {
             downloadData();
-        } else if (DatabaseController.getProduces(getType()).size() > 0) {
+        } else if (DatabaseController.getProduces(getCategory()).size() > 0) {
             loadClientData();
         } else {
             handleData(null);
@@ -125,7 +123,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         MultiValueMap params = new LinkedMultiValueMap<String, String>();
         params.add("token", getString(R.string.token));
         params.add("market", shareContent.getMarketNumber());
-        params.add("category", getType());
+        params.add("category", getCategory());
         ArrayList<ApiProduce> list = client.getData(params);
         ApiDataAdapter adapter = new ApiDataAdapter(list);
         handleData(adapter.getDataList());
@@ -133,7 +131,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void loadClientData() {
-        produces = DatabaseController.getProduces(getType(), shareContent.getMarketNumber());
+        produces = DatabaseController.getProduces(getCategory(), shareContent.getMarketNumber());
         handleData(produces);
     }
 
@@ -153,7 +151,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @Background
     protected void updateDatabase() {
         if (produces != null && !produces.isEmpty()) {
-            DatabaseController.clearTable(getType(), shareContent.getMarketNumber());
+            DatabaseController.clearTable(getCategory(), shareContent.getMarketNumber());
             for (Produce produce : produces) {
                 produce.save();
             }
@@ -189,32 +187,16 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void showInfo() {
+        String message = "資料日期：" + produces.get(0).transactionDate + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "\n" +
+                "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
+                "市場：" + shareContent.getMarketName();
 
-        final Dialog dialog = new Dialog(this, R.style.alertDialog);
-        dialog.setContentView(R.layout.dialog_info);
-
-        TextView message = (TextView) dialog.findViewById(R.id.info_text);
-        message.setText(
-                "資料日期：" + produces.get(0).transactionDate + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "\n" +
-                        "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
-                        "市場：" + shareContent.getMarketName()
-        );
-
-        Button dismiss = (Button) dialog.findViewById(R.id.info_dismiss);
-        dismiss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (dialog.isShowing())
-                    dialog.dismiss();
-            }
-        });
-
-        dialog.show();
+        ToolsHelper.showDialog(this, "資訊", message);
     }
 
     protected void openBookmark() {
         Intent intent = new Intent();
-        intent.putExtra("type", getType());
+        intent.putExtra("category", getCategory());
         intent.setClass(this, CustomerBookmarkActivity_.class);
         startActivityForResult(intent, 0);
     }
@@ -300,8 +282,8 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         return list;
     }
 
-    protected String getType() {
-        return getIntent().getStringExtra("type");
+    protected String getCategory() {
+        return getIntent().getStringExtra("category");
     }
 
 }
