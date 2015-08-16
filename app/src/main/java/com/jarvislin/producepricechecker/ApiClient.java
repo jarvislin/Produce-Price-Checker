@@ -21,6 +21,6 @@ import database.Produce;
 @Rest(converters = {FormHttpMessageConverter.class, GsonHttpMessageConverter.class})
 @Accept("application/json")
 public interface ApiClient extends RestClientErrorHandling {
-    @Post("http://produce.jarvislin.com/provider")
+    @Post("")
     ArrayList<ApiProduce> getData(MultiValueMap<String, String> map);
 }
