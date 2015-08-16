@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker.util;
 
 import org.androidannotations.annotations.sharedpreferences.DefaultFloat;
+import org.androidannotations.annotations.sharedpreferences.DefaultInt;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
 import org.androidannotations.annotations.sharedpreferences.SharedPref;
 
@@ -11,7 +12,10 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 public interface Preferences {
 
     @DefaultString("109")
-    String marketList();
+    String fruitMarketList();
+
+    @DefaultString("109")
+    String vegetableMarketList();
 
     @DefaultString("customer")
     String userMode();
@@ -33,5 +37,8 @@ public interface Preferences {
 
     @DefaultFloat(0.5f)
     float hightProfit();
+
+    @DefaultInt(1)
+    int versionCode();
 
 }

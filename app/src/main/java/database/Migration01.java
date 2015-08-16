@@ -9,9 +9,9 @@ import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
  * Created by Jarvis Lin on 2015/6/24.
  */
 @Migration(version = 2, databaseName = ProduceDatabase.NAME)
-public class DateMigration extends AlterTableMigration<Produce> {
+public class Migration01 extends AlterTableMigration<Produce> {
 
-    public DateMigration() {
+    public Migration01() {
         super(Produce.class);
     }
 

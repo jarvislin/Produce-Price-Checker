@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
@@ -26,6 +27,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.PreferenceByKey;
 import org.androidannotations.annotations.PreferenceChange;
 import org.androidannotations.annotations.PreferenceClick;
+import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import database.DatabaseController;
@@ -38,6 +40,9 @@ public class SettingsActivity extends PreferenceActivity {
 
     @Pref
     Preferences_ prefs;
+
+    @RestService
+    ApiClient client;
 
     private static final String PREF_NAME = "Preferences";
     private static final String PLAY_STORE = "http://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker";
@@ -60,7 +65,6 @@ public class SettingsActivity extends PreferenceActivity {
         addPreferencesFromResource(R.xml.pref_general);
     }
 
-
     @AfterPreferences
     void initPrefs() {
         setProfitSummary();
@@ -78,11 +82,16 @@ public class SettingsActivity extends PreferenceActivity {
         openUrl(PLAY_STORE);
     }
 
-    @PreferenceChange(R.string.pref_key_market)
-    void marketChanged() {
-        DatabaseController.clearTable();
+    @PreferenceChange(R.string.pref_key_fruit_market)
+    void fruitMarketChanged() {
         prefs.edit()
                 .fruitUpdateDate().put("")
+                .apply();
+    }
+
+    @PreferenceChange(R.string.pref_key_vegetable_market)
+    void vegetableMarketChanged() {
+        prefs.edit()
                 .vegetableUpdateDate().put("")
                 .apply();
     }

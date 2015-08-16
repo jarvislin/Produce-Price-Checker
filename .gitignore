@@ -6,4 +6,5 @@
 /build
 app/app-debug.apk
 app/app-release.apk
+app/app.iml
 app/manifest-merger-release-report.txt

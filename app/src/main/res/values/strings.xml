@@ -13,7 +13,8 @@
     <string name="mode">模式</string>
     <string name="back">返回</string>
     <string name="refresh">重新整理</string>
-    <string name="choose_market">選擇批發市場</string>
+    <string name="choose_fruit_market">選擇水果批發市場</string>
+    <string name="choose_vegetable_market">選擇蔬菜批發市場</string>
     <string name="choose_service">選擇開啟方式</string>
     <string name="unit">重量單位</string>
     <string name="customer_mode">消費者模式</string>
@@ -40,5 +41,12 @@
     <string name="yes">是</string>
     <string name="loading">讀取中......</string>
     <string name="pref_key_unit">gravity_unit</string>
-    <string name="pref_key_market">marketList</string>
+    <string name="pref_key_fruit_market">fruitMarketList</string>
+    <string name="pref_key_vegetable_market">vegetableMarketList</string>
+    <string name="token">c14f554a72062efdef37e29d9ab7fe15</string>
+    <string name="error_network">偵測不到網路, 請確認是否連上網路.</string>
+    <string name="error_site">連不上網站, 請稍候再重新整理一次.</string>
+    <string name="share_text">蔬果行情站可以查詢最新的蔬果價格，推薦你也來用用看：https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker</string>
+    <string name="remove_bookmark">已從清單移除項目</string>
+    <string name="add_bookmark">已將項目加入清單</string>
 </resources>

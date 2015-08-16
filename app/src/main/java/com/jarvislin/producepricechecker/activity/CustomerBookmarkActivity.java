@@ -35,7 +35,6 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     ImageView edit;
 
     protected CustomerBookmarkAdapter adapter;
-//    protected ImageView back, edit;
 
     @AfterViews
     protected void init() {
@@ -44,15 +43,15 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     }
 
     protected void initListView() {
-        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
+        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkCategory()), getBookmarkCategory(), prefs);
         bookmarkList.setAdapter(adapter);
     }
 
-    private String getType() {
-        return getIntent().getStringExtra("type");
+    private String getCategory() {
+        return getIntent().getStringExtra("category");
     }
-    protected String getBookmarkKind(){
-        return getType().equals(Constants.FRUIT) ? Constants.FRUIT_BOOKMARK : Constants.VEGETABLE_BOOKMARK;
+    protected String getBookmarkCategory(){
+        return getCategory().equals(Constants.FRUIT) ? Constants.FRUIT_BOOKMARK : Constants.VEGETABLE_BOOKMARK;
     }
 
     @Click

@@ -16,7 +16,7 @@
 
         <TextView
             android:id="@+id/type_name"
-            android:text="品種及名稱"
+            android:text="名稱及品種"
             android:layout_weight="5"
             style="@style/TableHeader"/>
         <TextView
