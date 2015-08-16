@@ -16,7 +16,7 @@ public class MerchantBookmarkActivity extends CustomerBookmarkActivity {
 
     @Override
     protected void initListView() {
-//        adapter = new MerchantBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
+        adapter = new MerchantBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
         bookmarkList.setAdapter(adapter);
     }
 }

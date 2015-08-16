@@ -11,7 +11,10 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 public interface Preferences {
 
     @DefaultString("109")
-    String marketList();
+    String fruitMarketList();
+
+    @DefaultString("109")
+    String vegetableMarketList();
 
     @DefaultString("customer")
     String userMode();

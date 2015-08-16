@@ -24,13 +24,13 @@ public class CustomerAdapter extends BaseAdapter {
     protected ArrayList<Produce> list;
     protected Context context;
     protected Preferences_ prefs;
-    protected String kind;
+    protected String category;
 
-    public CustomerAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String kind) {
+    public CustomerAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String category) {
         this.list = list;
         prefs = pref;
         this.context = context;
-        this.kind = kind;
+        this.category = category;
     }
 
 
@@ -68,11 +68,18 @@ public class CustomerAdapter extends BaseAdapter {
 
         Produce data = list.get(position);
 
-//        holder.cell.setBackgroundColor(context.getResources().getColor(
-//                DatabaseController.isBookmark(data.produceName, data.type, category) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+        holder.cell.setBackgroundColor(context.getResources().getColor(
+                DatabaseController.isBookmark(data.produceName, this.category) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
-        holder.name.setText(data.produceName);
+        String[] name = data.produceName.split("-");
+        if(name.length > 1) {
+            holder.name.setText(name[0]);
+            holder.type.setText(name[1]);
+        } else {
+            holder.name.setText(data.produceName);
+            holder.type.setText(null);
+        }
 
         float avg = Float.valueOf(data.averagePrice);
         int low = Math.round(avg * prefs.unit().get() * (1 + prefs.lowProfit().get()));

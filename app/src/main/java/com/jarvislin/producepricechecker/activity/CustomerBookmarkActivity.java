@@ -35,7 +35,6 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     ImageView edit;
 
     protected CustomerBookmarkAdapter adapter;
-//    protected ImageView back, edit;
 
     @AfterViews
     protected void init() {
@@ -44,7 +43,7 @@ public class CustomerBookmarkActivity extends AppCompatActivity {
     }
 
     protected void initListView() {
-//        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
+        adapter = new CustomerBookmarkAdapter(this, DatabaseController.getBookmarks(getBookmarkKind()), getBookmarkKind(), prefs);
         bookmarkList.setAdapter(adapter);
     }
 

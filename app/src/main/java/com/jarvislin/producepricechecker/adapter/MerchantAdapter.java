@@ -65,7 +65,7 @@ public class MerchantAdapter extends CustomerAdapter {
 
         Produce data = list.get(position);
 
-//        holder.cell.setBackgroundColor(context.getResources().getColor(DatabaseController.isBookmark(data.produceName, kind) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
+        holder.cell.setBackgroundColor(context.getResources().getColor(DatabaseController.isBookmark(data.produceName, category) ? R.color.highlight : (position % 2 == 0) ? R.color.white : R.color.odd_row));
 
         //set views
         holder.name.setText(data.produceName.replace("-","\n"));

@@ -10,10 +10,12 @@ import database.Produce;
  * Created by Jarvis Lin on 2015/8/15.
  */
 public class ApiDataAdapter {
-    private ArrayList<Produce> dataList = new ArrayList<>();
+    private ArrayList<Produce> dataList;
 
     public ApiDataAdapter(ArrayList<ApiProduce> list) {
+        if(list == null) return;
         Produce data;
+        dataList = new ArrayList<>();
         for (ApiProduce produce : list) {
             data = new Produce();
             data.produceName = produce.getProduceName();
@@ -28,7 +30,6 @@ public class ApiDataAdapter {
             data.transactionAmount = produce.getTransactionAmount();
             data.marketName = produce.getMarketName();
             data.marketNumber = produce.getMarketNumber();
-            data.save();
             dataList.add(data);
         }
     }

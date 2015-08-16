@@ -16,7 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.ApiClient;
-import com.jarvislin.producepricechecker.DataFetcher;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.model.ApiProduce;
@@ -32,7 +31,6 @@ import com.yalantis.contextmenu.lib.interfaces.OnMenuItemLongClickListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
@@ -57,12 +55,11 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     private TextView actionBarTitle;
     private SearchView searchView;
     private ImageView menu;
-    protected ArrayList<Produce> produces = new ArrayList<>();
+    protected ArrayList<Produce> produces;
     protected CustomerAdapter adapter;
+    protected ShareContent shareContent;
     @ViewById
     ListView dataList;
-    @Bean
-    DataFetcher dataFetcher;
 
     @RestService
     ApiClient client;
@@ -101,6 +98,8 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         ImageView v = (ImageView) searchView.findViewById(searchImgId);
         v.setImageResource(R.drawable.ic_search_white_36dp);
 
+        shareContent = getType().equals(Constants.FRUIT) ? new Fruit(this) : new Vegetable(this);
+
         loadData();
     }
 
@@ -108,21 +107,23 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     protected void loadData() {
         ToolsHelper.showProgressDialog(this, false);
         //show
-     if (ToolsHelper.isNetworkAvailable(this)) {
+        String updateDate = shareContent.getUpdateDate();
+        if (updateDate.equals(ToolsHelper.getCurrentDate())) {
+            loadClientData();
+        } else if (ToolsHelper.isNetworkAvailable(this)) {
             downloadData();
-//        } else if (DatabaseController.getProduces(getType()).size() > 0) {
-//            loadClientData();
+        } else if (DatabaseController.getProduces(getType()).size() > 0) {
+            loadClientData();
         } else {
             handleData(null);
         }
         ToolsHelper.closeProgressDialog(false);
     }
 
-    @Background
     protected void downloadData() {
         MultiValueMap params = new LinkedMultiValueMap<String, String>();
         params.add("token", getString(R.string.token));
-        params.add("market", "104");
+        params.add("market", shareContent.getMarketNumber());
         params.add("category", getType());
         ArrayList<ApiProduce> list = client.getData(params);
         ApiDataAdapter adapter = new ApiDataAdapter(list);
@@ -131,18 +132,18 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void loadClientData() {
-//        produces = DatabaseController.getProduces(getType());
+        produces = DatabaseController.getProduces(getType(), shareContent.getMarketNumber());
         handleData(produces);
     }
 
     @UiThread
     protected void handleData(ArrayList<Produce> list) {
-        if (list == null) {
+        if (list == null || list.size() == 0) {
             ToolsHelper.showNetworkErrorMessage(this);
             finish();
         } else {
             produces = list;
-            adapter = new CustomerAdapter(this, list, prefs, getBookmarkKind());
+            adapter = new CustomerAdapter(this, list, prefs, shareContent.getBookmarkCategory());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener);
         }
@@ -151,19 +152,11 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @Background
     protected void updateDatabase() {
         if (produces != null && !produces.isEmpty()) {
-//            DatabaseController.clearTable(getType());
+            DatabaseController.clearTable(getType(), shareContent.getMarketNumber());
             for (Produce produce : produces) {
                 produce.save();
             }
-            if (getType().equals(Constants.FRUIT)) {
-                prefs.fruitUpdateDate().put(ToolsHelper.getCurrentDate());
-//                DatabaseController.updateBookmark(produces, Constants.FRUIT_BOOKMARK);
-                prefs.fruitUpdateDate().put(produces.get(0).transactionDate);
-            } else {
-                prefs.vegetableUpdateDate().put(ToolsHelper.getCurrentDate());
-//                DatabaseController.updateBookmark(produces, Constants.VEGETABLE_BOOKMARK);
-                prefs.vegetableUpdateDate().put(produces.get(0).transactionDate);
-            }
+            shareContent.updateDatabase(produces);
         }
     }
 
@@ -195,16 +188,15 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     }
 
     public void showInfo() {
-        String[] date = ToolsHelper.getDateParam(ToolsHelper.getOffset(produces.get(0).transactionDate));
 
         final Dialog dialog = new Dialog(this, R.style.alertDialog);
         dialog.setContentView(R.layout.dialog_info);
 
         TextView message = (TextView) dialog.findViewById(R.id.info_text);
         message.setText(
-                "資料日期：" + date[0] + "/" + date[1] + "/" + date[2] + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(produces.get(0).transactionDate)) + "\n" +
+                "資料日期：" + produces.get(0).transactionDate + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(produces.get(0).transactionDate)) + "\n" +
                         "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
-                        "市場：" + ToolsHelper.getMarketName(prefs.marketList().get())
+                        "市場：" + shareContent.getMarketName()
         );
 
         Button dismiss = (Button) dialog.findViewById(R.id.info_dismiss);
@@ -249,7 +241,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             Toast.makeText(this, "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<Produce> searchList = getSearchList(newText);
-            adapter = new CustomerAdapter(this, searchList, prefs, getBookmarkKind());
+            adapter = new CustomerAdapter(this, searchList, prefs, shareContent.getBookmarkCategory());
             dataList.setAdapter(adapter);
         }
         return false;
@@ -287,10 +279,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             ColorDrawable color = (ColorDrawable) view.getBackground();
 
             if (getResources().getColor(R.color.highlight) == color.getColor()) {
-//                DatabaseController.delete(object.produceName, object.type, getBookmarkKind());
+                DatabaseController.delete(object.produceName, shareContent.getBookmarkCategory());
                 Toast.makeText(CustomerActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
             } else {
-//                DatabaseController.insertBookmark(object, getBookmarkKind());
+                DatabaseController.insertBookmark(object, shareContent.getBookmarkCategory());
                 Toast.makeText(CustomerActivity.this, "已將項目加入清單", Toast.LENGTH_SHORT).show();
             }
 
@@ -311,7 +303,4 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         return getIntent().getStringExtra("type");
     }
 
-    protected String getBookmarkKind() {
-        return getType().equals(Constants.FRUIT) ? Constants.FRUIT_BOOKMARK : Constants.VEGETABLE_BOOKMARK;
-    }
 }

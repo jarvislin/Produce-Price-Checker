@@ -10,7 +10,6 @@ import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,20 +19,16 @@ import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.R;
-import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
 import org.androidannotations.annotations.AfterPreferences;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.PreferenceByKey;
 import org.androidannotations.annotations.PreferenceChange;
 import org.androidannotations.annotations.PreferenceClick;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-
-import java.util.ArrayList;
 
 import database.DatabaseController;
 
@@ -87,11 +82,16 @@ public class SettingsActivity extends PreferenceActivity {
         openUrl(PLAY_STORE);
     }
 
-    @PreferenceChange(R.string.pref_key_market)
-    void marketChanged() {
-        DatabaseController.clearTable();
+    @PreferenceChange(R.string.pref_key_fruit_market)
+    void fruitMarketChanged() {
         prefs.edit()
                 .fruitUpdateDate().put("")
+                .apply();
+    }
+
+    @PreferenceChange(R.string.pref_key_vegetable_market)
+    void vegetableMarketChanged() {
+        prefs.edit()
                 .vegetableUpdateDate().put("")
                 .apply();
     }

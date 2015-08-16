@@ -98,7 +98,7 @@ public class CustomerBookmarkAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Produce data = list.get(position);
-//                DatabaseController.delete(data.produceName, category);
+                DatabaseController.delete(data.produceName, category);
                 list.remove(position);
                 Toast.makeText(context, "移除成功", Toast.LENGTH_SHORT).show();
                 CustomerBookmarkAdapter.this.notifyDataSetChanged();
