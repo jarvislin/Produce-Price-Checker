@@ -3,6 +3,7 @@ package com.jarvislin.producepricechecker.util;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Handler;
@@ -65,6 +66,14 @@ public class ToolsHelper {
         });
 
         dialog.show();
+    }
+
+    public static void shareText(Context context, String title, String text) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_SUBJECT, title);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        context.startActivity(Intent.createChooser(intent, title));
     }
 
     public static String getUnitInWords(float digit) {

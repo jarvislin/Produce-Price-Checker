@@ -183,6 +183,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
                 GoogleAnalyticsSender.getInstance(this).send("click_bookmark");
                 openBookmark();
                 break;
+            case 5:
+                GoogleAnalyticsSender.getInstance(this).send("click_share");
+                ToolsHelper.shareText(this, "分享：", getString(R.string.share_text));
+                break;
         }
     }
 
@@ -237,6 +241,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         menuObjects.add(new MenuObject(R.drawable.ic_refresh_blue_36dp, "重新整理"));
         menuObjects.add(new MenuObject(R.drawable.ic_swap_horiz_blue_36dp, "重量單位轉換"));
         menuObjects.add(new MenuObject(R.drawable.ic_list, "收藏清單"));
+        menuObjects.add(new MenuObject(R.drawable.ic_share_blue_36dp, "分享給朋友"));
         return menuObjects;
     }
 
