@@ -47,4 +47,6 @@
     <string name="error_network">偵測不到網路, 請確認是否連上網路.</string>
     <string name="error_site">連不上網站, 請稍候再重新整理一次.</string>
     <string name="share_text">蔬果行情站可以查詢最新的蔬果價格，推薦你也來用用看：https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker</string>
+    <string name="remove_bookmark">已從清單移除項目</string>
+    <string name="add_bookmark">已將項目加入清單</string>
 </resources>

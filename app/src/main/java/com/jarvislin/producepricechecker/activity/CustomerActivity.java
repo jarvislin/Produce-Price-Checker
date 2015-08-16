@@ -268,10 +268,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
 
             if (getResources().getColor(R.color.highlight) == color.getColor()) {
                 DatabaseController.delete(object.produceName, shareContent.getBookmarkCategory());
-                Toast.makeText(CustomerActivity.this, "已從清單移除項目", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomerActivity.this, R.string.remove_bookmark, Toast.LENGTH_SHORT).show();
             } else {
                 DatabaseController.insertBookmark(object, shareContent.getBookmarkCategory());
-                Toast.makeText(CustomerActivity.this, "已將項目加入清單", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CustomerActivity.this, R.string.add_bookmark, Toast.LENGTH_SHORT).show();
             }
 
             adapter.notifyDataSetChanged();
