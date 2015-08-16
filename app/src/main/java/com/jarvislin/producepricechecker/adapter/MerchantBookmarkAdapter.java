@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -56,7 +57,7 @@ public class MerchantBookmarkAdapter extends CustomerBookmarkAdapter {
         holder.delete.setOnClickListener(clickDelete(position));
         holder.topMid.setText(data.topPrice + "\n" + data.middlePrice);
         holder.lowAvg.setText(data.lowPrice + "\n" + data.averagePrice);
-        holder.date.setText(ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(data.transactionDate)));
+        holder.date.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(data.transactionDate)));
         holder.date.setVisibility(isEditing > 0 ? View.INVISIBLE : View.VISIBLE);
 
         return view;

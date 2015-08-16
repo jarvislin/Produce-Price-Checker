@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -88,7 +89,7 @@ public class CustomerBookmarkAdapter extends BaseAdapter {
         float avg = Float.valueOf(data.averagePrice);
         int low = Math.round(avg * prefs.unit().get() * (1 + prefs.lowProfit().get()));
         int high = Math.round(avg * prefs.unit().get() * (1 + prefs.hightProfit().get()));
-        holder.rangeDate.setText(low + " - " + high + "\n" + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(data.transactionDate)));
+        holder.rangeDate.setText(low + " - " + high + "\n" + DateUtil.getOffsetInWords(DateUtil.getOffset(data.transactionDate)));
 
         return view;
     }

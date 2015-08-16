@@ -21,6 +21,7 @@ import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.util.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.Constants;
+import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -108,7 +109,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         ToolsHelper.showProgressDialog(this, false);
         //show
         String updateDate = shareContent.getUpdateDate();
-        if (updateDate.equals(ToolsHelper.getCurrentDate())) {
+        if (updateDate.equals(DateUtil.getCurrentDate())) {
             loadClientData();
         } else if (ToolsHelper.isNetworkAvailable(this)) {
             downloadData();
@@ -139,7 +140,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     @UiThread
     protected void handleData(ArrayList<Produce> list) {
         if (list == null || list.size() == 0) {
-            ToolsHelper.showNetworkErrorMessage(this);
+            ToolsHelper.showToast(this, R.string.error_network);
             finish();
         } else {
             produces = list;
@@ -194,7 +195,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
 
         TextView message = (TextView) dialog.findViewById(R.id.info_text);
         message.setText(
-                "資料日期：" + produces.get(0).transactionDate + ToolsHelper.getOffsetInWords(ToolsHelper.getOffset(produces.get(0).transactionDate)) + "\n" +
+                "資料日期：" + produces.get(0).transactionDate + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "\n" +
                         "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
                         "市場：" + shareContent.getMarketName()
         );

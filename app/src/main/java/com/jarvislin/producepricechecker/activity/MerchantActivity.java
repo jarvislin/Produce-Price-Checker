@@ -22,7 +22,7 @@ public class MerchantActivity extends CustomerActivity {
     @Override
     protected void handleData(ArrayList<Produce> list) {
         if (list == null || list.size() == 0) {
-            ToolsHelper.showNetworkErrorMessage(this);
+            ToolsHelper.showToast(this, R.string.error_network);
             finish();
         } else {
             produces = list;

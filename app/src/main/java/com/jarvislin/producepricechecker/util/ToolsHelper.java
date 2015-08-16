@@ -38,37 +38,8 @@ public class ToolsHelper {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
-    public static void showNetworkErrorMessage(Context context) {
-        Toast.makeText(context, "偵測不到網路, 請確認是否連上網路.", Toast.LENGTH_LONG).show();
-    }
-
-    public static void showSiteErrorMessage(Context context) {
-        Toast.makeText(context, "連不上網站, 請稍候再重新整理一次.", Toast.LENGTH_LONG).show();
-    }
-
-    public static String getCurrentDate() {
-        DateFormat dateFormat = new SimpleDateFormat("MM.dd");
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(System.currentTimeMillis()));
-        int year = cal.get(Calendar.YEAR) - 1911;
-        String date = year +"."+ dateFormat.format(cal.getTime());
-        return date;
-    }
-
-    public static String getOffsetInWords(int offset) {
-        return (offset > 0) ? " (" + String.valueOf(offset) + "天前)" : " (今天)";
-    }
-
-    public static int getOffset(String date) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
-        try {
-            Date beginDate = dateFormat.parse(date);
-            Date endDate = dateFormat.parse(getCurrentDate());
-            return (int) (endDate.getTime() - beginDate.getTime()) / (24 * 60 * 60 * 1000);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return -1;
-        }
+    public static void showToast(Context context, int resId) {
+        Toast.makeText(context, context.getString(resId), Toast.LENGTH_LONG).show();
     }
 
     public static String getUnitInWords(float digit) {

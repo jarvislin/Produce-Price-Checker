@@ -21,10 +21,6 @@ public class DatabaseController {
     }
 
     public static ArrayList<Produce> getProduces(String category, String marketNumber) {
-        ArrayList<Produce> list = new ArrayList<Produce>(new Select().from(Produce.class)
-                .where(Condition.column(Produce$Table.MAINCATEGORY).is(category))
-                .and(Condition.column(Produce$Table.MARKETNUMBER).is(marketNumber))
-                .queryList());
         return new ArrayList<Produce>(new Select().from(Produce.class)
                 .where(Condition.column(Produce$Table.MAINCATEGORY).is(category))
                 .and(Condition.column(Produce$Table.MARKETNUMBER).is(marketNumber))
