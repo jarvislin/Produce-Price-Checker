@@ -52,15 +52,19 @@ public class MerchantBookmarkAdapter extends CustomerBookmarkAdapter {
 
         //set views
         holder.cell.setBackgroundColor(context.getResources().getColor((position % 2 == 0) ? R.color.white : R.color.odd_row));
-        holder.typeName.setText(data.produceName.replace("-","\n"));
+        holder.typeName.setText(data.produceName.replace("-", "\n"));
         holder.delete.setVisibility(isEditing > 0 ? View.VISIBLE : View.INVISIBLE);
         holder.delete.setOnClickListener(clickDelete(position));
-        holder.topMid.setText(data.topPrice + "\n" + data.middlePrice);
-        holder.lowAvg.setText(data.lowPrice + "\n" + data.averagePrice);
+        holder.topMid.setText(getPrice(data.topPrice) + "\n" + getPrice(data.middlePrice));
+        holder.lowAvg.setText(getPrice(data.lowPrice) + "\n" + getPrice(data.averagePrice));
         holder.date.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(data.transactionDate)));
         holder.date.setVisibility(isEditing > 0 ? View.INVISIBLE : View.VISIBLE);
 
         return view;
+    }
+
+    private String getPrice(String price){
+        return (String.valueOf(Math.round(Float.valueOf(price) * prefs.unit().get())));
     }
 
     private class ViewHolder {
