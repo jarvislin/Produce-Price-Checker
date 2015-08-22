@@ -79,7 +79,12 @@ public class SettingsActivity extends PreferenceActivity {
 
     @PreferenceClick(R.string.pref_key_rating)
     void rating() {
-        openUrl(PLAY_STORE);
+        final String appPackageName = getPackageName();
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     @PreferenceChange(R.string.pref_key_fruit_market)
