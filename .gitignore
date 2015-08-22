@@ -1,4 +1,10 @@
+# Gradle generated files
+.gradle/
+
 .gradle
+# Local configuration file (sdk path, etc)
+local.properties
+
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
@@ -6,5 +12,7 @@
 /build
 app/app-debug.apk
 app/app-release.apk
-app/app.iml
 app/manifest-merger-release-report.txt
+ehthumbs.db
+Thumbs.db
+*.iml

@@ -8,6 +8,7 @@ import org.androidannotations.annotations.rest.Post;
 import org.androidannotations.annotations.rest.Rest;
 import org.androidannotations.api.rest.RestClientErrorHandling;
 import org.springframework.http.converter.FormHttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.util.MultiValueMap;
 
@@ -18,9 +19,9 @@ import database.Produce;
 /**
  * Created by Jarvis Lin on 2015/8/3.
  */
-@Rest(converters = {FormHttpMessageConverter.class, GsonHttpMessageConverter.class})
+@Rest(converters = {FormHttpMessageConverter.class, GsonHttpMessageConverter.class, StringHttpMessageConverter.class})
 @Accept("application/json")
 public interface ApiClient extends RestClientErrorHandling {
-    @Post("")
+    @Post("http://produce.jarvislin.com/provider")
     ArrayList<ApiProduce> getData(MultiValueMap<String, String> map);
 }
