@@ -122,7 +122,7 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     @Click
     public void settings(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_settings");
-        Intent intent = new Intent(IndexActivity.this, SettingsActivity_.class);
+        Intent intent = new Intent(IndexActivity.this, HistoryActivity_.class);
         IndexActivity.this.startActivity(intent);
     }
 
