@@ -52,6 +52,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Base">
         </activity>
+        <activity
+            android:name=".activity.ChartActivity_"
+            android:label="chart"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.Base">
+        </activity>
     </application>
 
 </manifest>

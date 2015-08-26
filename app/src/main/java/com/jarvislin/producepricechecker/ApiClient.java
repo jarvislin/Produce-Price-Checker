@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker;
 
 import com.jarvislin.producepricechecker.model.ApiProduce;
+import com.jarvislin.producepricechecker.model.OpenData;
 
 import org.androidannotations.annotations.rest.Accept;
 import org.androidannotations.annotations.rest.Get;
@@ -24,4 +25,7 @@ import database.Produce;
 public interface ApiClient extends RestClientErrorHandling {
     @Post("http://produce.jarvislin.com/provider")
     ArrayList<ApiProduce> getData(MultiValueMap<String, String> map);
+
+    @Get("http://m.coa.gov.tw/OpenData/FarmTransData.aspx?$top=10000&$skip=0&StartDate={startDate}&EndDate={endDate}&Crop={produceName}&Market={marketName}")
+    String getOpenData(String startDate, String endDate, String produceName, String marketName);
 }
