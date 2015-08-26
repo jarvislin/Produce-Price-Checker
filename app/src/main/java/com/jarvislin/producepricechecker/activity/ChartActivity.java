@@ -2,6 +2,11 @@ package com.jarvislin.producepricechecker.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
@@ -30,24 +35,37 @@ import java.util.Iterator;
  * Created by jarvis on 15/8/26.
  */
 @EActivity(R.layout.activity_chart)
-public class ChartActivity extends AppCompatActivity {
+public class ChartActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     @RestService
     ApiClient client;
 
     @ViewById
     LineChart chart;
+    @ViewById
+    Spinner spinner;
+    @ViewById
+    ProgressBar chartProgress;
+
+    private int currentPosition = 0;
+    private String[] dateRange = {"一週", "一個月", "三個月", "半年", "一年", "兩年"};
 
     @AfterViews
     void init() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, dateRange);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
         chart.setDescription("請用兩指手勢進行放大/縮小");
-        fetch();
+        chartProgress.setVisibility(View.VISIBLE);
+        fetch("104.08.20", "104.08.26", "椰子", "台北一");
+        chartProgress.setVisibility(View.GONE);
     }
 
     @Background
-    protected void fetch() {
+    protected void fetch(String startDate, String endDate, String produceName, String marketName) {
+        setProgressVisibility(View.VISIBLE);
         Gson gson = new Gson();
         ArrayList<OpenData> list;
-        String data = client.getOpenData("104.08.20", "104.08.26", "椰子", "台北一");
+        String data = client.getOpenData(startDate, endDate, produceName, marketName);
         list = gson.fromJson(data, new TypeToken<ArrayList<OpenData>>() {
         }.getType());
         Log.e("GG", list.size() + "");
@@ -61,6 +79,12 @@ public class ChartActivity extends AppCompatActivity {
         Collections.sort(list);
         Log.e("GG", list.size() + "");
         updateChart(list);
+        setProgressVisibility(View.GONE);
+    }
+
+    @UiThread
+    void setProgressVisibility(int status){
+        chartProgress.setVisibility(status);
     }
 
     @UiThread
@@ -125,4 +149,36 @@ public class ChartActivity extends AppCompatActivity {
             ColorTemplate.VORDIPLOM_COLORS[2],
             ColorTemplate.VORDIPLOM_COLORS[3]
     };
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if(currentPosition != position) {
+            currentPosition = position;
+            switch (position) {
+                case 0:
+                    fetch("104.08.20", "104.08.26", "椰子", "台北一");
+                    break;
+                case 1:
+                    fetch("104.07.26", "104.08.26", "椰子", "台北一");
+                    break;
+                case 2:
+                    fetch("104.05.26", "104.08.26", "椰子", "台北一");
+                    break;
+                case 3:
+                    fetch("104.02.26", "104.08.26", "椰子", "台北一");
+                    break;
+                case 4:
+                    fetch("103.08.26", "104.08.26", "椰子", "台北一");
+                    break;
+                case 5:
+                    fetch("102.08.26", "104.08.26", "椰子", "台北一");
+                    break;
+            }
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
 }
