@@ -59,6 +59,8 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     protected ShareContent shareContent;
     @ViewById
     ListView dataList;
+    @ViewById
+    TextView bottomInfo;
 
     @RestService
     ApiClient client;
@@ -98,8 +100,13 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         v.setImageResource(R.drawable.ic_search_white_36dp);
 
         shareContent = getCategory().equals(Constants.FRUIT) ? new Fruit(this) : new Vegetable(this);
-
+        setBottomInfo();
         loadData();
+    }
+
+    private void setBottomInfo() {
+        String unitText = (prefs.unit().get() < 1 ? "台斤" : "公斤");
+        bottomInfo.setText(shareContent.getMarketName() + "　單位：" + unitText);
     }
 
     @Background
@@ -177,7 +184,9 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
                 float unit = prefs.unit().get();
                 prefs.unit().put(unit < 1 ? 1.0f : 0.6f);
                 adapter.notifyDataSetInvalidated();
-                Toast.makeText(this, "目前重量單位為：" + (prefs.unit().get() < 1 ? "台斤" : "公斤"), Toast.LENGTH_SHORT).show();
+                String unitText = (prefs.unit().get() < 1 ? "台斤" : "公斤");
+                Toast.makeText(this, "目前重量單位為：" + unitText, Toast.LENGTH_SHORT).show();
+                setBottomInfo();
                 break;
             case 4:
                 GoogleAnalyticsSender.getInstance(this).send("click_bookmark");

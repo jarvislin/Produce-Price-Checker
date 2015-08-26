@@ -31,33 +31,33 @@
             android:name=".activity.MerchantActivity_"
             android:label="@string/title_activity_data_list"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
         <activity
             android:name=".activity.CustomerActivity_"
             android:label="@string/title_activity_data_list"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
         <activity
             android:name=".activity.SettingsActivity_"
             android:label="@string/setting"
             android:screenOrientation="portrait"
-            android:theme="@style/MyAppTheme"></activity>
+            android:theme="@style/MyAppTheme"/>
         <activity
             android:name=".activity.CustomerBookmarkActivity_"
             android:label="@string/my_list"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
         <activity
             android:name=".activity.MerchantBookmarkActivity_"
             android:label="@string/my_list"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
         <activity
 
             android:name=".activity.HistoryActivity_"
             android:label="HIS"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/AppTheme.Base"/>
         <!--Include the AdActivity configChanges and theme. -->
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
@@ -68,7 +68,7 @@
             android:name=".activity.ChartActivity_"
             android:label="chart"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base"></activity>
+            android:theme="@style/MyAppTheme"/>
 
     </application>
 
