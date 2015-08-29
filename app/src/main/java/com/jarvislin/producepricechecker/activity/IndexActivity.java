@@ -81,8 +81,8 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     void showNews() {
         if(prefs.versionCode().get() != BuildConfig.VERSION_CODE){
             ToolsHelper.showDialog(this, "新功能",
-                    "1. 資料來源改用開放資料。\n" +
-                            "2. 選單新增分享功能。\n" + "3. 批發市場依蔬果分類。");
+                    "1. 自動偵測新版本。\n" +
+                            "2. 修改版面。");
             prefs.versionCode().put(BuildConfig.VERSION_CODE);
         }
     }
@@ -122,10 +122,11 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     @Click
     public void settings(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_settings");
+        Intent intent = new Intent(IndexActivity.this, SettingsActivity_.class);
 
 //        Intent intent = new Intent(IndexActivity.this, HistoryActivity_.class);
 
-        Intent intent = new Intent(IndexActivity.this, ChartActivity_.class);
+//        Intent intent = new Intent(IndexActivity.this, ChartActivity_.class);
 
         IndexActivity.this.startActivity(intent);
     }
@@ -134,7 +135,7 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     protected void showUpdate() {
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.setTitle("發現新版本");
-        dialog.setMessage("目前蔬果行情站版本過舊，請問要更新版本嗎？");
+        dialog.setMessage("目前蔬果行情站版本過舊，請問要進行更新嗎？");
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "馬上更新", this);
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "現在不要", this);
         dialog.show();

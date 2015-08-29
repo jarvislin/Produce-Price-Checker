@@ -100,13 +100,12 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
         v.setImageResource(R.drawable.ic_search_white_36dp);
 
         shareContent = getCategory().equals(Constants.FRUIT) ? new Fruit(this) : new Vegetable(this);
-        setBottomInfo();
         loadData();
     }
 
-    private void setBottomInfo() {
-        String unitText = (prefs.unit().get() < 1 ? "台斤" : "公斤");
-        bottomInfo.setText(shareContent.getMarketName() + "　單位：" + unitText);
+    protected void setBottomInfo() {
+        String unitText = (prefs.unit().get() < 1 ? "元/台斤" : "元/公斤");
+        bottomInfo.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　" + shareContent.getMarketName() + "　單位：" + unitText);
     }
 
     @Background
@@ -152,6 +151,7 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             adapter = new CustomerAdapter(this, list, prefs, shareContent.getBookmarkCategory());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener);
+            setBottomInfo();
         }
     }
 
@@ -172,14 +172,10 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
             case 0:
                 break;
             case 1:
-                GoogleAnalyticsSender.getInstance(this).send("click_info");
-                showInfo();
-                break;
-            case 2:
                 GoogleAnalyticsSender.getInstance(this).send("click_update");
                 loadData();
                 break;
-            case 3:
+            case 2:
                 GoogleAnalyticsSender.getInstance(this).send("click_convert_unit");
                 float unit = prefs.unit().get();
                 prefs.unit().put(unit < 1 ? 1.0f : 0.6f);
@@ -188,23 +184,15 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
                 Toast.makeText(this, "目前重量單位為：" + unitText, Toast.LENGTH_SHORT).show();
                 setBottomInfo();
                 break;
-            case 4:
+            case 3:
                 GoogleAnalyticsSender.getInstance(this).send("click_bookmark");
                 openBookmark();
                 break;
-            case 5:
+            case 4:
                 GoogleAnalyticsSender.getInstance(this).send("click_share");
                 ToolsHelper.shareText(this, "分享：", getString(R.string.share_text));
                 break;
         }
-    }
-
-    public void showInfo() {
-        String message = "資料日期：" + produces.get(0).transactionDate + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "\n" +
-                "單位：" + ToolsHelper.getUnitInWords(prefs.unit().get()) + "\n" +
-                "市場：" + shareContent.getMarketName();
-
-        ToolsHelper.showDialog(this, "資訊", message);
     }
 
     protected void openBookmark() {
@@ -246,7 +234,6 @@ public class CustomerActivity extends AppCompatActivity implements SearchView.On
     private List<MenuObject> getMenuObjects() {
         List<MenuObject> menuObjects = new ArrayList<>();
         menuObjects.add(new MenuObject(R.drawable.ic_close_blue_36dp));
-        menuObjects.add(new MenuObject(R.drawable.ic_info_outline_blue_36dp, "資訊"));
         menuObjects.add(new MenuObject(R.drawable.ic_refresh_blue_36dp, "重新整理"));
         menuObjects.add(new MenuObject(R.drawable.ic_swap_horiz_blue_36dp, "重量單位轉換"));
         menuObjects.add(new MenuObject(R.drawable.ic_list, "收藏清單"));
