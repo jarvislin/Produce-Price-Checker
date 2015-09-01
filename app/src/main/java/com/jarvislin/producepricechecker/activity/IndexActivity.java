@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 import android.os.AsyncTask;
 import android.os.Looper;
 import android.support.annotation.UiThread;
@@ -30,27 +29,11 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
+
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
 
 @EActivity(R.layout.activity_index)
 public class IndexActivity extends AppCompatActivity implements DialogInterface.OnClickListener{
@@ -81,8 +64,8 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     void showNews() {
         if(prefs.versionCode().get() != BuildConfig.VERSION_CODE){
             ToolsHelper.showDialog(this, "新功能",
-                    "1. 資料來源改用開放資料。\n" +
-                            "2. 選單新增分享功能。\n" + "3. 批發市場依蔬果分類。");
+                    "1. 自動偵測新版本。\n" +
+                            "2. 修改版面。");
             prefs.versionCode().put(BuildConfig.VERSION_CODE);
         }
     }
@@ -122,10 +105,11 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     @Click
     public void settings(View view) {
         GoogleAnalyticsSender.getInstance(this).send("click_settings");
+        Intent intent = new Intent(IndexActivity.this, SettingsActivity_.class);
 
 //        Intent intent = new Intent(IndexActivity.this, HistoryActivity_.class);
 
-        Intent intent = new Intent(IndexActivity.this, ChartActivity_.class);
+//        Intent intent = new Intent(IndexActivity.this, ChartActivity_.class);
 
         IndexActivity.this.startActivity(intent);
     }
@@ -134,7 +118,7 @@ public class IndexActivity extends AppCompatActivity implements DialogInterface.
     protected void showUpdate() {
         AlertDialog dialog = new AlertDialog.Builder(this).create();
         dialog.setTitle("發現新版本");
-        dialog.setMessage("目前蔬果行情站版本過舊，請問要更新版本嗎？");
+        dialog.setMessage("目前蔬果行情站版本過舊，請問要進行更新嗎？");
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "馬上更新", this);
         dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "現在不要", this);
         dialog.show();

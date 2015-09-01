@@ -1,14 +1,15 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/light_grey"
-    android:orientation="vertical">
+    android:background="@color/light_grey">
 
     <include layout="@layout/toolbar" />
 
     <LinearLayout
+        android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
         android:orientation="horizontal"
         android:background="@color/main_blue">
 
@@ -32,7 +33,19 @@
     <ListView
         android:id="@+id/data_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/label"
+        android:layout_above="@+id/bottom_info">
     </ListView>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/bottom_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/actionbar_back"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="4dp"
+        android:textColor="@android:color/white"/>
+
+</RelativeLayout>

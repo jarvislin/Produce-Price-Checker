@@ -20,7 +20,7 @@ public class DateUtil {
     }
 
     public static String getOffsetInWords(int offset) {
-        return (offset > 0) ? " (" + String.valueOf(offset) + "天前)" : " (今天)";
+        return (offset > 0) ? String.valueOf(offset) + "天前" : "今天";
     }
 
     public static int getOffset(String date) {

@@ -29,6 +29,7 @@ public class MerchantActivity extends CustomerActivity {
             adapter = new MerchantAdapter(this, list, prefs, shareContent.getBookmarkCategory());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener);
+            setBottomInfo();
         }
     }
 
