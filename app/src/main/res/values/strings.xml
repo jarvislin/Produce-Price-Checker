@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ProducePriceChecker</string>
+    <string name="loading">讀取中...</string>
+</resources>
