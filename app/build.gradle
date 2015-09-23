@@ -30,7 +30,7 @@ apt {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.jarvislin.producepricechecker"
@@ -45,15 +45,27 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
+    packagingOptions {
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:23.0.1'
+    compile 'com.google.android.gms:play-services-analytics:7.8.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    apt 'com.raizlabs.android:DBFlow-Compiler:2.1.0'
+    compile 'com.raizlabs.android:DBFlow-Core:2.1.0'
+    compile 'com.raizlabs.android:DBFlow:2.1.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.flow:flow:0.10'
     compile 'com.squareup.flow:flow-path:0.10'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
     compile "org.androidannotations:androidannotations-api:$AAVersion"
     apt "org.androidannotations:androidannotations:$AAVersion"
     compile('com.mikepenz:materialdrawer:4.3.0@aar') {
