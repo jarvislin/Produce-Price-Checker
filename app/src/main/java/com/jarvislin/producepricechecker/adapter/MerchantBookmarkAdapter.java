@@ -14,7 +14,7 @@ import com.jarvislin.producepricechecker.util.Preferences_;
 
 import java.util.ArrayList;
 
-import database.Produce;
+import com.jarvislin.producepricechecker.database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/6/20.

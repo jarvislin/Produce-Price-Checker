@@ -1,9 +1,7 @@
-package database;
+package com.jarvislin.producepricechecker.database;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
-import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;
-import com.raizlabs.android.dbflow.sql.migration.UpdateTableMigration;
 
 /**
  * Created by Jarvis Lin on 2015/8/15.

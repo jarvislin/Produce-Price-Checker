@@ -1,6 +1,4 @@
-package database;
-
-import android.database.sqlite.SQLiteDatabase;
+package com.jarvislin.producepricechecker.database;
 
 import com.raizlabs.android.dbflow.annotation.Migration;
 import com.raizlabs.android.dbflow.sql.migration.AlterTableMigration;

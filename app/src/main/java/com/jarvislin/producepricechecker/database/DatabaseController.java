@@ -1,4 +1,4 @@
-package database;
+package com.jarvislin.producepricechecker.database;
 
 
 import android.text.TextUtils;
