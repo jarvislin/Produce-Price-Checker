@@ -3,13 +3,12 @@ package com.jarvislin.producepricechecker.page.PriceList;
 import android.content.Context;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.database.DatabaseController;
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
 import java.util.ArrayList;
-
-import com.jarvislin.producepricechecker.database.DatabaseController;
-import com.jarvislin.producepricechecker.database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/8/15.

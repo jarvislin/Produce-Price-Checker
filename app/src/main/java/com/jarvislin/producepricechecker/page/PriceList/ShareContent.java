@@ -1,8 +1,8 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
-import java.util.ArrayList;
-
 import com.jarvislin.producepricechecker.database.Produce;
+
+import java.util.ArrayList;
 
 /**
  * Created by Jarvis Lin on 2015/8/15.

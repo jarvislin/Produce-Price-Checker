@@ -1,8 +1,8 @@
 package com.jarvislin.producepricechecker.page.Index;
 
 import android.view.View;
-import com.jarvislin.producepricechecker.page.Presenter;
 
+import com.jarvislin.producepricechecker.page.Presenter;
 
 import org.androidannotations.annotations.EBean;
 

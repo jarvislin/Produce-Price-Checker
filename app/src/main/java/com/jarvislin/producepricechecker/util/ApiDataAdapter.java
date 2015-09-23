@@ -1,10 +1,9 @@
 package com.jarvislin.producepricechecker.util;
 
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
 
 import java.util.ArrayList;
-
-import com.jarvislin.producepricechecker.database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/8/15.

@@ -35,7 +35,6 @@ import flow.path.PathContainer;
 import flow.path.PathContext;
 import flow.path.PathContextFactory;
 
-
 import static flow.Flow.Direction.REPLACE;
 
 /**

@@ -3,27 +3,21 @@ package com.jarvislin.producepricechecker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
-import com.jarvislin.producepricechecker.page.Index.IndexPresenter;
 import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
 import com.jarvislin.producepricechecker.path.GsonParceler;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
-import com.mikepenz.materialdrawer.DrawerBuilder;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import de.greenrobot.event.EventBus;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;

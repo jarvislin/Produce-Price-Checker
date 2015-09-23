@@ -71,4 +71,11 @@
         <item name="android:textColor">#E2FFFF</item>
     </style>
 
+    <style name="Row">
+        <item name="android:textSize">20sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#147585</item>
+    </style>
 </resources>
