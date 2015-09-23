@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_grey">
+
+    <LinearLayout
+        android:id="@+id/label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/main_blue">
+
+        <TextView
+            android:id="@+id/type_name"
+            android:text="名稱及品種"
+            android:layout_weight="5"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/top"
+            android:text="上價"
+            android:layout_weight="2"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/mid"
+            android:text="中價"
+            android:layout_weight="2"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/low"
+            android:text="下價"
+            android:layout_weight="2"
+            style="@style/TableHeader"/>
+        <TextView
+            android:id="@+id/avg"
+            android:text="平均"
+            android:layout_weight="2"
+            style="@style/TableHeader"/>
+
+    </LinearLayout>
+    <ListView
+        android:id="@+id/data_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/label"
+        android:layout_above="@+id/bottom_info">
+
+     </ListView>
+
+    <TextView
+        android:id="@+id/bottom_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/actionbar_back"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="4dp"
+        android:textColor="@android:color/white"/>
+</RelativeLayout>

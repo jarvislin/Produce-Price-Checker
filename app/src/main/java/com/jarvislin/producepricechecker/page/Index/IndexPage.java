@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
 import com.jarvislin.producepricechecker.BuildConfig;
+import com.jarvislin.producepricechecker.SettingsActivity_;
 import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
@@ -126,8 +127,8 @@ public class IndexPage extends FrameLayout implements PageListener, DialogInterf
     @Click
     public void settings() {
         GoogleAnalyticsSender.getInstance(getContext()).send("click_settings");
-//        Intent intent = new Intent(IndexActivity.this, SettingsActivity_.class);
-//        IndexActivity.this.startActivity(intent);
+        Intent intent = new Intent(getContext(), SettingsActivity_.class);
+        getContext().startActivity(intent);
     }
 
     @UiThread
@@ -144,11 +145,11 @@ public class IndexPage extends FrameLayout implements PageListener, DialogInterf
     public void onClick(DialogInterface dialog, int which) {
         if(which == DialogInterface.BUTTON_POSITIVE) {
             final String appPackageName = getContext().getPackageName(); // getPackageName() from Context or Activity object
-//            try {
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-//            } catch (android.content.ActivityNotFoundException anfe) {
-//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-//            }
+            try {
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+            }
         }
     }
 
