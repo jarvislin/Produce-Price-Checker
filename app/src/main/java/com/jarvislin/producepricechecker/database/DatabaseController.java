@@ -14,6 +14,17 @@ import java.util.ArrayList;
  * Created by Jarvis Lin on 2015/6/13.
  */
 public class DatabaseController {
+
+    public static String getUpdateDate(String category, String marketNumber) {
+        ArrayList<Produce> list = new ArrayList<>(new Select().from(Produce.class)
+                .where(Condition.column(Produce$Table.MAINCATEGORY).is(category))
+                .and(Condition.column(Produce$Table.MARKETNUMBER).is(marketNumber))
+                .queryList());
+
+            return (list.size() > 0) ? list.get(0).transactionDate : "";
+
+    }
+
     public static ArrayList<Produce> getProduces(String category) {
         return new ArrayList<Produce>(new Select().from(Produce.class)
                 .where(Condition.column(Produce$Table.MAINCATEGORY).is(category))
@@ -28,7 +39,7 @@ public class DatabaseController {
     }
 
     public static boolean isBookmark(String name, String category) {
-        if(TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name)) {
             return false;
         }
         return !new ArrayList<Produce>(new Select().from(Produce.class)
@@ -84,15 +95,15 @@ public class DatabaseController {
 
     public static void updateBookmark(ArrayList<Produce> produces, String category) {
         ArrayList<Produce> bookmarks = getProduces(category);
-        for(Produce bookmark : bookmarks){
-            for(Produce produce : produces){
-                if(bookmark.produceName.equals(produce.produceName)){
+        for (Produce bookmark : bookmarks) {
+            for (Produce produce : produces) {
+                if (bookmark.produceName.equals(produce.produceName)) {
                     Condition[] conditions = {
                             Condition.column(Produce$Table.TOPPRICE).eq(produce.topPrice)
-                            ,Condition.column(Produce$Table.MIDDLEPRICE).eq(produce.middlePrice)
-                            ,Condition.column(Produce$Table.LOWPRICE).eq(produce.lowPrice)
-                            ,Condition.column(Produce$Table.AVERAGEPRICE).eq(produce.averagePrice)
-                            ,Condition.column(Produce$Table.TRANSACTIONDATE).eq(produce.transactionDate)
+                            , Condition.column(Produce$Table.MIDDLEPRICE).eq(produce.middlePrice)
+                            , Condition.column(Produce$Table.LOWPRICE).eq(produce.lowPrice)
+                            , Condition.column(Produce$Table.AVERAGEPRICE).eq(produce.averagePrice)
+                            , Condition.column(Produce$Table.TRANSACTIONDATE).eq(produce.transactionDate)
                     };
 
                     new Update(Produce.class)

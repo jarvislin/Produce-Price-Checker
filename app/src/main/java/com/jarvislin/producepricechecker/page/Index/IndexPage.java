@@ -60,63 +60,40 @@ public class IndexPage extends FrameLayout implements PageListener, DialogInterf
     }
 
     @AfterViews
-    protected void init(){
-        showNews();
-        if(prefs.needToUpdate().get()){
-            showUpdate();
+    protected void init() {
+        if (prefs.versionCode().get() != BuildConfig.VERSION_CODE) {
+            showNews();
         }
-        if(ToolsHelper.isNetworkAvailable(getContext())) {
-            checkLatestVersion();
+        if (prefs.needToUpdate().get() && ToolsHelper.isNetworkAvailable(getContext())) {
+            showUpdate();
         }
     }
 
     @UiThread
     void showNews() {
-        if(prefs.versionCode().get() != BuildConfig.VERSION_CODE){
-            ToolsHelper.showDialog(getContext(), "新功能",
-                    "1. 自動偵測新版本。\n" +
-                            "2. 修改版面。");
-            prefs.versionCode().put(BuildConfig.VERSION_CODE);
-        }
+        ToolsHelper.showDialog(getContext(), "新功能",
+                "1. 自動偵測新版本。\n" +
+                        "2. 修改版面。");
+        prefs.versionCode().put(BuildConfig.VERSION_CODE);
     }
 
-    @Background
-    protected void checkLatestVersion() {
-        try {
-            Connection.Response res = null;
-            res = Jsoup.connect("https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker").execute();
-            String verName = res.parse().select("div[itemprop=softwareVersion]").first().text().trim();
-            if(!TextUtils.isEmpty(verName)) {
-                if(!BuildConfig.VERSION_NAME.equals(verName)) {
-                    prefs.needToUpdate().put(true);
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Click
     protected void fruit() {
         GoogleAnalyticsSender.getInstance(getContext()).send("click_fruit");
-//        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER) ? CustomerActivity_.class : MerchantActivity_.class));
-//        intent.putExtra("category", Constants.FRUIT);
-//        startActivity(intent);
+        presenter.direct("fruit");
     }
 
     @Click
     public void vegetable() {
         GoogleAnalyticsSender.getInstance(getContext()).send("click_vegetable");
-//        Intent intent = new Intent(this, (prefs.userMode().get().equals(Constants.CUSTOMER) ? CustomerActivity_.class : MerchantActivity_.class));
-//        intent.putExtra("category", Constants.VEGETABLE);
-//        IndexActivity.this.startActivity(intent);
+        presenter.direct("vegetable");
     }
 
     @Click
     public void settings() {
         GoogleAnalyticsSender.getInstance(getContext()).send("click_settings");
-        Intent intent = new Intent(getContext(), SettingsActivity_.class);
-        getContext().startActivity(intent);
+        presenter.direct("settings");
     }
 
     @UiThread
@@ -131,13 +108,8 @@ public class IndexPage extends FrameLayout implements PageListener, DialogInterf
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
-        if(which == DialogInterface.BUTTON_POSITIVE) {
-            final String appPackageName = getContext().getPackageName(); // getPackageName() from Context or Activity object
-            try {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
+        if (which == DialogInterface.BUTTON_POSITIVE) {
+            presenter.direct("update_app");
         }
     }
 

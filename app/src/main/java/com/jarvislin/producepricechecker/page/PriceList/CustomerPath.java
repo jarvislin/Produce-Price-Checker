@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.path.PathLayout;
 
 import flow.path.Path;
@@ -10,5 +11,13 @@ import flow.path.Path;
  */
 @PathLayout(R.layout.customer_price)
 public class CustomerPath extends Path {
-    public CustomerPath(){}
+    public ProduceData getData() {
+        return data;
+    }
+
+    private ProduceData data;
+
+    public CustomerPath(ProduceData data) {
+        this.data = data;
+    }
 }

@@ -40,18 +40,12 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     @AfterViews
     public void afterViews() {
         setSupportActionBar(toolbar);
-        initToolbar();
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
-        flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState, new
-                GsonParceler(), History.single(new IndexPath()), this);
+        flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
+                , new GsonParceler(), History.single(new IndexPath()), this);
     }
 
-    private void initToolbar() {
-//        if (getSupportActionBar() != null) {
-//            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        }
-    }
 
     @Override
     public Object onRetainCustomNonConfigurationInstance() {
