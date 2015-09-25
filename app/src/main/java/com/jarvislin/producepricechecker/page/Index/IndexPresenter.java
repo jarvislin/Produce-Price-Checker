@@ -6,16 +6,13 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.jarvislin.producepricechecker.BuildConfig;
-import com.jarvislin.producepricechecker.Fruit;
+import com.jarvislin.producepricechecker.model.Fruit;
 import com.jarvislin.producepricechecker.SettingsActivity_;
-import com.jarvislin.producepricechecker.ShareContent;
-import com.jarvislin.producepricechecker.Vegetable;
-import com.jarvislin.producepricechecker.database.DatabaseController;
+import com.jarvislin.producepricechecker.model.Vegetable;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.page.PriceList.CustomerPath;
 import com.jarvislin.producepricechecker.page.PriceList.MerchantPath;
 import com.jarvislin.producepricechecker.util.Constants;
-import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 

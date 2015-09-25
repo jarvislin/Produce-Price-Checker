@@ -3,16 +3,12 @@ package com.jarvislin.producepricechecker.page.PriceList;
 import android.view.View;
 
 import com.jarvislin.producepricechecker.ApiClient;
-import com.jarvislin.producepricechecker.Fruit;
 import com.jarvislin.producepricechecker.R;
-import com.jarvislin.producepricechecker.Vegetable;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
-import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.util.ApiDataAdapter;
-import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
@@ -31,18 +27,22 @@ import flow.path.Path;
  * Created by jarvis on 15/9/23.
  */
 @EBean
-public class CustomerPresenter extends Presenter {
-    CustomerPage page;
-    CustomerPath path;
+public class PriceListPresenter extends Presenter {
+    PriceListPage page;
+    ProduceDataGetter path;
     @RestService
     ApiClient client;
 
 
     @Override
     protected void init(Path path, View view) {
-        this.path = (CustomerPath) path;
-        this.page = (CustomerPage) view;
-        loadData(this.path.getData().getMarketNumber());
+        this.path = (ProduceDataGetter) path;
+        this.page = (PriceListPage) view;
+        loadData(getMarketNumber());
+    }
+
+    public String getMarketNumber() {
+        return this.path.getData().getMarketNumber();
     }
 
     @Background
@@ -67,7 +67,7 @@ public class CustomerPresenter extends Presenter {
     protected void downloadData(String marketNumber) {
         MultiValueMap params = new LinkedMultiValueMap<>();
         params.add("token", getString(R.string.token));
-        params.add("market", this.path.getData().getMarketNumber());
+        params.add("market", getMarketNumber());
         params.add("category", this.path.getData().getCategory());
         ArrayList<ApiProduce> list = client.getData(params);
         ApiDataAdapter adapter = new ApiDataAdapter(list);

@@ -10,15 +10,15 @@ import flow.path.Path;
  * Created by jarvis on 15/9/23.
  */
 @PathLayout(R.layout.merchant_price)
-public class MerchantPath extends Path {
-    public ProduceData getData() {
-        return data;
-    }
-
+public class MerchantPath extends Path implements ProduceDataGetter{
     private ProduceData data;
 
     public MerchantPath(ProduceData data){
         this.data = data;
     }
 
+    @Override
+    public ProduceData getData() {
+        return data;
+    }
 }

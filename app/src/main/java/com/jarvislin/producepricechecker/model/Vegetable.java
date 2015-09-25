@@ -1,7 +1,8 @@
-package com.jarvislin.producepricechecker;
+package com.jarvislin.producepricechecker.model;
 
 import android.content.Context;
 
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ProduceData;
