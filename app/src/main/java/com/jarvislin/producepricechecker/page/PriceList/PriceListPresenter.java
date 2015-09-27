@@ -10,11 +10,15 @@ import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.util.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
+import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
+import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
+import org.androidannotations.api.rest.RestErrorHandler;
+import org.springframework.core.NestedRuntimeException;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -28,38 +32,52 @@ import flow.path.Path;
  */
 @EBean
 public class PriceListPresenter extends Presenter {
-    PriceListPage page;
-    ProduceDataGetter path;
+    private PriceListPage page;
+    private ProduceDataGetter path;
+    Preferences_ prefs;
     @RestService
-    ApiClient client;
-
+    protected ApiClient client;
+    private String currentMarketNumber;
 
     @Override
     protected void init(Path path, View view) {
         this.path = (ProduceDataGetter) path;
         this.page = (PriceListPage) view;
-        loadData(getMarketNumber());
+        currentMarketNumber = this.path.getData().getDefaultMarketNumber();
+        loadData(currentMarketNumber);
+    }
+
+    @AfterInject
+    protected void afterInject() {
+        client.setRestErrorHandler(new RestErrorHandler() {
+            @Override
+            public void onRestClientExceptionThrown(NestedRuntimeException e) {
+                //show Toast and Reload button
+            }
+        });
     }
 
     public String getMarketNumber() {
-        return this.path.getData().getMarketNumber();
+        return currentMarketNumber;
     }
 
     @Background
     protected void loadData(String marketNumber) {
         ToolsHelper.showProgressDialog(getContext(), false);
         //show
-        String updateDate = "";
-//                path.getData().getUpdateDate(marketNumber);
+        String updateDate = path.getData().getUpdateDate(marketNumber);
         if (updateDate.equals(DateUtil.getCurrentDate())) {
+            //has today's data
             loadClientData(marketNumber);
         } else if (ToolsHelper.isNetworkAvailable(getContext())) {
+            //download latest data
             downloadData(marketNumber);
         } else if (DatabaseController.getProduces(this.path.getData().getCategory(), marketNumber).size() > 0) {
+            //load client DB
             loadClientData(marketNumber);
         } else {
+            //show no network
             Flow.get(getContext()).goBack();
-            //show no data
         }
         ToolsHelper.closeProgressDialog(false);
     }

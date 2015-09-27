@@ -17,12 +17,9 @@ import java.util.ArrayList;
  * Created by Jarvis Lin on 2015/8/15.
  */
 public class Fruit extends ProduceData {
-    private Preferences_ prefs;
-
-    public Fruit(Context context){
-        prefs = new Preferences_(context);
+    public Fruit(String number){
+        super.number = number;
     }
-
     @Override
     public int getNumbersResId() {
         return R.array.pref_fruit_market_values;
@@ -31,11 +28,6 @@ public class Fruit extends ProduceData {
     @Override
     protected int getMarketsResId() {
         return R.array.pref_fruit_market_titles;
-    }
-
-    @Override
-    public String getMarketNumber() {
-        return prefs.fruitMarketList().get();
     }
 
     @Override

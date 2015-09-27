@@ -71,4 +71,5 @@ dependencies {
     compile('com.mikepenz:materialdrawer:4.3.0@aar') {
         transitive = true
     }
+    compile 'com.getbase:floatingactionbutton:1.10.0'
 }

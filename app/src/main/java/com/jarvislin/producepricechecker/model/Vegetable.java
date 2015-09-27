@@ -16,12 +16,10 @@ import java.util.ArrayList;
  * Created by Jarvis Lin on 2015/8/15.
  */
 public class Vegetable extends ProduceData {
-    private Preferences_ prefs;
-
-    public Vegetable(Context context){
-        prefs = new Preferences_(context);
+    public Vegetable(String number){
+        super();
+        super.number = number;
     }
-
     @Override
     public int getNumbersResId() {
         return R.array.pref_vegetable_market_values;
@@ -30,11 +28,6 @@ public class Vegetable extends ProduceData {
     @Override
     protected int getMarketsResId() {
         return R.array.pref_vegetable_market_titles;
-    }
-
-    @Override
-    public String getMarketNumber() {
-        return prefs.vegetableMarketList().get();
     }
 
     @Override

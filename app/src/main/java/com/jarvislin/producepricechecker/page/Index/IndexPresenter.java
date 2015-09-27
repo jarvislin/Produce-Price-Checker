@@ -51,10 +51,10 @@ public class IndexPresenter extends Presenter {
         Path path = null;
         switch (page) {
             case "fruit":
-                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Fruit(getContext())) : new MerchantPath(new Fruit(getContext()));
+                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Fruit(prefs.fruitMarketList().get())) : new MerchantPath(new Fruit(prefs.fruitMarketList().get()));
                 break;
             case "vegetable":
-                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Vegetable(getContext())) : new MerchantPath(new Vegetable(getContext()));
+                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Vegetable(prefs.vegetableMarketList().get())) : new MerchantPath(new Vegetable(prefs.vegetableMarketList().get()));
                 break;
             case "settings":
                 Intent intent = new Intent(getContext(), SettingsActivity_.class);

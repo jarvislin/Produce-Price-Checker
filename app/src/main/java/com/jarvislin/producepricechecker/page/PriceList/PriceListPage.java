@@ -8,6 +8,7 @@ import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -22,6 +23,7 @@ import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.PageListener;
+import com.jarvislin.producepricechecker.path.HandlesBack;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
@@ -52,7 +54,7 @@ import flow.path.Path;
  * Created by jarvis on 15/9/25.
  */
 @EView
-public abstract class PriceListPage extends RelativeLayout implements PageListener {
+public abstract class PriceListPage extends RelativeLayout implements PageListener, HandlesBack {
     @Bean
     PriceListPresenter presenter;
     @ViewById
@@ -66,6 +68,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private ArrayList<Produce> produces;
     private CustomerAdapter adapter;
     private ProduceData data;
+    private Drawer result;
 
     public PriceListPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -92,7 +95,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 )
                 .build();
 
-        final Drawer result = new DrawerBuilder()
+        result = new DrawerBuilder()
                 .withAccountHeader(headerResult)
                 .withActivity(componentHelper.getActivity())
                 .withToolbar(componentHelper.getToolbar())
@@ -210,6 +213,16 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @UiThread
     protected void setBottomInfo() {
         String unitText = (prefs.unit().get() < 1 ? "元/台斤" : "元/公斤");
-        bottomInfo.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　" + data.getMarketName(getContext()) + "　單位：" + unitText);
+        bottomInfo.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　" + data.getMarketName(getContext(), produces.get(0).marketNumber) + "　單位：" + unitText);
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        if(result.isDrawerOpen()) {
+            result.closeDrawer();
+            return true;
+        } else {
+            return Flow.get(getContext()).goBack();
+        }
     }
 }
