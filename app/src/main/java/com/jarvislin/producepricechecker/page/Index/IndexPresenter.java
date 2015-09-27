@@ -6,9 +6,9 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.jarvislin.producepricechecker.BuildConfig;
-import com.jarvislin.producepricechecker.model.Fruit;
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.SettingsActivity_;
-import com.jarvislin.producepricechecker.model.Vegetable;
+import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.page.PriceList.CustomerPath;
 import com.jarvislin.producepricechecker.page.PriceList.MerchantPath;
@@ -48,13 +48,13 @@ public class IndexPresenter extends Presenter {
     }
 
     public void direct(String page){
-        Path path = null;
+        ProduceData data = null;
         switch (page) {
             case "fruit":
-                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Fruit(prefs.fruitMarketList().get())) : new MerchantPath(new Fruit(prefs.fruitMarketList().get()));
+                data = new ProduceData(prefs.fruitMarketList().get(), R.array.pref_fruit_market_values, R.array.pref_fruit_market_titles, Constants.FRUIT_BOOKMARK, Constants.FRUIT);
                 break;
             case "vegetable":
-                path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(new Vegetable(prefs.vegetableMarketList().get())) : new MerchantPath(new Vegetable(prefs.vegetableMarketList().get()));
+                data = new ProduceData(prefs.fruitMarketList().get(), R.array.pref_vegetable_market_values, R.array.pref_vegetable_market_titles, Constants.VEGETABLE_BOOKMARK, Constants.VEGETABLE);
                 break;
             case "settings":
                 Intent intent = new Intent(getContext(), SettingsActivity_.class);
@@ -69,7 +69,8 @@ public class IndexPresenter extends Presenter {
                 }
                 break;
         }
-        if(path != null){
+        if(data != null){
+            Path path = prefs.userMode().get().equals(Constants.CUSTOMER) ? new CustomerPath(data) : new MerchantPath(data);
             Flow.get(getContext()).set(path);
         }
     }
