@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,7 @@ import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.UiThread;
@@ -165,6 +167,11 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 return true;
             }
         });
+    }
+
+    @AfterViews
+    protected void initFooter(){
+        dataList.addFooterView(LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null));
     }
 
     @UiThread
