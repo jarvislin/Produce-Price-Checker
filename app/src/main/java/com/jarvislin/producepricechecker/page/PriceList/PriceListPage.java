@@ -1,23 +1,27 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
+import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
-import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.database.DatabaseController;
@@ -25,6 +29,7 @@ import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.path.HandlesBack;
+import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
@@ -35,42 +40,49 @@ import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import flow.Flow;
-import flow.path.Path;
 
 /**
  * Created by jarvis on 15/9/25.
  */
 @EView
-public abstract class PriceListPage extends RelativeLayout implements PageListener, HandlesBack {
+public abstract class PriceListPage extends RelativeLayout implements PageListener, HandlesBack, CompoundButton.OnCheckedChangeListener {
     @Bean
     PriceListPresenter presenter;
     @ViewById
     ListView dataList;
     @ViewById
     TextView bottomInfo;
+    @ViewById
+    FloatingActionsMenu fab;
+    @ViewById
+    FloatingActionButton subcategoryFilter;
 
     @Pref
     Preferences_ prefs;
 
     private ArrayList<Produce> produces;
+    private ArrayList<Produce> filterList;
     private CustomerAdapter adapter;
     private ProduceData data;
     private Drawer result;
+    private int lastItemPosition = 0;
+    private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
+    private Dialog dialog;
 
     public PriceListPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -83,7 +95,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         presenter.setView(this);
         componentHelper.showToolbar(false);
 
-
         // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(componentHelper.getActivity())
@@ -91,10 +102,10 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 .withProfileImagesClickable(false)
                 .withProfileImagesVisible(false)
                 .withSelectionListEnabledForSingleProfile(false)
-                .addProfiles(
-                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com")
-
-                )
+//                .addProfiles(
+//                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com")
+//
+//                )
                 .build();
 
         result = new DrawerBuilder()
@@ -103,15 +114,13 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 .withToolbar(componentHelper.getToolbar())
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
-                        new PrimaryDrawerItem().withName("Refresh").withSelectable(false).withSetSelected(false),
+                        new PrimaryDrawerItem().withName("書籤").withSelectable(false),
+                        new SecondaryDrawerItem().withName("常見問題").withSelectable(false),
                         new DividerDrawerItem().withSelectable(false),
-                        new PrimaryDrawerItem().withName("Transfer").withSelectable(false),
-                        new PrimaryDrawerItem().withName("Bookmark").withSelectable(false),
-                        new SecondaryDrawerItem().withName("Share").withSelectable(false),
-                        new SecondaryDrawerItem().withName("Rating").withSelectable(false),
-                        new SecondaryDrawerItem().withName("Facebook").withSelectable(false),
-                        new SecondaryDrawerItem().withName("Q&A").withSelectable(false),
-                        new SecondaryDrawerItem().withName("Contact").withSelectable(true)
+                        new SecondaryDrawerItem().withName("分享").withSelectable(false),
+                        new SecondaryDrawerItem().withName("評分").withSelectable(false),
+                        new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
+                        new SecondaryDrawerItem().withName("聯繫作者").withDescription("hihi").withSelectable(true)
                 )
                 .build();
         result.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -145,7 +154,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 return true;
             }
         });
-
     }
 
     @Override
@@ -163,15 +171,119 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
             @Override
             public boolean onQueryTextChange(String query) {
-//                loadHistory(query);
-                return true;
+                if (null == produces) {
+                    Toast.makeText(getContext(), "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
+                } else {
+                    ArrayList<Produce> searchList = getSearchList(query);
+                    adapter = getAdapter(getContext(), searchList, prefs, data.getBookmarkCategory());
+                    dataList.setAdapter(adapter);
+                }
+                return false;
             }
         });
     }
 
+    protected ArrayList<Produce> getSearchList(String newText) {
+        ArrayList<Produce> list = new ArrayList<>();
+        for (Produce data : filterList) {
+            if (data.produceName.contains(newText))
+                list.add(data);
+        }
+        return list;
+    }
+
+    @Click
+    protected void convertUnit() {
+        GoogleAnalyticsSender.getInstance(getContext()).send("click_convert_unit");
+        float unit = prefs.unit().get();
+        prefs.unit().put(unit < 1 ? 1.0f : 0.6f);
+        adapter.notifyDataSetInvalidated();
+        String unitText = (prefs.unit().get() < 1 ? "台斤" : "公斤");
+        Toast.makeText(getContext(), "目前重量單位為：" + unitText, Toast.LENGTH_SHORT).show();
+        setBottomInfo();
+        fab.collapse();
+    }
+
+    @Click
+    protected void update() {
+        GoogleAnalyticsSender.getInstance(getContext()).send("click_update");
+        presenter.loadData(presenter.getMarketNumber());
+        fab.collapse();
+    }
+
+    @Click
+    protected void subcategoryFilter() {
+        // show filter dialog
+        if(dialog == null) {
+            dialog = new Dialog(getContext(), R.style.alertDialog);
+            dialog.setContentView(R.layout.dialog_filter);
+            Button submit = (Button) dialog.findViewById(R.id.dismiss);
+            submit.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
+            });
+        }
+        CheckBox root = (CheckBox) dialog.findViewById(R.id.root);
+        CheckBox leaf = (CheckBox) dialog.findViewById(R.id.leaf);
+        CheckBox flowerFruit = (CheckBox) dialog.findViewById(R.id.flower_fruit);
+        CheckBox mushroom = (CheckBox) dialog.findViewById(R.id.mushroom);
+        CheckBox pickle = (CheckBox) dialog.findViewById(R.id.pickle);
+
+        root.setOnCheckedChangeListener(this);
+        leaf.setOnCheckedChangeListener(this);
+        flowerFruit.setOnCheckedChangeListener(this);
+        mushroom.setOnCheckedChangeListener(this);
+        pickle.setOnCheckedChangeListener(this);
+
+        checkBoxes.clear();
+        checkBoxes.add(root);
+        checkBoxes.add(leaf);
+        checkBoxes.add(flowerFruit);
+        checkBoxes.add(mushroom);
+        checkBoxes.add(pickle);
+
+        dialog.show();
+        fab.collapse();
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        filterList.clear();
+        for (CheckBox checkBox : checkBoxes) {
+            if (checkBox.isChecked()) {
+                filterList.addAll(getListBySubcategory(checkBox.getId()));
+            }
+        }
+        Collections.sort(filterList);
+        adapter = getAdapter(getContext(), filterList, prefs, data.getBookmarkCategory());
+        dataList.setAdapter(adapter);
+    }
+
     @AfterViews
-    protected void initFooter(){
+    protected void initFooter() {
         dataList.addFooterView(LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null));
+        dataList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                int currentFirstVisibleItem = dataList.getFirstVisiblePosition();
+                if (currentFirstVisibleItem > lastItemPosition) {
+                    // scroll down
+                    fab.setVisibility(GONE);
+                } else if (currentFirstVisibleItem < lastItemPosition) {
+                    // scroll up
+                    fab.setVisibility(VISIBLE);
+                }
+                lastItemPosition = currentFirstVisibleItem;
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     @UiThread
@@ -181,11 +293,13 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             Flow.get(getContext()).goBack();
         } else {
             produces = list;
+            filterList = new ArrayList<>(list);
             this.data = data;
             adapter = getAdapter(getContext(), list, prefs, data.getBookmarkCategory());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener(data));
             setBottomInfo();
+            subcategoryFilter.setVisibility(data.getCategory().equals(Constants.VEGETABLE) ? VISIBLE : GONE);
         }
     }
 
@@ -225,11 +339,39 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @Override
     public boolean onBackPressed() {
-        if(result.isDrawerOpen()) {
+        if (result.isDrawerOpen()) {
             result.closeDrawer();
             return true;
         } else {
             return Flow.get(getContext()).goBack();
         }
+    }
+
+    public ArrayList<Produce> getListBySubcategory(int id) {
+        String subcategory = "";
+        ArrayList<Produce> list = new ArrayList<>();
+        switch (id) {
+            case R.id.root:
+                subcategory = "root";
+                break;
+            case R.id.leaf:
+                subcategory = "leaf";
+                break;
+            case R.id.flower_fruit:
+                subcategory = "flower_fruit";
+                break;
+            case R.id.mushroom:
+                subcategory = "mushroom";
+                break;
+            case R.id.pickle:
+                subcategory = "pickle";
+                break;
+        }
+        for (Produce produce : produces) {
+            if (produce.subCategory.equals(subcategory)) {
+                list.add(produce);
+            }
+        }
+        return list;
     }
 }

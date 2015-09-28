@@ -54,7 +54,7 @@ public class IndexPresenter extends Presenter {
                 data = new ProduceData(prefs.fruitMarketList().get(), R.array.pref_fruit_market_values, R.array.pref_fruit_market_titles, Constants.FRUIT_BOOKMARK, Constants.FRUIT);
                 break;
             case "vegetable":
-                data = new ProduceData(prefs.fruitMarketList().get(), R.array.pref_vegetable_market_values, R.array.pref_vegetable_market_titles, Constants.VEGETABLE_BOOKMARK, Constants.VEGETABLE);
+                data = new ProduceData(prefs.vegetableMarketList().get(), R.array.pref_vegetable_market_values, R.array.pref_vegetable_market_titles, Constants.VEGETABLE_BOOKMARK, Constants.VEGETABLE);
                 break;
             case "settings":
                 Intent intent = new Intent(getContext(), SettingsActivity_.class);

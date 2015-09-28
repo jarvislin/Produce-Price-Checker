@@ -24,8 +24,6 @@ import flow.path.Path;
  */
 @EView
 public class MerchantPage extends PriceListPage {
-    @Bean
-    PriceListPresenter presenter;
 
     public MerchantPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -35,12 +33,6 @@ public class MerchantPage extends PriceListPage {
     @Override
     protected CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ prefs, String bookmarkCategory) {
         return new MerchantAdapter(context, list, prefs, bookmarkCategory);
-    }
-
-    @Override
-    public void onPageStart(ActivityComponentHelper componentHelper) {
-        presenter.setView(this);
-        componentHelper.showToolbar(false);
     }
 
 }
