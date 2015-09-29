@@ -95,7 +95,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
         componentHelper.showToolbar(false);
-        componentHelper.getToolbar().setTitle("");
+        componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
         // init Drawer
