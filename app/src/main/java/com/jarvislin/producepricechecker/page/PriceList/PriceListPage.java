@@ -11,11 +11,13 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,7 +80,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private ArrayList<Produce> produces;
     private ArrayList<Produce> filterList;
     private CustomerAdapter adapter;
-    private ProduceData data;
     private Drawer result;
     private int lastItemPosition = 0;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
@@ -94,7 +95,10 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
         componentHelper.showToolbar(false);
+        componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+
+        // init Drawer
         // Create the AccountHeader
         AccountHeader headerResult = new AccountHeaderBuilder()
                 .withActivity(componentHelper.getActivity())
@@ -154,6 +158,26 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 return true;
             }
         });
+
+
+        // init Spinner
+        Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
+        String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     @Override
@@ -175,12 +199,13 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                     Toast.makeText(getContext(), "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
                 } else {
                     ArrayList<Produce> searchList = getSearchList(query);
-                    adapter = getAdapter(getContext(), searchList, prefs, data.getBookmarkCategory());
+                    adapter = getAdapter(getContext(), searchList, prefs, presenter.getProduceData().getBookmarkCategory());
                     dataList.setAdapter(adapter);
                 }
                 return false;
             }
         });
+
     }
 
     protected ArrayList<Produce> getSearchList(String newText) {
@@ -214,7 +239,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @Click
     protected void subcategoryFilter() {
         // show filter dialog
-        if(dialog == null) {
+        if (dialog == null) {
             dialog = new Dialog(getContext(), R.style.alertDialog);
             dialog.setContentView(R.layout.dialog_filter);
             Button submit = (Button) dialog.findViewById(R.id.dismiss);
@@ -259,7 +284,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             }
         }
         Collections.sort(filterList);
-        adapter = getAdapter(getContext(), filterList, prefs, data.getBookmarkCategory());
+        adapter = getAdapter(getContext(), filterList, prefs, presenter.getProduceData().getBookmarkCategory());
         dataList.setAdapter(adapter);
     }
 
@@ -287,19 +312,18 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     }
 
     @UiThread
-    protected void handleData(ArrayList<Produce> list, ProduceData data) {
+    protected void handleData(ArrayList<Produce> list) {
         if (list == null || list.size() == 0) {
             Toast.makeText(getContext(), R.string.error_network, Toast.LENGTH_SHORT).show();
             Flow.get(getContext()).goBack();
         } else {
             produces = list;
             filterList = new ArrayList<>(list);
-            this.data = data;
-            adapter = getAdapter(getContext(), list, prefs, data.getBookmarkCategory());
+            adapter = getAdapter(getContext(), list, prefs, presenter.getProduceData().getBookmarkCategory());
             dataList.setAdapter(adapter);
-            dataList.setOnItemClickListener(itemClickListener(data));
+            dataList.setOnItemClickListener(itemClickListener(presenter.getProduceData()));
             setBottomInfo();
-            subcategoryFilter.setVisibility(data.getCategory().equals(Constants.VEGETABLE) ? VISIBLE : GONE);
+            subcategoryFilter.setVisibility(presenter.getProduceData().getCategory().equals(Constants.VEGETABLE) ? VISIBLE : GONE);
         }
     }
 
@@ -334,7 +358,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @UiThread
     protected void setBottomInfo() {
         String unitText = (prefs.unit().get() < 1 ? "元/台斤" : "元/公斤");
-        bottomInfo.setText(DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　" + data.getMarketName(getContext(), produces.get(0).marketNumber) + "　單位：" + unitText);
+        bottomInfo.setText("日期：" + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　單位：" + unitText);
     }
 
     @Override
