@@ -53,7 +53,6 @@ import flow.path.Path;
 @EView
 public class CustomerPage extends PriceListPage {
 
-
     public CustomerPage(Context context, AttributeSet attrs) {
         super(context, attrs);
         Path.get(context);

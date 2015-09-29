@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="問：這個應用程式的行情來源是？\n答：農委會提供的開放資料。\n\n問：為什麼常常看不到當天的行情資料？\n答：行情資料並非每天更新，或者是當天休市。\n\n問：上價、中價、下價是什麼？\n答：農產品有品質及等級之分，不同狀況的產品就會有不同的價格。\n ‧上價：總交易量中最高價格的20%平均價\n ‧下價：總交易量中最低價格的20%平均價\n ‧中價：扣除上價及下價後剩餘的60%平均價\n\n問：我想要某個功能，但是應用程式沒有提供。\n答：請到FB粉絲團留言或寄信提供想法給作者。\n\n問：我可以提出合作計劃嗎？\n答：直接聯繫作者即可。"/>
+</ScrollView>

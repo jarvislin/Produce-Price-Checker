@@ -14,7 +14,7 @@ import java.io.Serializable;
  */
 @ModelContainer
 @Table(databaseName = ProduceDatabase.NAME)
-public class Produce extends BaseModel implements Serializable {
+public class Produce extends BaseModel implements Serializable, Comparable<Produce> {
 
     @PrimaryKey(autoincrement = true)
     @Column
@@ -64,4 +64,8 @@ public class Produce extends BaseModel implements Serializable {
     }
 
 
+    @Override
+    public int compareTo(Produce another) {
+        return Float.compare(Float.valueOf(this.middlePrice), Float.valueOf(another.middlePrice));
+    }
 }
