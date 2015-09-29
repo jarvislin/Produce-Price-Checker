@@ -7,6 +7,7 @@ import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
+import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.util.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
@@ -63,6 +64,7 @@ public class PriceListPresenter extends Presenter {
 
     @Background
     protected void loadData(String marketNumber) {
+        currentMarketNumber = marketNumber;
         ToolsHelper.showProgressDialog(getContext(), false);
         //show
         String updateDate = path.getData().getUpdateDate(marketNumber);
@@ -89,13 +91,13 @@ public class PriceListPresenter extends Presenter {
         params.add("category", this.path.getData().getCategory());
         ArrayList<ApiProduce> list = client.getData(params);
         ApiDataAdapter adapter = new ApiDataAdapter(list);
-        page.handleData(adapter.getDataList(), this.path.getData());
+        page.handleData(adapter.getDataList());
         updateDatabase(adapter.getDataList(), marketNumber);
     }
 
     public void loadClientData(String marketNumber) {
         ArrayList<Produce> produces = DatabaseController.getProduces(this.path.getData().getCategory(), marketNumber);
-        page.handleData(produces, this.path.getData());
+        page.handleData(produces);
     }
 
     @Background
@@ -107,5 +109,9 @@ public class PriceListPresenter extends Presenter {
             }
             this.path.getData().updateDatabase(produces, this.path.getData().getCategory());
         }
+    }
+
+    public ProduceData getProduceData() {
+        return this.path.getData();
     }
 }
