@@ -9,6 +9,8 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -297,11 +299,16 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
                 int currentFirstVisibleItem = dataList.getFirstVisiblePosition();
-                if (currentFirstVisibleItem > lastItemPosition) {
+                Animation animation;
+                if (currentFirstVisibleItem > lastItemPosition && fab.getVisibility() == VISIBLE) {
                     // scroll down
+                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
+                    fab.startAnimation(animation);
                     fab.setVisibility(GONE);
-                } else if (currentFirstVisibleItem < lastItemPosition) {
+                } else if (currentFirstVisibleItem < lastItemPosition && fab.getVisibility() == GONE) {
                     // scroll up
+                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+                    fab.startAnimation(animation);
                     fab.setVisibility(VISIBLE);
                 }
                 lastItemPosition = currentFirstVisibleItem;
@@ -319,6 +326,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             Toast.makeText(getContext(), R.string.error_network, Toast.LENGTH_SHORT).show();
             Flow.get(getContext()).goBack();
         } else {
+            Collections.sort(list);
             produces = list;
             filterList = new ArrayList<>(list);
             adapter = getAdapter(getContext(), list, prefs, presenter.getProduceData().getBookmarkCategory());
@@ -326,6 +334,14 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             dataList.setOnItemClickListener(itemClickListener(presenter.getProduceData()));
             setBottomInfo();
             subcategoryFilter.setVisibility(presenter.getProduceData().getCategory().equals(Constants.VEGETABLE) ? VISIBLE : GONE);
+            //reset dialog status
+            resetFilter();
+        }
+    }
+
+    private void resetFilter() {
+        for(CheckBox box : checkBoxes){
+            box.setChecked(true);
         }
     }
 

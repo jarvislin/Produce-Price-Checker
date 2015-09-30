@@ -35,7 +35,6 @@ import flow.path.Path;
 public class PriceListPresenter extends Presenter {
     private PriceListPage page;
     private ProduceDataGetter path;
-    Preferences_ prefs;
     @RestService
     protected ApiClient client;
     private String currentMarketNumber;

@@ -66,6 +66,6 @@ public class Produce extends BaseModel implements Serializable, Comparable<Produ
 
     @Override
     public int compareTo(Produce another) {
-        return Float.compare(Float.valueOf(this.middlePrice), Float.valueOf(another.middlePrice));
+        return Float.compare(Float.valueOf(this.averagePrice), Float.valueOf(another.averagePrice));
     }
 }
