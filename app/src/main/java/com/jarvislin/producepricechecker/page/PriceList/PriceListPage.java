@@ -290,7 +290,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @AfterViews
     protected void initFooter() {
-        dataList.addFooterView(LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null));
+        View footer = LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null);
+        footer.setOnClickListener(null);
+        dataList.addFooterView(footer);
         dataList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
