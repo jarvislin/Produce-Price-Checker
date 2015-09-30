@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -86,6 +87,8 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private int lastItemPosition = 0;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     private Dialog dialog;
+    private Handler uiHandler;
+    private boolean isShowing = true;
 
     public PriceListPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -98,7 +101,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         presenter.setView(this);
         componentHelper.showToolbar(false);
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
-
 
         // init Drawer
         // Create the AccountHeader
@@ -292,30 +294,42 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @AfterViews
     protected void initFooter() {
+        uiHandler = new Handler(getContext().getMainLooper());
         View footer = LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null);
         footer.setOnClickListener(null);
         dataList.addFooterView(footer);
         dataList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                int currentFirstVisibleItem = dataList.getFirstVisiblePosition();
-                Animation animation;
-                if (currentFirstVisibleItem > lastItemPosition && fab.getVisibility() == VISIBLE) {
-                    // scroll down
-                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
-                    fab.startAnimation(animation);
-                    fab.setVisibility(GONE);
-                } else if (currentFirstVisibleItem < lastItemPosition && fab.getVisibility() == GONE) {
-                    // scroll up
-                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
-                    fab.startAnimation(animation);
-                    fab.setVisibility(VISIBLE);
+//                int currentFirstVisibleItem = dataList.getFirstVisiblePosition();
+//                Animation animation;
+//                if (currentFirstVisibleItem > lastItemPosition && fab.getVisibility() == VISIBLE) {
+//                    // scroll down
+//                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
+//                    fab.startAnimation(animation);
+//                    fab.setVisibility(GONE);
+//                } else if (currentFirstVisibleItem < lastItemPosition && fab.getVisibility() == GONE) {
+//                    // scroll up
+//                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+//                    fab.startAnimation(animation);
+//                    fab.setVisibility(VISIBLE);
+//                }
+//                lastItemPosition = currentFirstVisibleItem;
+                if (scrollState == SCROLL_STATE_IDLE && fab.getVisibility() == GONE) {
+                    isShowing = true;
+                    uiHandler.postDelayed(showButton, 400);
+                } else if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    uiHandler.removeCallbacks(showButton);
+                    if (fab.getVisibility() == VISIBLE) {
+                        uiHandler.post(hideButton);
+                    }
                 }
-                lastItemPosition = currentFirstVisibleItem;
             }
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                isShowing = false;
+
             }
         });
     }
@@ -340,7 +354,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     }
 
     private void resetFilter() {
-        for(CheckBox box : checkBoxes){
+        for (CheckBox box : checkBoxes) {
             box.setChecked(true);
         }
     }
@@ -416,4 +430,24 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         }
         return list;
     }
+
+    private Runnable showButton = new Runnable() {
+        @Override
+        public void run() {
+
+                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+                fab.startAnimation(animation);
+                fab.setVisibility(VISIBLE);
+
+        }
+    };
+
+    private Runnable hideButton = new Runnable() {
+        @Override
+        public void run() {
+                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
+                fab.startAnimation(animation);
+                fab.setVisibility(GONE);
+        }
+    };
 }
