@@ -321,7 +321,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     }
 
     @UiThread
-    protected void handl0eData(ArrayList<Produce> list) {
+    protected void handleData(ArrayList<Produce> list) {
         if (list == null || list.size() == 0) {
             Toast.makeText(getContext(), R.string.error_network, Toast.LENGTH_SHORT).show();
             Flow.get(getContext()).goBack();
