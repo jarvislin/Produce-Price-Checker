@@ -24,7 +24,8 @@ public class QuestionsPage extends ScrollView implements PageListener {
 
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
-        componentHelper.showToolbar(true);
+        componentHelper.showToolbar();
+        componentHelper.showArrow();
     }
 
     @Override

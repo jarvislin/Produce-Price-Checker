@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -33,6 +34,7 @@ import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.PageListener;
+import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
 import com.jarvislin.producepricechecker.path.HandlesBack;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
@@ -60,12 +62,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import flow.Flow;
+import flow.History;
 
 /**
  * Created by jarvis on 15/9/25.
  */
 @EView
-public abstract class PriceListPage extends RelativeLayout implements PageListener, HandlesBack, CompoundButton.OnCheckedChangeListener {
+public abstract class PriceListPage extends RelativeLayout implements PageListener, CompoundButton.OnCheckedChangeListener {
     @Bean
     PriceListPresenter presenter;
     @ViewById
@@ -83,7 +86,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private ArrayList<Produce> produces;
     private ArrayList<Produce> filterList;
     private CustomerAdapter adapter;
-    private Drawer result;
+
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     private Dialog dialog;
     private Handler uiHandler;
@@ -97,62 +100,10 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
-        componentHelper.showToolbar(false);
+        componentHelper.getActivity().invalidateOptionsMenu(); // to avoid showing menu item twice
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        // init Drawer
-        // Create the AccountHeader
-        AccountHeader headerResult = new AccountHeaderBuilder()
-                .withActivity(componentHelper.getActivity())
-                .withHeaderBackground(R.drawable.index_background)
-                .withProfileImagesClickable(false)
-                .withProfileImagesVisible(false)
-                .withSelectionListEnabledForSingleProfile(false)
-//                .addProfiles(
-//                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com")
-//
-//                )
-                .build();
-
-        result = new DrawerBuilder()
-                .withAccountHeader(headerResult)
-                .withActivity(componentHelper.getActivity())
-                .withToolbar(componentHelper.getToolbar())
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
-                        new PrimaryDrawerItem().withName("書籤").withSelectable(false),
-                        new SecondaryDrawerItem().withName("常見問題").withSelectable(false),
-                        new DividerDrawerItem().withSelectable(false),
-                        new SecondaryDrawerItem().withName("分享").withSelectable(false),
-                        new SecondaryDrawerItem().withName("評分").withSelectable(false),
-                        new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
-                        new SecondaryDrawerItem().withName("聯繫作者").withDescription("hihi").withSelectable(true)
-                )
-                .build();
-        result.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                // do something with the clicked item :D
-                switch (position) {
-                    case 2:
-                        GoogleAnalyticsSender.getInstance(getContext()).send("click_update");
-                        break;
-                    case 3:
-                        GoogleAnalyticsSender.getInstance(getContext()).send("click_convert_unit");
-                        break;
-                    case 4:
-                        GoogleAnalyticsSender.getInstance(getContext()).send("click_bookmark");
-                        openBookmark();
-                        break;
-                    case 5:
-                        GoogleAnalyticsSender.getInstance(getContext()).send("click_share");
-                        ToolsHelper.shareText(getContext(), "分享：", getContext().getString(R.string.share_text));
-                        break;
-                }
-                result.closeDrawer();
-                return true;
-            }
-        });
+        componentHelper.showToolbar();
+        componentHelper.showHamburger();
 
 
         // init Spinner
@@ -235,6 +186,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @Click
     protected void subcategoryFilter() {
+        GoogleAnalyticsSender.getInstance(getContext()).send("click_filter");
         // show filter dialog
         if (dialog == null) {
             dialog = new Dialog(getContext(), R.style.alertDialog);
@@ -369,15 +321,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         bottomInfo.setText("日期：" + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　單位：" + unitText);
     }
 
-    @Override
-    public boolean onBackPressed() {
-        if (result.isDrawerOpen()) {
-            result.closeDrawer();
-            return true;
-        } else {
-            return Flow.get(getContext()).goBack();
-        }
-    }
+
 
     public ArrayList<Produce> getListBySubcategory(int id) {
         String subcategory = "";
@@ -410,20 +354,18 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private Runnable showButton = new Runnable() {
         @Override
         public void run() {
-
-                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
-                fab.startAnimation(animation);
-                fab.setVisibility(VISIBLE);
-
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
+            fab.startAnimation(animation);
+            fab.setVisibility(VISIBLE);
         }
     };
 
     private Runnable hideButton = new Runnable() {
         @Override
         public void run() {
-                Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
-                fab.startAnimation(animation);
-                fab.setVisibility(GONE);
+            Animation animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
+            fab.startAnimation(animation);
+            fab.setVisibility(GONE);
         }
     };
 }
