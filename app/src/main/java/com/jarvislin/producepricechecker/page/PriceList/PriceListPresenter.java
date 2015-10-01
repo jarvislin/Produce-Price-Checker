@@ -43,8 +43,6 @@ public class PriceListPresenter extends Presenter {
     protected void init(Path path, View view) {
         this.path = (ProduceDataGetter) path;
         this.page = (PriceListPage) view;
-        currentMarketNumber = this.path.getData().getDefaultMarketNumber();
-        loadData(currentMarketNumber);
     }
 
     @AfterInject
@@ -106,7 +104,7 @@ public class PriceListPresenter extends Presenter {
             for (Produce produce : produces) {
                 produce.save();
             }
-            this.path.getData().updateDatabase(produces, this.path.getData().getCategory());
+            this.path.getData().updateDatabase(produces, this.path.getData().getBookmarkCategory());
         }
     }
 

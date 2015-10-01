@@ -84,11 +84,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private ArrayList<Produce> filterList;
     private CustomerAdapter adapter;
     private Drawer result;
-    private int lastItemPosition = 0;
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     private Dialog dialog;
     private Handler uiHandler;
-    private boolean isShowing = true;
 
     public PriceListPage(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -138,16 +136,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 switch (position) {
                     case 2:
                         GoogleAnalyticsSender.getInstance(getContext()).send("click_update");
-                        presenter.loadData(presenter.getMarketNumber());
                         break;
                     case 3:
                         GoogleAnalyticsSender.getInstance(getContext()).send("click_convert_unit");
-                        float unit = prefs.unit().get();
-                        prefs.unit().put(unit < 1 ? 1.0f : 0.6f);
-                        adapter.notifyDataSetInvalidated();
-                        String unitText = (prefs.unit().get() < 1 ? "台斤" : "公斤");
-                        Toast.makeText(getContext(), "目前重量單位為：" + unitText, Toast.LENGTH_SHORT).show();
-                        setBottomInfo();
                         break;
                     case 4:
                         GoogleAnalyticsSender.getInstance(getContext()).send("click_bookmark");
@@ -170,7 +161,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -182,6 +172,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
             }
         });
+
+        //this will trigger onItemSelected
+        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
     }
 
     @Override
@@ -301,23 +294,8 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         dataList.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                int currentFirstVisibleItem = dataList.getFirstVisiblePosition();
-//                Animation animation;
-//                if (currentFirstVisibleItem > lastItemPosition && fab.getVisibility() == VISIBLE) {
-//                    // scroll down
-//                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_out);
-//                    fab.startAnimation(animation);
-//                    fab.setVisibility(GONE);
-//                } else if (currentFirstVisibleItem < lastItemPosition && fab.getVisibility() == GONE) {
-//                    // scroll up
-//                    animation = AnimationUtils.loadAnimation(getContext(), R.anim.zoom_in);
-//                    fab.startAnimation(animation);
-//                    fab.setVisibility(VISIBLE);
-//                }
-//                lastItemPosition = currentFirstVisibleItem;
                 if (scrollState == SCROLL_STATE_IDLE && fab.getVisibility() == GONE) {
-                    isShowing = true;
-                    uiHandler.postDelayed(showButton, 400);
+                    uiHandler.postDelayed(showButton, 600);
                 } else if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
                     uiHandler.removeCallbacks(showButton);
                     if (fab.getVisibility() == VISIBLE) {
@@ -328,8 +306,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                isShowing = false;
-
             }
         });
     }
