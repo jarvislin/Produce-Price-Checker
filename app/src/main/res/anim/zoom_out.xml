@@ -8,5 +8,5 @@
         android:fromYScale="1.0"
         android:toXScale="0.0"
         android:toYScale="0.0"
-        android:duration="300"/>
+        android:duration="200"/>
 </set>
