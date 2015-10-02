@@ -30,8 +30,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.HashMap;
-
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
@@ -60,83 +58,87 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
                 , new GsonParceler(), History.single(new IndexPath()), this);
 
-        initDrawer();
+        drawer = getDrawer();
     }
 
-    private void initDrawer() {
+    private Drawer getDrawer() {
         // init Drawer
         // Create the AccountHeader
-        AccountHeader header = new AccountHeaderBuilder()
-                .withActivity(MainActivity.this)
-                .withHeaderBackground(R.drawable.index_background)
-                .withProfileImagesClickable(false)
-                .withProfileImagesVisible(false)
-                .withSelectionListEnabledForSingleProfile(false)
+        if(drawer == null) {
+            AccountHeader header = new AccountHeaderBuilder()
+                    .withActivity(MainActivity.this)
+                    .withHeaderBackground(R.drawable.index_background)
+                    .withProfileImagesClickable(false)
+                    .withProfileImagesVisible(false)
+                    .withSelectionListEnabledForSingleProfile(false)
 //                .addProfiles(
 //                        new ProfileDrawerItem().withName("Mike Penz").withEmail("mikepenz@gmail.com")
 //
 //                )
-                .build();
+                    .build();
 
-        drawer = new DrawerBuilder()
-                .withAccountHeader(header)
-                .withActivity(MainActivity.this)
-                .withToolbar(toolbar)
-                .addDrawerItems(
-                        new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
-                        new PrimaryDrawerItem().withName("書籤"),
-                        new PrimaryDrawerItem().withName("常見問題").withSelectable(false),
-                        new DividerDrawerItem().withSelectable(false),
-                        new SecondaryDrawerItem().withName("分享").withSelectable(false),
-                        new SecondaryDrawerItem().withName("評分").withSelectable(false),
-                        new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
-                        new SecondaryDrawerItem().withName("聯繫作者").withDescription("hihi").withSelectable(false)
-                )
-                .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
-                    @Override
-                    public boolean onNavigationClickListener(View clickedView) {
-                        //this method is only called if the Arrow icon is shown. The hamburger is automatically managed by the MaterialDrawer
-                        //if the back arrow is shown. close the activity
-                        Flow.get(getActivity()).goBack();
-                        //return true if we have consumed the event
-                        return true;
-                    }
-                })
-                .build();
-        drawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                // do something with the clicked item :D
-                Log.e("POS", position + "");
-                switch (position) {
-                    case 1:
-                        GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_price_list");
-                        break;
-                    case 2:
-                        GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_bookmark");
+            final Drawer newDrawer = new DrawerBuilder()
+                    .withAccountHeader(header)
+                    .withActivity(MainActivity.this)
+                    .withToolbar(toolbar)
+                    .addDrawerItems(
+                            new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
+                            new PrimaryDrawerItem().withName("書籤"),
+                            new PrimaryDrawerItem().withName("常見問題").withSelectable(false),
+                            new DividerDrawerItem().withSelectable(false),
+                            new SecondaryDrawerItem().withName("分享").withSelectable(false),
+                            new SecondaryDrawerItem().withName("評分").withSelectable(false),
+                            new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
+                            new SecondaryDrawerItem().withName("聯繫作者").withDescription("hihi").withSelectable(false)
+                    )
+                    .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
+                        @Override
+                        public boolean onNavigationClickListener(View clickedView) {
+                            //this method is only called if the Arrow icon is shown. The hamburger is automatically managed by the MaterialDrawer
+                            //if the back arrow is shown. close the activity
+                            Flow.get(getActivity()).goBack();
+                            //return true if we have consumed the event
+                            return true;
+                        }
+                    })
+                    .build();
+            newDrawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                @Override
+                public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                    // do something with the clicked item :D
+                    Log.e("POS", position + "");
+                    switch (position) {
+                        case 1:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_price_list");
+                            break;
+                        case 2:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_bookmark");
 //                        openBookmark();
-                        break;
-                    case 3:
-                        GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
-                        Flow.get(MainActivity.this).set(new QuestionsPath());
+                            break;
+                        case 3:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
+                            Flow.get(MainActivity.this).set(new QuestionsPath());
 //                        Flow.get(getContext()).setHistory(History.single(new QuestionsPath()), Flow.Direction.REPLACE);
-                        break;
-                    case 4:
+                            break;
+                        case 4:
 
-                        break;
-                    case 5:
-                        GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_share");
-                        ToolsHelper.shareText(MainActivity.this, "分享：", MainActivity.this.getString(R.string.share_text));
+                            break;
+                        case 5:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_share");
+                            ToolsHelper.shareText(MainActivity.this, "分享：", MainActivity.this.getString(R.string.share_text));
 
-                        break;
-                    case 6:
-                        GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
-                        break;
+                            break;
+                        case 6:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
+                            break;
+                    }
+                    newDrawer.closeDrawer();
+                    return true;
                 }
-                drawer.closeDrawer();
-                return true;
-            }
-        });
+            });
+            return newDrawer;
+        }
+        return drawer;
     }
 
 
@@ -223,12 +225,12 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     @Override
     public void showHamburger() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        drawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
+        getDrawer().getActionBarDrawerToggle().setDrawerIndicatorEnabled(true);
     }
 
     @Override
     public void showArrow() {
-        drawer.getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
+        getDrawer().getActionBarDrawerToggle().setDrawerIndicatorEnabled(false);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
