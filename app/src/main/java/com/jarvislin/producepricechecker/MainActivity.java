@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
@@ -28,6 +29,8 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.HashMap;
 
 import flow.Flow;
 import flow.FlowDelegate;
@@ -51,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
 
     @AfterViews
     public void afterViews() {
+        char[] c = "ss".toCharArray();
         setSupportActionBar(toolbar);
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
@@ -82,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                 .addDrawerItems(
                         new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
                         new PrimaryDrawerItem().withName("書籤"),
-                        new PrimaryDrawerItem().withName("常見問題"),
+                        new PrimaryDrawerItem().withName("常見問題").withSelectable(false),
                         new DividerDrawerItem().withSelectable(false),
                         new SecondaryDrawerItem().withName("分享").withSelectable(false),
                         new SecondaryDrawerItem().withName("評分").withSelectable(false),
@@ -209,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     }
 
     @Override
-    public void showToolbar() {
+    public void showToolbar(boolean showSpinner) {
         toolbar.setVisibility(View.VISIBLE);
+        Spinner spinner = (Spinner) toolbar.findViewById(R.id.spinner_nav);
+        spinner.setVisibility(showSpinner ? View.VISIBLE : View.GONE);
     }
 
     @Override

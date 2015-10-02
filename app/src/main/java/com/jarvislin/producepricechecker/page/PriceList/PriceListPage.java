@@ -102,7 +102,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         presenter.setView(this);
         componentHelper.getActivity().invalidateOptionsMenu(); // to avoid showing menu item twice
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
-        componentHelper.showToolbar();
+        componentHelper.showToolbar(true);
         componentHelper.showHamburger();
 
 
