@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
 
     @AfterViews
     public void afterViews() {
-        char[] c = "ss".toCharArray();
         setSupportActionBar(toolbar);
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
@@ -192,7 +191,9 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
 
     @Override
     public void onBackPressed() {
-        if (!container.onBackPressed()) {
+        if(drawer.isDrawerOpen()) {
+            drawer.closeDrawer();
+        }else if (!container.onBackPressed()) {
             super.onBackPressed();
         }
     }
