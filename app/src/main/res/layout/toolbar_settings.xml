@@ -9,13 +9,4 @@
     android:textAppearance="@android:color/white"
     app:contentInsetStart="0dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            style="@style/ActionBarTitle"
-            android:text="@string/setting" />
-
-    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

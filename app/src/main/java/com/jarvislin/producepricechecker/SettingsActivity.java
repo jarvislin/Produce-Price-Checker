@@ -59,16 +59,26 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         getPreferenceManager().setSharedPreferencesName(PREF_NAME);
         addPreferencesFromResource(R.xml.pref_general);
+
+        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
+        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, root, false);
+        root.addView(bar, 0); // insert at top
+
+        bar.setTitle("設定");
+        bar.setTitleTextColor(getResources().getColor(android.R.color.white));
+        bar.setNavigationIcon(R.drawable.ic_action_back);
+        bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     @AfterPreferences
     void initPrefs() {
         setProfitSummary();
         setUnitSummary();
-
-        LinearLayout root = (LinearLayout) findViewById(android.R.id.list).getParent().getParent().getParent();
-        Toolbar bar = (Toolbar) LayoutInflater.from(this).inflate(R.layout.toolbar_settings, root, false);
-        root.addView(bar, 0); // insert at top
     }
 
 
