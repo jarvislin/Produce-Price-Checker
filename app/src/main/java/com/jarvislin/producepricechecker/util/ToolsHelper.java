@@ -121,12 +121,10 @@ public class ToolsHelper {
     }
 
     public static void hideSoftKeyboard(Activity activity) {
-        InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        if (inputMethodManager.isActive()) {
-            View view = activity.getCurrentFocus();
-            if (view != null) {
-                inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
+        View view = activity.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
 
