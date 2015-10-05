@@ -12,20 +12,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="問：這個應用程式的行情來源是？"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/actionbar_back"
             android:text="答：農委會提供的開放資料。\n"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="問：為什麼常常看不到當天的行情資料？"/>
+            android:text="問：什麼樣的族群適合使用這個程式？"/>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/actionbar_back"
-            android:text="答：農委會資料並非每天更新，或者是當天休市。\n"/>
+            android:text="答：在批發市場採購的商家及一般小量購買的消費者。\n"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="問：我選了消費者模式，但是實際購買蔬果時卻與程式估算的不同。"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actionbar_back"
+            android:text="答：消費者模式是從『批發價格』來估算含利潤的『販售價格』，不同店家的販售價格也有所差異，使用者可在設定選項自行調整利潤範圍。\n"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="問：為什麼常常看不到當天的行情資料？"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/actionbar_back"
+            android:text="答：農委會資料並非每天更新，或是當天休市。\n"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -36,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/actionbar_back"
-            android:text="答：農產品有品質及等級之分，不同狀況的產品就會有不同的價格。\n\n ‧上價：總交易量中最高價格的20%平均價\n ‧下價：總交易量中最低價格的20%平均價\n ‧中價：扣除上價及下價後剩餘的60%平均價\n"/>
+            android:text="答：農產品有品質及等級之分，不同狀況的產品就會有不同的價格。\n\n ‧上價：總交易量中最高價格的20%加權平均價\n ‧下價：總交易量中最低價格的20%加權平均價\n ‧中價：扣除上價及下價後剩餘的60%加權平均價\n"/>
 
         <TextView
             android:layout_width="match_parent"
