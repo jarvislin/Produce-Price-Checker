@@ -5,11 +5,13 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -104,35 +106,14 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
         componentHelper.showToolbar(true);
         componentHelper.showHamburger();
-
-
-        // init Spinner
-        Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
-        String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        //this will trigger onItemSelected
-        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
     }
 
     @Override
     public void onPrepareOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
+        // init searchView
         componentHelper.getActivity().getMenuInflater().inflate(R.menu.search, menu);
         SearchManager manager = (SearchManager) componentHelper.getActivity().getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(componentHelper.getActivity().getComponentName()));
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
@@ -154,7 +135,30 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             }
         });
 
+        // init Spinner
+        Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
+        String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                search.setIconified(true);
+                presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        //this will trigger onItemSelected
+        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
+
     }
+
 
     protected ArrayList<Produce> getSearchList(String newText) {
         ArrayList<Produce> list = new ArrayList<>();
