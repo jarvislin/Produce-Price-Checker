@@ -30,7 +30,7 @@ public class QuestionsPage extends ScrollView implements PageListener {
     }
 
     @Override
-    public void onPrepareOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
+    public void onCreateOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
 
     }
 }

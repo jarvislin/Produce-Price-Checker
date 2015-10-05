@@ -10,5 +10,5 @@ import com.jarvislin.producepricechecker.ActivityComponentHelper;
 public interface PageListener {
     void onPageStart(ActivityComponentHelper componentHelper);
 
-    void onPrepareOptionsMenu(ActivityComponentHelper componentHelper, Menu menu);
+    void onCreateOptionsMenu(ActivityComponentHelper componentHelper, Menu menu);
 }

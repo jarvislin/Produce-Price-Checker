@@ -102,14 +102,13 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
-        componentHelper.getActivity().invalidateOptionsMenu(); // to avoid showing menu item twice
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
         componentHelper.showToolbar(true);
         componentHelper.showHamburger();
     }
 
     @Override
-    public void onPrepareOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
+    public void onCreateOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
         // init searchView
         componentHelper.getActivity().getMenuInflater().inflate(R.menu.search, menu);
         SearchManager manager = (SearchManager) componentHelper.getActivity().getSystemService(Context.SEARCH_SERVICE);

@@ -248,8 +248,8 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        container.onPrepareOptionsMenu(this, menu);
-        return super.onPrepareOptionsMenu(menu);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        container.onCreateOptionsMenu(this, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 }
