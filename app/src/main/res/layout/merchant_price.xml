@@ -55,7 +55,7 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         fab:fab_addButtonColorNormal="#FF4081"
-        fab:fab_addButtonColorPressed="@color/white_pressed"
+        fab:fab_addButtonColorPressed="#A0FF4081"
         fab:fab_addButtonPlusIconColor="@color/white"
         fab:fab_labelStyle="@style/menu_labels_style"
         android:layout_marginBottom="16dp"
