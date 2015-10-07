@@ -41,9 +41,6 @@ public class SettingsActivity extends PreferenceActivity {
     ApiClient client;
 
     private static final String PREF_NAME = "Preferences";
-    private static final String PLAY_STORE = "http://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker";
-    private static final String HOMEPAGE = "http://jarvislin.com";
-    private static final String SOURCE_CODE = "https://github.com/jarvislin/Produce-Price-Checker";
 
     private EditText lowProfit;
     private EditText highProfit;
@@ -82,17 +79,6 @@ public class SettingsActivity extends PreferenceActivity {
     }
 
 
-
-    @PreferenceClick(R.string.pref_key_rating)
-    void rating() {
-        final String appPackageName = getPackageName();
-        try {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-        } catch (android.content.ActivityNotFoundException anfe) {
-            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-        }
-    }
-
     @PreferenceChange(R.string.pref_key_fruit_market)
     void fruitMarketChanged() {
         prefs.edit()
@@ -120,25 +106,6 @@ public class SettingsActivity extends PreferenceActivity {
         setUnitSummary();
     }
 
-    @PreferenceClick(R.string.pref_key_about)
-    void about() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.about));
-        builder.setMessage(getString(R.string.about_app));
-        builder.setNegativeButton(getString(R.string.back), null);
-        builder.setPositiveButton(getString(R.string.get_source_code), new AlertDialog.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                openUrl(SOURCE_CODE);
-            }
-        });
-        builder.show();
-    }
-
-    @PreferenceClick(R.string.pref_key_visit)
-    void visit() {
-        openUrl(HOMEPAGE);
-    }
 
     @PreferenceClick(R.string.pref_key_profit)
     void profit() {
@@ -186,13 +153,6 @@ public class SettingsActivity extends PreferenceActivity {
             return "最低利潤不可大於最高利潤";
         }
         return null;
-    }
-
-    public void openUrl(String url) {
-        Uri uri = Uri.parse(url);
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        Intent chooser = Intent.createChooser(intent, getString(R.string.choose_service));
-        startActivity(chooser);
     }
 
     private void setProfitSummary() {
