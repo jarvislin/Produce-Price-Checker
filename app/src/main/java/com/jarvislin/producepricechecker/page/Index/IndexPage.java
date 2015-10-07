@@ -15,6 +15,7 @@ import com.jarvislin.producepricechecker.ActivityComponentHelper;
 import com.jarvislin.producepricechecker.BuildConfig;
 import com.jarvislin.producepricechecker.SettingsActivity_;
 import com.jarvislin.producepricechecker.page.PageListener;
+import com.jarvislin.producepricechecker.path.HandlesBack;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -36,7 +37,7 @@ import flow.path.Path;
  * Created by jarvis on 15/9/22.
  */
 @EView
-public class IndexPage extends FrameLayout implements PageListener, DialogInterface.OnClickListener {
+public class IndexPage extends FrameLayout implements PageListener, HandlesBack {
     @Pref
     Preferences_ prefs;
 
@@ -101,17 +102,85 @@ public class IndexPage extends FrameLayout implements PageListener, DialogInterf
         AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
         dialog.setTitle("發現新版本");
         dialog.setMessage("目前蔬果行情站版本過舊，請問要進行更新嗎？");
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "馬上更新", this);
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "現在不要", this);
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "馬上更新", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                presenter.direct("update_app");
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "現在不要", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
         dialog.show();
     }
 
     @Override
-    public void onClick(DialogInterface dialog, int which) {
-        if (which == DialogInterface.BUTTON_POSITIVE) {
-            presenter.direct("update_app");
+    public boolean onBackPressed() {
+        int count = prefs.openAppCount().get();
+        count++;
+        prefs.openAppCount().put(count);
+        if (count > 15 && !prefs.hasShownRating().get() && ToolsHelper.isNetworkAvailable(getContext())) {
+            // show dialog
+            AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+            dialog.setTitle("系統訊息");
+            dialog.setMessage("請問在使用過程中還滿意嗎？");
+            dialog.setButton(DialogInterface.BUTTON_POSITIVE, "滿意", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    prefs.hasShownRating().put(true);
+                    showRatingDialog();
+                }
+            });
+            dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "不滿意", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    prefs.hasShownRating().put(true);
+                    showContactDialog();
+                }
+            });
+            dialog.show();
+
+            return true;
         }
+        return false;
     }
 
+    private void showContactDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        dialog.setTitle("系統訊息");
+        dialog.setMessage("很抱歉沒達到您的要求，請問要跟作者提出建議嗎？");
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "是", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ToolsHelper.openUrl(getContext(), "http://jarvislin.com/contact/");
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "否", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.show();
+    }
 
+    private void showRatingDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+        dialog.setTitle("系統訊息");
+        dialog.setMessage("謝謝您的支持，請問可以給我們一個評分當作鼓勵嗎");
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "可以", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ToolsHelper.rating(getContext());
+            }
+        });
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "不要", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+        dialog.show();
+    }
 }

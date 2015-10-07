@@ -83,13 +83,11 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                     .withToolbar(toolbar)
                     .addDrawerItems(
                             new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
-                            new PrimaryDrawerItem().withName("書籤"),
                             new PrimaryDrawerItem().withName("常見問題").withSelectable(false),
                             new DividerDrawerItem().withSelectable(false),
                             new SecondaryDrawerItem().withName("分享").withSelectable(false),
-                            new SecondaryDrawerItem().withName("評分").withSelectable(false),
                             new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
-                            new SecondaryDrawerItem().withName("聯繫作者").withDescription("hihi").withSelectable(false)
+                            new SecondaryDrawerItem().withName("聯繫作者").withSelectable(false)
                     )
                     .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                         @Override
@@ -112,25 +110,24 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_price_list");
                             break;
                         case 2:
-                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_bookmark");
-//                        openBookmark();
-                            break;
-                        case 3:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
                             Flow.get(MainActivity.this).set(new QuestionsPath());
-//                        Flow.get(getContext()).setHistory(History.single(new QuestionsPath()), Flow.Direction.REPLACE);
                             break;
-                        case 4:
+                        case 3:
 
                             break;
-                        case 5:
+                        case 4:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_share");
                             ToolsHelper.shareText(MainActivity.this, "分享：", MainActivity.this.getString(R.string.share_text));
 
                             break;
-                        case 6:
+                        case 5:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
+                            ToolsHelper.openUrl(MainActivity.this, "https://www.facebook.com/produce.price.checker");
                             break;
+                        case 6:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_contact");
+                            ToolsHelper.openUrl(MainActivity.this, "http://jarvislin.com/contact/");
                     }
                     newDrawer.closeDrawer();
                     return true;

@@ -45,4 +45,10 @@ public interface Preferences {
     @DefaultBoolean(false)
     boolean needToUpdate();
 
+    @DefaultInt(0)
+    int openAppCount();
+
+    @DefaultBoolean(false)
+    boolean hasShownRating();
+
 }

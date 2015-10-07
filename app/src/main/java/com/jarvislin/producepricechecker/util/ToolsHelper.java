@@ -138,5 +138,13 @@ public class ToolsHelper {
         }
     }
 
+    public static void openUrl(Context context, String url) {
+        Uri uri = Uri.parse(url);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        Intent chooser = Intent.createChooser(intent, context.getString(R.string.choose_service));
+        context.startActivity(chooser);
+    }
+
+
 
 }
