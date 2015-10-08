@@ -122,7 +122,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
         int count = prefs.openAppCount().get();
         count++;
         prefs.openAppCount().put(count);
-        if (count > 15 && !prefs.hasShownRating().get() && ToolsHelper.isNetworkAvailable(getContext())) {
+        if (count > 2 && !prefs.hasShownRating().get() && ToolsHelper.isNetworkAvailable(getContext())) {
             // show dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
             dialog.setTitle("系統訊息");
@@ -149,27 +149,39 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     }
 
     private void showContactDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
-        dialog.setTitle("系統訊息");
-        dialog.setMessage("很抱歉沒達到您的要求，請問要跟作者提出建議嗎？");
-        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "是", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ToolsHelper.openUrl(getContext(), "http://jarvislin.com/contact/");
-            }
-        });
-        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "否", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-        });
-        dialog.show();
+//        AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+//        dialog.setTitle("系統訊息");
+//        dialog.setMessage("很抱歉沒達到您的要求，請問要跟作者提出建議嗎？");
+//        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "是", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                ToolsHelper.openUrl(getContext(), "http://jarvislin.com/contact/");
+//            }
+//        });
+//        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "否", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//            }
+//        });
+//        dialog.show();
+
+//        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
+//        emailIntent.setType("message/rfc822");
+//        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"admin@jarvislin.com"});
+//        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "回報問題");
+//        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "對於蔬果行情站不是很滿意，我認為這麼做會更好：\n");
+//        getContext().startActivity(Intent.createChooser(emailIntent, "寫信給開發人員"));
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri data = Uri.parse("mailto:admin@jarvisllin.com?subject=" + "提供建議" + "&body=" + "對於蔬果行情站不是很滿意，我認為這麼做會更好：\n");
+        intent.setData(data);
+        getContext().startActivity(Intent.createChooser(intent, "提供建議給開發人員"));
     }
 
     private void showRatingDialog() {
         AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
         dialog.setTitle("系統訊息");
-        dialog.setMessage("謝謝您的支持，請問可以給我們一個評分當作鼓勵嗎");
+        dialog.setMessage("謝謝您，請問可以給行情站一個評分表示支持嗎？");
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "可以", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
