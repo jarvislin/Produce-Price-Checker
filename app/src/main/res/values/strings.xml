@@ -44,7 +44,7 @@
     <string name="pref_key_fruit_market">fruitMarketList</string>
     <string name="pref_key_vegetable_market">vegetableMarketList</string>
     <string name="token">c14f554a72062efdef37e29d9ab7fe15</string>
-    <string name="error_network">偵測不到網路, 請確認是否連上網路.</string>
+    <string name="error_network">網路狀況不佳, 請確認是否連上網路.</string>
     <string name="error_site">連不上網站, 請稍候再重新整理一次.</string>
     <string name="share_text">蔬果行情站可以查詢最新的蔬果價格，推薦你也來用用看：https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker</string>
     <string name="remove_bookmark">已移除重點標示</string>

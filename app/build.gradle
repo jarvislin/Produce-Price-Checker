@@ -72,4 +72,5 @@ dependencies {
         transitive = true
     }
     compile 'com.getbase:floatingactionbutton:1.10.0'
+    compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
 }

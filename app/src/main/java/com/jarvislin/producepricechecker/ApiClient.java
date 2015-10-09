@@ -23,6 +23,9 @@ public interface ApiClient extends RestClientErrorHandling {
     @Post("http://produce.jarvislin.com/provider")
     ArrayList<ApiProduce> getData(MultiValueMap<String, String> map);
 
+    @Get("https://raw.githubusercontent.com/jarvislin/Produce-Price-Data/master/{category}-{marketNumber}")
+    String getDataFromGitHub(String category, String marketNumber);
+
     @Get("http://m.coa.gov.tw/OpenData/FarmTransData.aspx?$top=10000&$skip=0&StartDate={startDate}&EndDate={endDate}&Crop={produceName}&Market={marketName}")
     String getOpenData(String startDate, String endDate, String produceName, String marketName);
 }

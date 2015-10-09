@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,8 @@ import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
 import com.jarvislin.producepricechecker.path.GsonParceler;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         if(drawer == null) {
             AccountHeader header = new AccountHeaderBuilder()
                     .withActivity(MainActivity.this)
-                    .withHeaderBackground(R.drawable.index_background)
+                    .withHeaderBackground(R.drawable.fruits_vegetable_food)
                     .withProfileImagesClickable(false)
                     .withProfileImagesVisible(false)
                     .withSelectionListEnabledForSingleProfile(false)
@@ -82,12 +85,28 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                     .withActivity(MainActivity.this)
                     .withToolbar(toolbar)
                     .addDrawerItems(
-                            new PrimaryDrawerItem().withName("行情表").withSetSelected(true),
-                            new PrimaryDrawerItem().withName("常見問題").withSelectable(false),
+                            new SecondaryDrawerItem().withName("行情表").withSetSelected(true).withSelectedTextColor(getResources().getColor(R.color.main_blue)).withIcon(new IconicsDrawable(this)
+                                    .icon(CommunityMaterial.Icon.cmd_format_list_bulleted)
+                                    .color(getResources().getColor(android.R.color.darker_gray))
+                                    .sizeDp(18)),
+                            new SecondaryDrawerItem().withName("常見問題").withSelectable(false).withIcon(new IconicsDrawable(this)
+                                            .icon(CommunityMaterial.Icon.cmd_help)
+                                            .color(getResources().getColor(android.R.color.darker_gray))
+                                            .sizeDp(18)
+                            ),
                             new DividerDrawerItem().withSelectable(false),
-                            new SecondaryDrawerItem().withName("分享").withSelectable(false),
-                            new SecondaryDrawerItem().withName("粉絲團").withSelectable(false),
-                            new SecondaryDrawerItem().withName("聯繫作者").withSelectable(false)
+                            new SecondaryDrawerItem().withName("分享").withSelectable(false).withIcon(new IconicsDrawable(this)
+                                    .icon(CommunityMaterial.Icon.cmd_share_variant)
+                                    .color(getResources().getColor(android.R.color.darker_gray))
+                                    .sizeDp(18)),
+                            new SecondaryDrawerItem().withName("粉絲團").withSelectable(false).withIcon(new IconicsDrawable(this)
+                                    .icon(CommunityMaterial.Icon.cmd_facebook)
+                                    .color(getResources().getColor(android.R.color.darker_gray))
+                                    .sizeDp(18)),
+                            new SecondaryDrawerItem().withName("聯繫作者").withSelectable(false).withIcon(new IconicsDrawable(this)
+                                    .icon(CommunityMaterial.Icon.cmd_comment_processing_outline)
+                                    .color(getResources().getColor(android.R.color.darker_gray))
+                                    .sizeDp(18))
                     )
                     .withOnDrawerNavigationListener(new Drawer.OnDrawerNavigationListener() {
                         @Override
