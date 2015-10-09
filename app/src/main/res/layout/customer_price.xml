@@ -78,6 +78,7 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             fab:fab_colorNormal="@color/white"
+            fab:fab_icon="@drawable/ic_check_blue_36dp"
             fab:fab_title="分類顯示"
             fab:fab_size="mini"
             fab:fab_colorPressed="@color/white_pressed"/>
