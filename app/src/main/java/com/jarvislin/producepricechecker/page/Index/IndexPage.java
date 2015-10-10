@@ -66,8 +66,9 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     @UiThread
     void showNews() {
         ToolsHelper.showDialog(getContext(), "新功能",
-                "1. 自動偵測新版本。\n" +
-                        "2. 修改版面。");
+                "1. 蔬菜頁面新增分類過濾以便快速查詢。\n" +
+                        "2. 版面調整。\n" +
+                        "3. 移除書籤功能，留下標示功能。");
         prefs.versionCode().put(BuildConfig.VERSION_CODE);
     }
 
@@ -115,7 +116,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
         int count = prefs.openAppCount().get();
         count++;
         prefs.openAppCount().put(count);
-        if (count > 2 && !prefs.hasShownRating().get() && ToolsHelper.isNetworkAvailable(getContext())) {
+        if (count > 15 && !prefs.hasShownRating().get() && ToolsHelper.isNetworkAvailable(getContext())) {
             // show dialog
             AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
             dialog.setTitle("系統訊息");
@@ -158,13 +159,6 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
 //        });
 //        dialog.show();
 
-//        final Intent emailIntent = new Intent(Intent.ACTION_SEND);
-//        emailIntent.setType("message/rfc822");
-//        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{"admin@jarvislin.com"});
-//        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "回報問題");
-//        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "對於蔬果行情站不是很滿意，我認為這麼做會更好：\n");
-//        getContext().startActivity(Intent.createChooser(emailIntent, "寫信給開發人員"));
-
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data = Uri.parse("mailto:admin@jarvisllin.com?subject=" + "提供建議" + "&body=" + "對於蔬果行情站不是很滿意，我認為這麼做會更好：\n");
         intent.setData(data);
@@ -174,7 +168,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     private void showRatingDialog() {
         AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
         dialog.setTitle("系統訊息");
-        dialog.setMessage("謝謝您，請問可以給行情站一個評分表示支持嗎？");
+        dialog.setMessage("謝謝您，請問可以給行情站一個好評分表示支持嗎？");
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "可以", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

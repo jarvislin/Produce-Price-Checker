@@ -83,6 +83,8 @@ public class IndexPresenter extends Presenter {
             if(!TextUtils.isEmpty(verName)) {
                 if(!BuildConfig.VERSION_NAME.equals(verName)) {
                     prefs.needToUpdate().put(true);
+                } else {
+                    prefs.needToUpdate().put(false);
                 }
             }
         } catch (IOException e) {
