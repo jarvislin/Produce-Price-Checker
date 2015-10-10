@@ -6,14 +6,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.UiThread;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.widget.FrameLayout;
 
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
 import com.jarvislin.producepricechecker.BuildConfig;
-import com.jarvislin.producepricechecker.SettingsActivity_;
 import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.path.HandlesBack;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
@@ -21,15 +19,10 @@ import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.sharedpreferences.Pref;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
-
-import java.io.IOException;
 
 import flow.path.Path;
 

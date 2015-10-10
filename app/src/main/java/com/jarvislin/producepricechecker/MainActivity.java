@@ -1,7 +1,6 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +24,6 @@ import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 

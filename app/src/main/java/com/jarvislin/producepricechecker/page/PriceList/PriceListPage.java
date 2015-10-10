@@ -5,13 +5,10 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,21 +33,10 @@ import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.PageListener;
-import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
-import com.jarvislin.producepricechecker.path.HandlesBack;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
-import com.jarvislin.producepricechecker.util.ToolsHelper;
-import com.mikepenz.materialdrawer.AccountHeader;
-import com.mikepenz.materialdrawer.AccountHeaderBuilder;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -64,7 +50,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import flow.Flow;
-import flow.History;
 
 /**
  * Created by jarvis on 15/9/25.

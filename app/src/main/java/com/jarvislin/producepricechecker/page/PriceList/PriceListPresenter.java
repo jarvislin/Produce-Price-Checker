@@ -5,7 +5,6 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jarvislin.producepricechecker.ApiClient;
-import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
@@ -21,8 +20,6 @@ import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.api.rest.RestErrorHandler;
 import org.springframework.core.NestedRuntimeException;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.List;

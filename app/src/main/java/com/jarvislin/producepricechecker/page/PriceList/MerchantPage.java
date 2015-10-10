@@ -2,17 +2,12 @@ package com.jarvislin.producepricechecker.page.PriceList;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.Menu;
-import android.widget.RelativeLayout;
 
-import com.jarvislin.producepricechecker.ActivityComponentHelper;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.adapter.MerchantAdapter;
 import com.jarvislin.producepricechecker.database.Produce;
-import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
-import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EView;
 
 import java.util.ArrayList;
