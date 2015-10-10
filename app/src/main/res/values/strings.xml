@@ -13,8 +13,8 @@
     <string name="mode">模式</string>
     <string name="back">返回</string>
     <string name="refresh">重新整理</string>
-    <string name="choose_fruit_market">選擇水果批發市場</string>
-    <string name="choose_vegetable_market">選擇蔬菜批發市場</string>
+    <string name="choose_fruit_market">選擇預設水果批發市場</string>
+    <string name="choose_vegetable_market">選擇預設蔬菜批發市場</string>
     <string name="choose_service">選擇開啟方式</string>
     <string name="unit">重量單位</string>
     <string name="customer_mode">消費者模式</string>
