@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="利潤範圍"
+        android:textColor="@color/main_blue"
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/light_blue" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最低利潤："
+            android:textColor="@color/main_blue"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/profit_low"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_grey"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="4dp"
+            android:textSize="20sp"
+            tools:text="30" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="％"
+            android:textColor="@color/main_blue"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="最高利潤："
+            android:textColor="@color/main_blue"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/profit_high"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:background="@color/light_grey"
+            android:gravity="center"
+            android:inputType="number"
+            android:padding="4dp"
+            android:textSize="20sp"
+            tools:text="50" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="％"
+            android:textColor="@color/main_blue"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:paddingBottom="16dp"
+        android:paddingLeft="16dp"
+        android:text="價格區間將套用此設定"
+        android:textColor="@color/actionbar_back"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ffdbdbdb" />
+
+    <Button
+        android:id="@+id/profit_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/press_effect_with_alpha"
+        android:padding="16dp"
+        android:text="送出"
+        android:textSize="14sp" />
+
+</LinearLayout>

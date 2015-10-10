@@ -1,0 +1,42 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <ListPreference
+        android:key="@string/pref_key_fruit_market"
+        android:title="@string/choose_fruit_market"
+        android:defaultValue="109"
+        android:summary="%s"
+        android:entries="@array/pref_fruit_market_titles"
+        android:entryValues="@array/pref_fruit_market_values"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <ListPreference
+        android:key="@string/pref_key_vegetable_market"
+        android:title="@string/choose_vegetable_market"
+        android:defaultValue="109"
+        android:summary="%s"
+        android:entries="@array/pref_vegetable_market_titles"
+        android:entryValues="@array/pref_vegetable_market_values"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null" />
+
+    <ListPreference
+        android:key="@string/pref_key_unit"
+        android:title="@string/unit"
+        android:defaultValue="0.6"
+        android:summary="%s"
+        android:entries="@array/pref_unit_titles"
+        android:entryValues="@array/pref_unit_values" />
+
+    <CheckBoxPreference
+        android:key="@string/pref_key_is_customer"
+        android:title="@string/customer_mode"
+        android:summary="@string/customer_mode_description"
+        android:defaultValue="true" />
+
+    <Preference
+        android:key="@string/pref_key_profit"
+        android:dependency="@string/pref_key_is_customer"
+        android:title="利潤範圍"/>
+
+</PreferenceScreen>

@@ -15,5 +15,9 @@ public interface ActivityComponentHelper {
 
     void hideToolbar();
 
-    void showToolbar(boolean showHomeAsUp);
+    void showToolbar(boolean showSpinner);
+
+    void showHamburger();
+
+    void showArrow();
 }

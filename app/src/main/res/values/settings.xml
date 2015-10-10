@@ -1,0 +1,72 @@
+<resources>
+    <string-array name="pref_fruit_market_titles">
+        <item>台北一市 萬華區</item>
+        <item>台北二市 中山區</item>
+        <item>新北市 三重區</item>
+        <item>宜蘭市</item>
+        <item>桃園縣</item>
+        <item>台中市</item>
+        <item>台中市 東勢區</item>
+        <item>嘉義市</item>
+        <item>高雄市</item>
+        <item>高雄市 鳳山區</item>
+        <item>台東市</item>
+    </string-array>
+    <string-array name="pref_fruit_market_values">
+        <item>109</item>
+        <item>104</item>
+        <item>241</item>
+        <item>260</item>
+        <item>338</item>
+        <item>400</item>
+        <item>423</item>
+        <item>600</item>
+        <item>800</item>
+        <item>830</item>
+        <item>930</item>
+    </string-array>
+
+    <string-array name="pref_vegetable_market_titles">
+        <item>台北一市 萬華區</item>
+        <item>台北二市 中山區</item>
+        <item>新北市 三重區</item>
+        <item>宜蘭市</item>
+        <item>桃園縣</item>
+        <item>台中市</item>
+        <item>彰化縣 溪湖鎮</item>
+        <item>彰化縣 永靖鄉</item>
+        <item>南投市</item>
+        <item>雲林縣 西螺鎮</item>
+        <item>高雄市</item>
+        <item>高雄市 鳳山區</item>
+        <item>屏東市</item>
+        <item>台東市</item>
+        <item>花蓮市</item>
+    </string-array>
+    <string-array name="pref_vegetable_market_values">
+        <item>109</item>
+        <item>104</item>
+        <item>241</item>
+        <item>260</item>
+        <item>338</item>
+        <item>400</item>
+        <item>514</item>
+        <item>512</item>
+        <item>540</item>
+        <item>648</item>
+        <item>800</item>
+        <item>830</item>
+        <item>900</item>
+        <item>930</item>
+        <item>950</item>
+    </string-array>
+
+    <string-array name="pref_unit_titles">
+        <item>公斤</item>
+        <item>台斤</item>
+    </string-array>
+    <string-array name="pref_unit_values">
+        <item>1.0</item>
+        <item>0.6</item>
+    </string-array>
+</resources>
