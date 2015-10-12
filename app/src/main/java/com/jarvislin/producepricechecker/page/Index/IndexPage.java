@@ -57,6 +57,8 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     protected void init() {
         if (prefs.versionCode().get() != BuildConfig.VERSION_CODE) {
             showNews();
+            prefs.versionCode().put(BuildConfig.VERSION_CODE);
+            prefs.needToUpdate().put(false);
         }
         if (prefs.needToUpdate().get() && ToolsHelper.isNetworkAvailable(getContext())) {
             showUpdate();
@@ -69,7 +71,6 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
                 "1. 蔬菜頁面新增分類過濾以便快速查詢。\n" +
                         "2. 版面調整。\n" +
                         "3. 移除書籤功能，留下標示功能。");
-        prefs.versionCode().put(BuildConfig.VERSION_CODE);
     }
 
 
