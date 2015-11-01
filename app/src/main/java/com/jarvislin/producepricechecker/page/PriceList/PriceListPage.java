@@ -37,6 +37,7 @@ import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
+import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -128,8 +129,10 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ToolsHelper.showProgressDialog(getContext(), true);
                 search.setIconified(true);
                 presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
+                ToolsHelper.closeProgressDialog(true);
             }
 
             @Override
@@ -138,8 +141,12 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             }
         });
 
+        String marketNumber = "";
+        if(presenter.isLoaderAlive()) {
+            marketNumber = presenter.getMarketNumber();
+        }
         //this will trigger onItemSelected
-        spinner.setSelection(presenter.getProduceData().getDefaultMarketTitlePosition(getContext()));
+        spinner.setSelection(presenter.getProduceData().getMarketTitlePosition(getContext(), marketNumber));
 
     }
 
@@ -168,7 +175,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     @Click
     protected void update() {
         GoogleAnalyticsSender.getInstance(getContext()).send("click_update");
-        presenter.loadData(presenter.getMarketNumber());
+        presenter.loadData();
         fab.collapse();
     }
 

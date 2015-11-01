@@ -58,7 +58,7 @@ public class IndexPresenter extends Presenter {
             checkLatestVersion();
         }
 
-        test();
+//        test();
 
     }
 
