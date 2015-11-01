@@ -40,7 +40,6 @@ public class DataLoader {
 
     public interface OnReceiveDataListener {
         void OnReceived(ArrayList<Produce> produces);
-
         void OnFailed();
     }
 
@@ -87,8 +86,8 @@ public class DataLoader {
         onReceiveDataListener.OnReceived(produces);
     }
 
-    @Background
-    protected void downloadData(boolean enableDatabaseUpdate) {
+
+    private void downloadData(boolean enableDatabaseUpdate) {
         ArrayList<ApiProduce> list = new Gson().fromJson(client.getDataFromGitHub(currentCategory, currentMarketNumber), new TypeToken<List<ApiProduce>>() {
         }.getType());
         ApiDataAdapter adapter = new ApiDataAdapter(list);
@@ -98,8 +97,8 @@ public class DataLoader {
         }
     }
 
-    @Background
-    protected void updateDatabase(ArrayList<Produce> produces) {
+
+    private void updateDatabase(ArrayList<Produce> produces) {
         if (produces != null && !produces.isEmpty()) {
             DatabaseController.clearTable(currentCategory, currentMarketNumber);
             for (Produce produce : produces) {

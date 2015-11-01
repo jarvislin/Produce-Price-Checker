@@ -50,12 +50,15 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     }
 
 
+    @Background
     public void loadData(String marketNumber) {
+        ToolsHelper.showProgressDialog(getContext(), false);
         dataLoader.setOnReceiveDataListener(this);
         dataLoader.loadData(getContext(), path.getData().getCategory(), marketNumber, path.getData().getUpdateDate(marketNumber), path.getData().getBookmarkCategory(), true);
+        ToolsHelper.closeProgressDialog(false);
     }
 
-
+    @Background
     public void loadData() {
         dataLoader.setOnReceiveDataListener(this);
         ToolsHelper.showProgressDialog(getContext(), false);
