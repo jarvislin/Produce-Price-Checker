@@ -3,31 +3,19 @@ package com.jarvislin.producepricechecker.page.PriceList;
 import android.view.View;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.bean.DataLoader;
-import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
-import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.path.HandlesBack;
-import com.jarvislin.producepricechecker.util.ApiDataAdapter;
-import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
-import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.rest.RestService;
-import org.androidannotations.api.rest.RestErrorHandler;
-import org.springframework.core.NestedRuntimeException;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import flow.Flow;
 import flow.History;
@@ -54,7 +42,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     public void loadData(String marketNumber) {
         ToolsHelper.showProgressDialog(getContext(), false);
         dataLoader.setOnReceiveDataListener(this);
-        dataLoader.loadData(getContext(), path.getData().getCategory(), marketNumber, path.getData().getUpdateDate(marketNumber), path.getData().getBookmarkCategory(), true);
+        dataLoader.loadLatestData(getContext(), path.getData().getCategory(), marketNumber, path.getData().getUpdateDate(marketNumber), path.getData().getBookmarkCategory());
         ToolsHelper.closeProgressDialog(false);
     }
 
@@ -62,7 +50,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     public void loadData() {
         dataLoader.setOnReceiveDataListener(this);
         ToolsHelper.showProgressDialog(getContext(), false);
-        dataLoader.loadData(getContext(), "", "", "", "", true);
+        dataLoader.loadLatestData(getContext(), "", "", "", "");
         ToolsHelper.closeProgressDialog(false);
     }
 

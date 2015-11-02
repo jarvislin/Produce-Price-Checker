@@ -40,6 +40,7 @@ public class DataLoader {
 
     public interface OnReceiveDataListener {
         void OnReceived(ArrayList<Produce> produces);
+
         void OnFailed();
     }
 
@@ -58,7 +59,7 @@ public class DataLoader {
         });
     }
 
-    public void loadData(Context context, String category, String marketNumber, String updateDate, String bookmarkCategory, boolean enableUpdate) {
+    public void loadLatestData(Context context, String category, String marketNumber, String updateDate, String bookmarkCategory) {
         if (!TextUtils.isEmpty(category) && !TextUtils.isEmpty(marketNumber) && !TextUtils.isEmpty(bookmarkCategory)) {
             currentMarketNumber = marketNumber;
             currentCategory = category;
@@ -71,7 +72,7 @@ public class DataLoader {
             loadClientData();
         } else if (ToolsHelper.isNetworkAvailable(context)) {
             //download latest data
-            downloadData(enableUpdate);
+            downloadData();
         } else if (DatabaseController.getProduces(currentCategory, currentMarketNumber).size() > 0) {
             //load client data in DB
             loadClientData();
@@ -87,14 +88,21 @@ public class DataLoader {
     }
 
 
-    private void downloadData(boolean enableDatabaseUpdate) {
-        ArrayList<ApiProduce> list = new Gson().fromJson(client.getDataFromGitHub(currentCategory, currentMarketNumber), new TypeToken<List<ApiProduce>>() {
+    private void downloadData() {
+        ArrayList<ApiProduce> list = new Gson().fromJson(client.getDataFromGitHub(currentCategory, currentMarketNumber)
+                , new TypeToken<List<ApiProduce>>() {
         }.getType());
         ApiDataAdapter adapter = new ApiDataAdapter(list);
         onReceiveDataListener.OnReceived(adapter.getDataList());
-        if (enableDatabaseUpdate) {
-            updateDatabase(adapter.getDataList());
-        }
+        updateDatabase(adapter.getDataList());
+    }
+
+    public void downloadHistory(String category, String marketNumber, String year, String date) {
+        ArrayList<ApiProduce> list = new Gson().fromJson(client.getHistoryDataFromGitHub(category, marketNumber, year, date)
+                , new TypeToken<List<ApiProduce>>() {
+        }.getType());
+        ApiDataAdapter adapter = new ApiDataAdapter(list);
+        onReceiveDataListener.OnReceived(adapter.getDataList());
     }
 
 
