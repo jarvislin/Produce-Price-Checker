@@ -9,6 +9,7 @@ import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
+import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.util.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -97,14 +98,18 @@ public class DataLoader {
         updateDatabase(adapter.getDataList());
     }
 
-    public void downloadHistory(String category, String marketNumber, String year, String date) {
-        ArrayList<ApiProduce> list = new Gson().fromJson(client.getHistoryDataFromGitHub(category, marketNumber, year, date)
+    public ArrayList<Produce> getHistory(String year, String date) {
+        ArrayList<ApiProduce> list = new Gson().fromJson(client.getHistoryDataFromGitHub(currentCategory, currentMarketNumber, year, date)
                 , new TypeToken<List<ApiProduce>>() {
         }.getType());
         ApiDataAdapter adapter = new ApiDataAdapter(list);
-        onReceiveDataListener.OnReceived(adapter.getDataList());
+        return adapter.getDataList();
     }
 
+    public HistoryDirectory getHistoryDirectory() {
+        String json = client.getHistoryDirectoryFromGitHub(currentCategory, currentMarketNumber);
+        return new Gson().fromJson(json, HistoryDirectory.class);
+    }
 
     private void updateDatabase(ArrayList<Produce> produces) {
         if (produces != null && !produces.isEmpty()) {

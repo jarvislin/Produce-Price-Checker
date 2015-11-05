@@ -79,4 +79,5 @@ dependencies {
     }
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
+    compile 'com.squareup:android-times-square:1.6.4@aar'
 }

@@ -1,10 +1,14 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
+import com.jarvislin.producepricechecker.ApiClient;
+import com.jarvislin.producepricechecker.MainActivity_;
 import com.jarvislin.producepricechecker.bean.DataLoader;
 import com.jarvislin.producepricechecker.database.Produce;
+import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
@@ -14,6 +18,7 @@ import com.jarvislin.producepricechecker.util.ToolsHelper;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.rest.RestService;
 
 import java.util.ArrayList;
 
@@ -81,5 +86,26 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     public boolean onBackPressed() {
         Flow.get(getContext()).setHistory(History.single(new IndexPath()), Flow.Direction.BACKWARD);
         return false;
+    }
+
+    @Background
+    public void fetchHistoryDirectory() {
+        ToolsHelper.showProgressDialog(getContext(), false);
+        HistoryDirectory directory = dataLoader.getHistoryDirectory();
+        ToolsHelper.closeProgressDialog(false);
+        if(directory != null) {
+            page.showHistoryDialog(directory);
+        }
+    }
+
+    @Background
+    public void fetchHistory(String year, String date) {
+        ToolsHelper.showProgressDialog(getContext(), false);
+        ArrayList<Produce> list = dataLoader.getHistory(year, date);
+        ToolsHelper.closeProgressDialog(false);
+        Intent intent = new Intent();
+        intent.setClass(getContext(), MainActivity_.class);
+        intent.putExtra("produces", list);
+        getContext().startActivity(intent);
     }
 }

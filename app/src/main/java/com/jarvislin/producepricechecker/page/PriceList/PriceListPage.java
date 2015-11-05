@@ -1,12 +1,16 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -27,10 +31,12 @@ import android.widget.Toast;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
+import com.jarvislin.producepricechecker.Events;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
+import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.util.Constants;
@@ -38,6 +44,7 @@ import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
+import com.squareup.timessquare.CalendarPickerView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -48,15 +55,21 @@ import org.androidannotations.annotations.ViewById;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 
+import de.greenrobot.event.EventBus;
 import flow.Flow;
+
+import static android.widget.Toast.LENGTH_SHORT;
 
 /**
  * Created by jarvis on 15/9/25.
  */
 @EView
 public abstract class PriceListPage extends RelativeLayout implements PageListener, CompoundButton.OnCheckedChangeListener {
+    private Activity activity;
     @Bean
     PriceListPresenter presenter;
     @ViewById
@@ -67,9 +80,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     FloatingActionsMenu fab;
     @ViewById
     FloatingActionButton subcategoryFilter;
-
     @Pref
     Preferences_ prefs;
+
 
     private ArrayList<Produce> produces;
     private ArrayList<Produce> filterList;
@@ -84,10 +97,13 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     }
 
     abstract protected CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ prefs, String bookmarkCategory);
+    abstract protected boolean enableSpinner();
 
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
+        activity = componentHelper.getActivity();
+        EventBus.getDefault().register(this);
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
         componentHelper.showToolbar(true);
         componentHelper.showHamburger();
@@ -120,33 +136,35 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             }
         });
 
-        // init Spinner
-        Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
-        String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                ToolsHelper.showProgressDialog(getContext(), true);
-                search.setIconified(true);
-                presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
-                ToolsHelper.closeProgressDialog(true);
+        if(enableSpinner()) {
+            // init Spinner
+            Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
+            String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner, array);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    ToolsHelper.showProgressDialog(getContext(), true);
+                    search.setIconified(true);
+                    presenter.loadData(getResources().getStringArray(presenter.getProduceData().getMarketNumbersResId())[position]);
+                    ToolsHelper.closeProgressDialog(true);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+            String marketNumber = "";
+            if (presenter.isLoaderAlive()) {
+                marketNumber = presenter.getMarketNumber();
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-        String marketNumber = "";
-        if(presenter.isLoaderAlive()) {
-            marketNumber = presenter.getMarketNumber();
+            //this will trigger onItemSelected
+            spinner.setSelection(presenter.getProduceData().getMarketTitlePosition(getContext(), marketNumber));
         }
-        //this will trigger onItemSelected
-        spinner.setSelection(presenter.getProduceData().getMarketTitlePosition(getContext(), marketNumber));
 
     }
 
@@ -303,11 +321,8 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         };
     }
 
-    protected void openBookmark() {
-//        Intent intent = new Intent();
-//        intent.putExtra("category", getCategory());
-//        intent.setClass(this, CustomerBookmarkActivity_.class);
-//        startActivityForResult(intent, 0);
+    public void onEvent(Events.onHistoryClicked event) {
+        presenter.fetchHistoryDirectory();
     }
 
     @UiThread
@@ -315,7 +330,6 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         String unitText = (prefs.unit().get() < 1 ? "元/台斤" : "元/公斤");
         bottomInfo.setText("日期：" + DateUtil.getOffsetInWords(DateUtil.getOffset(produces.get(0).transactionDate)) + "　單位：" + unitText);
     }
-
 
 
     public ArrayList<Produce> getListBySubcategory(int id) {
@@ -363,4 +377,72 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             fab.setVisibility(GONE);
         }
     };
+
+    @UiThread
+    public void showHistoryDialog(final HistoryDirectory directory) {
+        final CalendarPickerView pickerView = (CalendarPickerView) activity.getLayoutInflater().inflate(R.layout.dialog_customized, null, false);
+        AlertDialog dialog = new AlertDialog.Builder(getContext()) //
+                .setView(pickerView)
+                .setNeutralButton("關閉", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .create();
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialogInterface) {
+                pickerView.fixDialogDimens();
+            }
+        });
+        dialog.show();
+
+        final Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DATE, 1);
+        pickerView.init(directory.getMinDate(), calendar.getTime())
+                .inMode(CalendarPickerView.SelectionMode.SINGLE)
+                .withHighlightedDates(directory.getAllDates());
+
+        pickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(Date date) {
+                calendar.setTime(date);
+                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+                month = month.length() < 2 ? "0" + month : month;
+                day = day.length() < 2 ? "0" + day : day;
+                presenter.fetchHistory(String.valueOf(calendar.get(Calendar.YEAR) - 1911), month + "." + day);
+            }
+
+            @Override
+            public void onDateUnselected(Date date) {
+
+            }
+        });
+
+        pickerView.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+            @Override
+            public boolean isDateSelectable(Date date) {
+                for (Date data : directory.getAllDates()) {
+                    if (data.getTime() / 1000 == date.getTime() / 1000) return true;
+                }
+                return false;
+            }
+        });
+        pickerView.setOnInvalidDateSelectedListener(new CalendarPickerView.OnInvalidDateSelectedListener() {
+            @Override
+            public void onInvalidDateSelected(Date date) {
+                presenter.showToast("此日期無行情資料。", Toast.LENGTH_SHORT);
+            }
+        });
+
+        calendar.clear();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        EventBus.getDefault().unregister(this);
+        super.onDetachedFromWindow();
+    }
 }

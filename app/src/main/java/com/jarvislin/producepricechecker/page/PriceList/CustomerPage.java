@@ -29,11 +29,10 @@ public class CustomerPage extends PriceListPage {
         return new CustomerAdapter(context, list, prefs, bookmarkCategory);
     }
 
-
-
-
-
-
+    @Override
+    protected boolean enableSpinner() {
+        return true;
+    }
 
 
 }
