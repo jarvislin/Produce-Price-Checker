@@ -10,15 +10,20 @@ import com.jarvislin.producepricechecker.bean.DataLoader;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
+import com.jarvislin.producepricechecker.page.History.CustomerHistoryPath;
+import com.jarvislin.producepricechecker.page.History.MerchantHistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.path.HandlesBack;
+import com.jarvislin.producepricechecker.util.Constants;
+import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
+import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
 
@@ -35,6 +40,8 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     private ProduceDataGetter path;
     @Bean
     protected DataLoader dataLoader;
+    @Pref
+    protected Preferences_ preferences;
 
     @Override
     protected void init(Path path, View view) {
@@ -105,7 +112,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ToolsHelper.closeProgressDialog(false);
         Intent intent = new Intent();
         intent.setClass(getContext(), MainActivity_.class);
-        intent.putExtra("produces", list);
+        intent.putExtra("path", (preferences.userMode().get().equals(Constants.CUSTOMER)) ? new CustomerHistoryPath(list) : new MerchantHistoryPath(list));
         getContext().startActivity(intent);
     }
 }

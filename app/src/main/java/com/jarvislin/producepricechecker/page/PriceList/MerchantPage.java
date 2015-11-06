@@ -35,4 +35,9 @@ public class MerchantPage extends PriceListPage {
         return true;
     }
 
+    @Override
+    protected boolean enableRefresh() {
+        return true;
+    }
+
 }

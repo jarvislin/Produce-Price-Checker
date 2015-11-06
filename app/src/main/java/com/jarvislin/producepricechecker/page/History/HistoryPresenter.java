@@ -2,9 +2,12 @@ package com.jarvislin.producepricechecker.page.History;
 
 import android.view.View;
 
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.page.Presenter;
 
 import org.androidannotations.annotations.EBean;
+
+import java.util.ArrayList;
 
 import flow.path.Path;
 
@@ -14,10 +17,14 @@ import flow.path.Path;
 @EBean
 public class HistoryPresenter extends Presenter{
     private HistoryPage page;
-    private ProduceListGetter path;
+    private HistoryPath path;
     @Override
     protected void init(Path path, View view) {
-        this.path = (ProduceListGetter) path;
+        this.path = (HistoryPath) path;
         this.page = (HistoryPage) view;
+    }
+
+    public ArrayList<Produce> getProduces(){
+        return path.getList();
     }
 }

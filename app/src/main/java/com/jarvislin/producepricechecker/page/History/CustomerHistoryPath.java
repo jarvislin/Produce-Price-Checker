@@ -11,14 +11,10 @@ import flow.path.Path;
 /**
  * Created by jarvis on 15/11/5.
  */
-@PathLayout(R.layout.customer_price)
-public class CustomerHistoryPath extends Path implements ProduceListGetter {
-    private ArrayList<Produce> list;
+@PathLayout(R.layout.customer_history)
+public class CustomerHistoryPath extends HistoryPath {
+
     public CustomerHistoryPath(ArrayList<Produce> list) {
-        this.list = list;
-    }
-    @Override
-    public ArrayList<Produce> getProduces() {
-        return list;
+        super(list);
     }
 }

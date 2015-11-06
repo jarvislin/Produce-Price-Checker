@@ -71,17 +71,19 @@ import static android.widget.Toast.LENGTH_SHORT;
 public abstract class PriceListPage extends RelativeLayout implements PageListener, CompoundButton.OnCheckedChangeListener {
     private Activity activity;
     @Bean
-    PriceListPresenter presenter;
+    protected PriceListPresenter presenter;
     @ViewById
-    ListView dataList;
+    protected ListView dataList;
     @ViewById
-    TextView bottomInfo;
+    protected TextView bottomInfo;
     @ViewById
-    FloatingActionsMenu fab;
+    protected FloatingActionsMenu fab;
     @ViewById
-    FloatingActionButton subcategoryFilter;
+    protected FloatingActionButton subcategoryFilter;
+    @ViewById
+    protected FloatingActionButton update;
     @Pref
-    Preferences_ prefs;
+    protected Preferences_ prefs;
 
 
     private ArrayList<Produce> produces;
@@ -98,6 +100,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     abstract protected CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ prefs, String bookmarkCategory);
     abstract protected boolean enableSpinner();
+    abstract protected boolean enableRefresh();
 
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
@@ -107,6 +110,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
         componentHelper.showToolbar(true);
         componentHelper.showHamburger();
+        update.setVisibility(enableRefresh() ? VISIBLE : GONE);
     }
 
     @Override

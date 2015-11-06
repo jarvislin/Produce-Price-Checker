@@ -6,25 +6,19 @@ import android.view.Menu;
 import android.widget.RelativeLayout;
 
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
-import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
-import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.page.PageListener;
-import com.jarvislin.producepricechecker.page.PriceList.PriceListPage;
-import com.jarvislin.producepricechecker.util.Preferences_;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EView;
-import org.androidannotations.annotations.UiThread;
-
-import java.util.ArrayList;
 
 import flow.path.Path;
 
 /**
- * Created by jarvis on 15/11/5.
+ * Created by jarvis on 15/11/6.
  */
 @EView
-public class HistoryPage extends PriceListPage implements PageListener{
+abstract class HistoryPage extends RelativeLayout implements PageListener{
     @Bean
     protected HistoryPresenter presenter;
     public HistoryPage(Context context, AttributeSet attrs) {
@@ -33,18 +27,9 @@ public class HistoryPage extends PriceListPage implements PageListener{
     }
 
     @Override
-    protected CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ prefs, String bookmarkCategory) {
-        return null;
-    }
-
-    @Override
-    protected boolean enableSpinner() {
-        return false;
-    }
-
-    @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
+        init();
     }
 
     @Override
@@ -52,10 +37,5 @@ public class HistoryPage extends PriceListPage implements PageListener{
 
     }
 
-    @UiThread
-    @Override
-    protected void handleData(ArrayList<Produce> list) {
-
-        super.handleData(list);
-    }
+    abstract void init();
 }

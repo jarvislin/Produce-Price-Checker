@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 
+import com.jarvislin.producepricechecker.page.History.HistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
 import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
@@ -29,6 +30,7 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import de.greenrobot.event.EventBus;
@@ -44,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     Toolbar toolbar;
     @ViewById(R.id.container)
     FrameLayoutContainerView container;
+    @Extra
+    protected HistoryPath path;
     private Drawer drawer;
 
     @Override
@@ -58,9 +62,15 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
-                , new GsonParceler(), History.single(new IndexPath()), this);
+                , new GsonParceler(), History.single(getFirstPath()), this);
 
         drawer = getDrawer();
+    }
+
+    private Object getFirstPath() {
+        if(path!=null)
+            path.getList();
+        return (path == null) ? new IndexPath() : path;
     }
 
     private Drawer getDrawer() {
