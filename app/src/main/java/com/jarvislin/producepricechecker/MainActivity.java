@@ -37,6 +37,7 @@ import de.greenrobot.event.EventBus;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
+import flow.path.Path;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, ActivityComponentHelper {
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     @ViewById(R.id.container)
     FrameLayoutContainerView container;
     @Extra
-    protected HistoryPath path;
+    protected HistoryPath historyPath;
     private Drawer drawer;
 
     @Override
@@ -67,10 +68,8 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         drawer = getDrawer();
     }
 
-    private Object getFirstPath() {
-        if(path!=null)
-            path.getList();
-        return (path == null) ? new IndexPath() : path;
+    private Path getFirstPath() {
+        return (historyPath == null) ? new IndexPath() : historyPath;
     }
 
     private Drawer getDrawer() {

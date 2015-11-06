@@ -112,7 +112,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ToolsHelper.closeProgressDialog(false);
         Intent intent = new Intent();
         intent.setClass(getContext(), MainActivity_.class);
-        intent.putExtra("path", (preferences.userMode().get().equals(Constants.CUSTOMER)) ? new CustomerHistoryPath(list) : new MerchantHistoryPath(list));
+        intent.putExtra("historyPath", (preferences.userMode().get().equals(Constants.CUSTOMER)) ? new CustomerHistoryPath(list) : new MerchantHistoryPath(list));
         getContext().startActivity(intent);
     }
 }
