@@ -72,16 +72,6 @@
             fab:fab_colorPressed="@color/white_pressed"/>
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/update"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/white"
-            fab:fab_icon="@drawable/ic_refresh_blue_36dp"
-            fab:fab_size="mini"
-            fab:fab_title="重新整理"
-            fab:fab_colorPressed="@color/white_pressed"/>
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/subcategory_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

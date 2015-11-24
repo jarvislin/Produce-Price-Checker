@@ -5,6 +5,8 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.ApiClient;
+import com.jarvislin.producepricechecker.BlankActivity;
+import com.jarvislin.producepricechecker.BlankActivity_;
 import com.jarvislin.producepricechecker.MainActivity_;
 import com.jarvislin.producepricechecker.bean.DataLoader;
 import com.jarvislin.producepricechecker.database.Produce;
@@ -111,7 +113,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ArrayList<Produce> list = dataLoader.getHistory(year, date);
         ToolsHelper.closeProgressDialog(false);
         Intent intent = new Intent();
-        intent.setClass(getContext(), MainActivity_.class);
+        intent.setClass(getContext(), BlankActivity_.class);
         intent.putExtra("historyPath", (preferences.userMode().get().equals(Constants.CUSTOMER)) ? new CustomerHistoryPath(list) : new MerchantHistoryPath(list));
         getContext().startActivity(intent);
     }

@@ -2,8 +2,10 @@ package com.jarvislin.producepricechecker.page.History;
 
 import android.view.View;
 
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.page.Presenter;
+import com.jarvislin.producepricechecker.util.Constants;
 
 import org.androidannotations.annotations.EBean;
 
@@ -25,6 +27,21 @@ public class HistoryPresenter extends Presenter{
     }
 
     public ArrayList<Produce> getProduces(){
-        return path.getList();
+        return new ArrayList<>(path.getList());
+    }
+
+    public String getMarketName() {
+        String currentNumber = path.getList().get(0).marketNumber;
+        boolean isFruit = path.getList().get(0).mainCategory.equals(Constants.FRUIT);
+        String[] markets = getContext().getResources().getStringArray(isFruit ? R.array.pref_fruit_market_titles : R.array.pref_vegetable_market_titles);
+        String[] numbers = getContext().getResources().getStringArray(isFruit ? R.array.pref_fruit_market_values : R.array.pref_vegetable_market_values);
+        for(int i = 0 ; i < markets.length ; i++){
+            if(numbers[i].equals(currentNumber)) return markets[i];
+        }
+        return "";
+    }
+
+    public String getDate() {
+        return path.getList().get(0).transactionDate;
     }
 }

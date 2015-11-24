@@ -9,18 +9,17 @@
         android:name=".Application"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
-        android:largeHeap="true"
         android:icon="@drawable/tomato"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".MainActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             android:label="@string/app_name" >
             <intent-filter>
-
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -30,8 +29,11 @@
             android:name=".SettingsActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             android:label="@string/app_name" >
+        </activity>
+        <activity android:name=".BlankActivity_"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

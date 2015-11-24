@@ -24,12 +24,28 @@ public class HistoryDirectory implements Serializable {
     }
 
     public Date getMinDate() {
-        return history[0].getDate().get(0);
+        int minYearOfIndex = 0;
+        int min = Integer.parseInt(history[0].getYear());
+        for(int i = 0 ; i < history.length; i++) {
+            if(min > Integer.parseInt(history[i].getYear())) {
+                min = Integer.parseInt(history[i].getYear());
+                minYearOfIndex = i;
+            }
+        }
+        return history[minYearOfIndex].getDate().get(0);
     }
 
     public Date getMaxDate() {
-        int size = history[history.length - 1].getDate().size();
-        return history[history.length - 1].getDate().get(size - 1);
+        int maxYearOfIndex = 0;
+        int max = Integer.parseInt(history[0].getYear());
+        for(int i = 0 ; i < history.length; i++) {
+            if(max < Integer.parseInt(history[i].getYear())) {
+                max = Integer.parseInt(history[i].getYear());
+                max = i;
+            }
+        }
+        int size = history[maxYearOfIndex].getDate().size();
+        return history[maxYearOfIndex].getDate().get(size - 1);
     }
 
     public ArrayList<Date> getAllDates() {
