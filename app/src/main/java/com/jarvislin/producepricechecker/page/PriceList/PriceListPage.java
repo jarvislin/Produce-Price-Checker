@@ -34,6 +34,7 @@ import com.jarvislin.producepricechecker.ActivityComponentHelper;
 import com.jarvislin.producepricechecker.Events;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
+import com.jarvislin.producepricechecker.custom.CalendarDialog;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
@@ -384,64 +385,80 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @UiThread
     public void showHistoryDialog(final HistoryDirectory directory) {
-        final CalendarPickerView pickerView = (CalendarPickerView) activity.getLayoutInflater().inflate(R.layout.dialog_customized, null, false);
-        AlertDialog dialog = new AlertDialog.Builder(getContext()) //
-                .setView(pickerView)
-                .setNeutralButton("關閉", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.dismiss();
-                    }
-                })
-                .create();
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-            @Override
-            public void onShow(DialogInterface dialogInterface) {
-                pickerView.fixDialogDimens();
-            }
-        });
-        dialog.show();
-
-        final Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, 1);
-        pickerView.init(directory.getMinDate(), calendar.getTime())
-                .inMode(CalendarPickerView.SelectionMode.SINGLE)
-                .withHighlightedDates(directory.getAllDates());
-
-        pickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
-            @Override
-            public void onDateSelected(Date date) {
-                calendar.setTime(date);
-                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
-                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
-                month = month.length() < 2 ? "0" + month : month;
-                day = day.length() < 2 ? "0" + day : day;
-                presenter.fetchHistory(String.valueOf(calendar.get(Calendar.YEAR) - 1911), month + "." + day);
-            }
-
-            @Override
-            public void onDateUnselected(Date date) {
-
-            }
-        });
-
-        pickerView.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
-            @Override
-            public boolean isDateSelectable(Date date) {
-                for (Date data : directory.getAllDates()) {
-                    if (data.getTime() / 1000 == date.getTime() / 1000) return true;
-                }
-                return false;
-            }
-        });
-        pickerView.setOnInvalidDateSelectedListener(new CalendarPickerView.OnInvalidDateSelectedListener() {
-            @Override
-            public void onInvalidDateSelected(Date date) {
-                presenter.showToast("此日期無行情資料。", Toast.LENGTH_SHORT);
-            }
-        });
-
-        calendar.clear();
+        new CalendarDialog(getContext(), directory).show();
+//        ToolsHelper.showProgressDialog(getContext(), true);
+//        final CalendarPickerView pickerView = (CalendarPickerView) activity.getLayoutInflater().inflate(R.layout.dialog_customized, null, false);
+//        AlertDialog dialog = new AlertDialog.Builder(getContext()) //
+//                .setView(pickerView)
+//                .setNeutralButton("關閉", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialogInterface, int i) {
+//                        dialogInterface.dismiss();
+//                    }
+//                })
+//                .create();
+//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//            @Override
+//            public void onShow(DialogInterface dialogInterface) {
+//                pickerView.fixDialogDimens();
+//            }
+//        });
+//
+//        dialog.show();
+//
+//        final Calendar calendar = Calendar.getInstance();
+//        calendar.add(Calendar.DATE, 1);
+//        pickerView.init(directory.getMinDate(), calendar.getTime())
+//                .inMode(CalendarPickerView.SelectionMode.SINGLE)
+//                .withHighlightedDates(directory.getAllDates());
+//
+//        pickerView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//
+//            }
+//        });
+//
+//        pickerView.setOnDateSelectedListener(new CalendarPickerView.OnDateSelectedListener() {
+//            @Override
+//            public void onDateSelected(Date date) {
+//                calendar.setTime(date);
+//                String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+//                String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+//                month = month.length() < 2 ? "0" + month : month;
+//                day = day.length() < 2 ? "0" + day : day;
+//                presenter.fetchHistory(String.valueOf(calendar.get(Calendar.YEAR) - 1911), month + "." + day);
+//            }
+//
+//            @Override
+//            public void onDateUnselected(Date date) {
+//
+//            }
+//        });
+//
+//        pickerView.setDateSelectableFilter(new CalendarPickerView.DateSelectableFilter() {
+//            @Override
+//            public boolean isDateSelectable(Date date) {
+//                for (Date data : directory.getAllDates()) {
+//                    if (data.getTime() / 1000 == date.getTime() / 1000) return true;
+//                }
+//                return false;
+//            }
+//        });
+//        pickerView.setOnInvalidDateSelectedListener(new CalendarPickerView.OnInvalidDateSelectedListener() {
+//            @Override
+//            public void onInvalidDateSelected(Date date) {
+//                presenter.showToast("此日期無行情資料。", Toast.LENGTH_SHORT);
+//            }
+//        });
+//
+//        calendar.clear();
+//        ToolsHelper.closeProgressDialog(true);
     }
 
     @Override

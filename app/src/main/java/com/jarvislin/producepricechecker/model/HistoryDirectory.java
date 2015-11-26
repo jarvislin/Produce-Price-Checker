@@ -26,8 +26,8 @@ public class HistoryDirectory implements Serializable {
     public Date getMinDate() {
         int minYearOfIndex = 0;
         int min = Integer.parseInt(history[0].getYear());
-        for(int i = 0 ; i < history.length; i++) {
-            if(min > Integer.parseInt(history[i].getYear())) {
+        for (int i = 0; i < history.length; i++) {
+            if (min > Integer.parseInt(history[i].getYear())) {
                 min = Integer.parseInt(history[i].getYear());
                 minYearOfIndex = i;
             }
@@ -38,10 +38,10 @@ public class HistoryDirectory implements Serializable {
     public Date getMaxDate() {
         int maxYearOfIndex = 0;
         int max = Integer.parseInt(history[0].getYear());
-        for(int i = 0 ; i < history.length; i++) {
-            if(max < Integer.parseInt(history[i].getYear())) {
+        for (int i = 0; i < history.length; i++) {
+            if (max < Integer.parseInt(history[i].getYear())) {
                 max = Integer.parseInt(history[i].getYear());
-                max = i;
+                maxYearOfIndex = i;
             }
         }
         int size = history[maxYearOfIndex].getDate().size();
@@ -52,8 +52,22 @@ public class HistoryDirectory implements Serializable {
         ArrayList<Date> list = new ArrayList<>();
         for (History history : this.history) {
             list.addAll(history.getDate());
+            break;
         }
         return list;
+    }
+
+    public boolean exist(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year,month,day,0,0,0);
+        for (History history : this.history) {
+            if (Integer.parseInt(history.getYear()) == year - 1911) {
+                for(Date date : history.getDate()) {
+                    if(date.getTime() /1000 == calendar.getTime().getTime() / 1000) return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override

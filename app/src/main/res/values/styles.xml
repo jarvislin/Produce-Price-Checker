@@ -83,4 +83,9 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/white</item>
     </style>
+
+    <style name="CustomDayTextAppearance"
+        parent="TextAppearance.AppCompat.Medium">
+        <item name="android:textColor">@color/mcv_text_date_light</item>
+    </style>
 </resources>
