@@ -59,6 +59,10 @@ public class CalendarDialog implements OnDateSelectedListener {
         listener.onDateClicked(date);
     }
 
+    public void setHistory(HistoryDirectory directory) {
+        historyDirectory = directory;
+    }
+
 
     private class DisableDecorator implements DayViewDecorator {
 
