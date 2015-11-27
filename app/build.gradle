@@ -61,13 +61,13 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.1.0'
-    compile 'com.google.android.gms:play-services-analytics:8.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     apt 'com.raizlabs.android:DBFlow-Compiler:2.1.0'
     compile 'com.raizlabs.android:DBFlow-Core:2.1.0'
     compile 'com.raizlabs.android:DBFlow:2.1.0'
-    compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.google.code.gson:gson:2.4'
     compile 'com.squareup.flow:flow:0.10'
     compile 'com.squareup.flow:flow-path:0.10'
     compile 'org.jsoup:jsoup:1.8.3'
@@ -79,6 +79,5 @@ dependencies {
     }
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
-    compile 'com.squareup:android-times-square:1.6.4@aar'
     compile 'com.prolificinteractive:material-calendarview:1.1.0'
 }

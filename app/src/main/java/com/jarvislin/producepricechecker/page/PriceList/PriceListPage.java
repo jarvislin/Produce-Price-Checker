@@ -45,7 +45,7 @@ import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.GoogleAnalyticsSender;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
-import com.squareup.timessquare.CalendarPickerView;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Bean;
@@ -69,7 +69,7 @@ import static android.widget.Toast.LENGTH_SHORT;
  * Created by jarvis on 15/9/25.
  */
 @EView
-public abstract class PriceListPage extends RelativeLayout implements PageListener, CompoundButton.OnCheckedChangeListener {
+public abstract class PriceListPage extends RelativeLayout implements PageListener, CompoundButton.OnCheckedChangeListener, CalendarDialog.OnClickDateListener {
     private Activity activity;
     @Bean
     protected PriceListPresenter presenter;
@@ -94,13 +94,16 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     private ArrayList<CheckBox> checkBoxes = new ArrayList<>();
     private Dialog dialog;
     private Handler uiHandler;
+    private CalendarDialog historyDialog;
 
     public PriceListPage(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
 
     abstract protected CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ prefs, String bookmarkCategory);
+
     abstract protected boolean enableSpinner();
+
     abstract protected boolean enableRefresh();
 
     @Override
@@ -141,7 +144,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             }
         });
 
-        if(enableSpinner()) {
+        if (enableSpinner()) {
             // init Spinner
             Spinner spinner = (Spinner) componentHelper.getToolbar().findViewById(R.id.spinner_nav);
             String[] array = getContext().getResources().getStringArray(presenter.getProduceData().getMarketsTitleResId());
@@ -385,7 +388,10 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
     @UiThread
     public void showHistoryDialog(final HistoryDirectory directory) {
-        new CalendarDialog(getContext(), directory).show();
+        if (historyDialog == null) {
+            historyDialog = new CalendarDialog(getContext(), directory, this);
+        }
+        historyDialog.show();
 //        ToolsHelper.showProgressDialog(getContext(), true);
 //        final CalendarPickerView pickerView = (CalendarPickerView) activity.getLayoutInflater().inflate(R.layout.dialog_customized, null, false);
 //        AlertDialog dialog = new AlertDialog.Builder(getContext()) //
@@ -465,5 +471,14 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
     protected void onDetachedFromWindow() {
         EventBus.getDefault().unregister(this);
         super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void onDateClicked(CalendarDay date) {
+        String month = String.valueOf(date.getMonth() + 1);
+        String day = String.valueOf(date.getDay());
+        month = month.length() < 2 ? "0" + month : month;
+        day = day.length() < 2 ? "0" + day : day;
+        presenter.fetchHistory(String.valueOf(date.getYear() - 1911), month + "." + day);
     }
 }
