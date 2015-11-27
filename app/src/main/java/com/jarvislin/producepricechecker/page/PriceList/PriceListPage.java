@@ -394,6 +394,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             historyDialog = new CalendarDialog(getContext(), directory, this);
         } else {
             historyDialog.setHistory(directory);
+            historyDialog.resetDate();
         }
         historyDialog.show();
     }

@@ -25,7 +25,6 @@ public class CalendarDialog implements OnDateSelectedListener {
     private HistoryDirectory historyDirectory;
     private AlertDialog dialog;
     private MaterialCalendarView calendarView;
-    private DisableDecorator decorator;
     private OnClickDateListener listener;
 
     public CalendarDialog(Context context, HistoryDirectory historyDirectory, OnClickDateListener listener) {
@@ -83,5 +82,9 @@ public class CalendarDialog implements OnDateSelectedListener {
 
     public interface OnClickDateListener {
         void onDateClicked(CalendarDay date);
+    }
+
+    public void resetDate(){
+        calendarView.setCurrentDate(new Date());
     }
 }
