@@ -1,8 +1,10 @@
 package com.jarvislin.producepricechecker.page.History;
 
 import android.app.Dialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.os.Handler;
+import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
@@ -82,7 +84,29 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
 
     @Override
     public void onCreateOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
+// init searchView
+        componentHelper.getActivity().getMenuInflater().inflate(R.menu.search, menu);
+        SearchManager manager = (SearchManager) componentHelper.getActivity().getSystemService(Context.SEARCH_SERVICE);
+        final SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        search.setSearchableInfo(manager.getSearchableInfo(componentHelper.getActivity().getComponentName()));
+        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String query) {
+                if (null == list) {
+                    Toast.makeText(getContext(), "讀取資料中，請稍後再試。", Toast.LENGTH_SHORT).show();
+                } else {
+                    ArrayList<Produce> searchList = getSearchList(query);
+                    adapter.updateList(searchList);
+                }
+                return false;
+            }
+        });
     }
 
     private void init() {
@@ -218,5 +242,14 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
 
         dialog.show();
         fab.collapse();
+    }
+
+    protected ArrayList<Produce> getSearchList(String newText) {
+        ArrayList<Produce> list = new ArrayList<>();
+        for (Produce data : this.list) {
+            if (data.produceName.contains(newText))
+                list.add(data);
+        }
+        return list;
     }
 }
