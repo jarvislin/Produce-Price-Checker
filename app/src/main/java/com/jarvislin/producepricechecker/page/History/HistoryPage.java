@@ -72,7 +72,11 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
-        componentHelper.getToolbar().setTitle(presenter.getMarketName());
+        componentHelper.showToolbar(false);
+        componentHelper.showArrow();
+        if (componentHelper.getActivity().getSupportActionBar() != null) {
+            componentHelper.getActivity().getSupportActionBar().setTitle(presenter.getMarketName());
+        }
         init();
     }
 
@@ -81,10 +85,10 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
 
     }
 
-    private void init(){
+    private void init() {
         list = presenter.getProduces();
         String bookmark = "";
-        if(!presenter.getProduces().isEmpty()) {
+        if (!presenter.getProduces().isEmpty()) {
             bookmark = presenter.getProduces().get(0).mainCategory.equals(Constants.FRUIT) ? Constants.FRUIT_BOOKMARK : Constants.VEGETABLE_BOOKMARK;
         }
         adapter = getAdapter(getContext(), list, preferences, bookmark);

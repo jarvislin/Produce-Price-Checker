@@ -121,8 +121,6 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
     @Override
     public void showToolbar(boolean showSpinner) {
         toolbar.setVisibility(View.VISIBLE);
-        Spinner spinner = (Spinner) toolbar.findViewById(R.id.spinner_nav);
-        spinner.setVisibility(showSpinner ? View.VISIBLE : View.GONE);
     }
 
     @Override
