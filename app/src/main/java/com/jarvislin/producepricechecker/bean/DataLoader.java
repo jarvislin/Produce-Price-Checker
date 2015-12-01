@@ -10,12 +10,11 @@ import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
-import com.jarvislin.producepricechecker.util.ApiDataAdapter;
+import com.jarvislin.producepricechecker.adapter.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.AfterInject;
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.api.rest.RestErrorHandler;
@@ -23,8 +22,6 @@ import org.springframework.core.NestedRuntimeException;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import flow.Flow;
 
 /**
  * Created by Jarvis Lin on 2015/11/1.

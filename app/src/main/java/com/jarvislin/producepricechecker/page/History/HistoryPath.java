@@ -2,7 +2,7 @@ package com.jarvislin.producepricechecker.page.History;
 
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
-import com.jarvislin.producepricechecker.util.ApiDataAdapter;
+import com.jarvislin.producepricechecker.adapter.ApiDataAdapter;
 
 import java.io.Serializable;
 import java.util.ArrayList;

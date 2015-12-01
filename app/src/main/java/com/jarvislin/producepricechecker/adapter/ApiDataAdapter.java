@@ -1,4 +1,4 @@
-package com.jarvislin.producepricechecker.util;
+package com.jarvislin.producepricechecker.adapter;
 
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
