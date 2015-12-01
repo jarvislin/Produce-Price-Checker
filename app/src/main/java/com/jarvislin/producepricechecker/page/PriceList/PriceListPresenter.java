@@ -10,6 +10,7 @@ import com.jarvislin.producepricechecker.BlankActivity_;
 import com.jarvislin.producepricechecker.MainActivity_;
 import com.jarvislin.producepricechecker.bean.DataLoader;
 import com.jarvislin.producepricechecker.database.Produce;
+import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.History.CustomerHistoryPath;
@@ -110,7 +111,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     @Background
     public void fetchHistory(String year, String date) {
         ToolsHelper.showProgressDialog(getContext(), false);
-        ArrayList<Produce> list = dataLoader.getHistory(year, date);
+        ArrayList<ApiProduce> list = dataLoader.getHistory(year, date);
         ToolsHelper.closeProgressDialog(false);
         Intent intent = new Intent();
         intent.setClass(getContext(), BlankActivity_.class);

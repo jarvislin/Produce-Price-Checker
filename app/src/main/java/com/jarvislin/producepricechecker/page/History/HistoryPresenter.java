@@ -31,6 +31,7 @@ public class HistoryPresenter extends Presenter{
     }
 
     public String getMarketName() {
+        if(path.getList().isEmpty()) return "";
         String currentNumber = path.getList().get(0).marketNumber;
         boolean isFruit = path.getList().get(0).mainCategory.equals(Constants.FRUIT);
         String[] markets = getContext().getResources().getStringArray(isFruit ? R.array.pref_fruit_market_titles : R.array.pref_vegetable_market_titles);
@@ -42,6 +43,7 @@ public class HistoryPresenter extends Presenter{
     }
 
     public String getDate() {
+        if(path.getList().isEmpty()) return "";
         return path.getList().get(0).transactionDate;
     }
 }

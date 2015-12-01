@@ -89,7 +89,7 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
         }
         adapter = getAdapter(getContext(), list, preferences, bookmark);
         dataList.setAdapter(adapter);
-        subcategoryFilter.setVisibility(presenter.getProduces().get(0).mainCategory.equals(Constants.VEGETABLE) ? VISIBLE : GONE);
+//        subcategoryFilter.setVisibility(presenter.getProduces().get(0).mainCategory.equals(Constants.VEGETABLE) ? VISIBLE : GONE);
     }
 
     abstract CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String category);
@@ -127,8 +127,7 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
             }
         }
         Collections.sort(list);
-        adapter.notifyDataSetChanged();
-        dataList.setAdapter(adapter);
+        adapter.updateList(list);
     }
 
     public ArrayList<Produce> getListBySubcategory(int id) {

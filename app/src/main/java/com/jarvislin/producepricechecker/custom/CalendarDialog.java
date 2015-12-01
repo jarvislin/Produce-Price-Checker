@@ -84,7 +84,7 @@ public class CalendarDialog implements OnDateSelectedListener {
         void onDateClicked(CalendarDay date);
     }
 
-    public void resetDate(){
+    public void resetDate() {
         calendarView.setCurrentDate(new Date());
     }
 }

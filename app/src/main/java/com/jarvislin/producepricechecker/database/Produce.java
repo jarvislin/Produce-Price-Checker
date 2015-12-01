@@ -59,12 +59,6 @@ public class Produce extends BaseModel implements Serializable, Comparable<Produ
     public String marketName;
 
     @Override
-    public String toString() {
-        return "ClassPojo [transactionAmount = " + transactionAmount + ", lowPrice = " + lowPrice + ", transactionDate = " + transactionDate + ", main_category = " + mainCategory + ", produceName = " + produceName + ", middlePrice = " + middlePrice + ", averagePrice = " + averagePrice + ", marketNumber = " + marketNumber + ", marketName = " + marketName + ", topPrice = " + topPrice + ", sub_category = " + subCategory + ", produceNumber = " + produceNumber + "]";
-    }
-
-
-    @Override
     public int compareTo(Produce another) {
         return Float.compare(Float.valueOf(this.averagePrice), Float.valueOf(another.averagePrice));
     }

@@ -41,7 +41,6 @@ public class DataLoader {
 
     public interface OnReceiveDataListener {
         void OnReceived(ArrayList<Produce> produces);
-
         void OnFailed();
     }
 
@@ -98,12 +97,11 @@ public class DataLoader {
         updateDatabase(adapter.getDataList());
     }
 
-    public ArrayList<Produce> getHistory(String year, String date) {
+    public ArrayList<ApiProduce> getHistory(String year, String date) {
         ArrayList<ApiProduce> list = new Gson().fromJson(client.getHistoryDataFromGitHub(currentCategory, currentMarketNumber, year, date)
                 , new TypeToken<List<ApiProduce>>() {
         }.getType());
-        ApiDataAdapter adapter = new ApiDataAdapter(list);
-        return adapter.getDataList();
+        return list;
     }
 
     public HistoryDirectory getHistoryDirectory() {
