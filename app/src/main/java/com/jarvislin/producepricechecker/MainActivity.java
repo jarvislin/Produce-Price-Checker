@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                             break;
                         case 3:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
-                            Flow.get(MainActivity.this).set(new QuestionsPath());
+                            BlankActivity_.intent(getActivity()).questionsPath(new QuestionsPath()).start();
                             break;
                         case 4:
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                             break;
                         case 6:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
-                            ToolsHelper.openUrl(MainActivity.this, "https://www.facebook.com/produce.price.checker");
+                            ToolsHelper.openUrl(MainActivity.this, "fb://page/811415095642801");
                             break;
                         case 7:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_contact");

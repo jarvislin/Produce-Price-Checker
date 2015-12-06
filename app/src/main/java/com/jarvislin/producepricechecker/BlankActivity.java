@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Spinner;
 
 import com.jarvislin.producepricechecker.page.History.HistoryPath;
+import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
 import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
 import com.jarvislin.producepricechecker.path.GsonParceler;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -23,6 +24,7 @@ import org.androidannotations.annotations.ViewById;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
+import flow.path.Path;
 
 @EActivity(R.layout.activity_blank)
 public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher, ActivityComponentHelper {
@@ -34,6 +36,8 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
     FrameLayoutContainerView container;
     @Extra
     protected HistoryPath historyPath;
+    @Extra
+    protected QuestionsPath questionsPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +51,10 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
         setSupportActionBar(toolbar);
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
-
-        if(historyPath == null) this.finish();
+        Path path = historyPath != null ? historyPath : questionsPath;
+        if (path == null) this.finish();
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
-                , new GsonParceler(), History.single(historyPath), this);
+                , new GsonParceler(), History.single(path), this);
     }
 
 

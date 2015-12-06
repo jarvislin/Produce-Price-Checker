@@ -6,10 +6,12 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.v7.widget.SearchView;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.AbsListView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -117,7 +119,7 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
         }
         adapter = getAdapter(getContext(), list, preferences, bookmark);
         dataList.setAdapter(adapter);
-//        subcategoryFilter.setVisibility(presenter.getProduces().get(0).mainCategory.equals(Constants.VEGETABLE) ? VISIBLE : GONE);
+        subcategoryFilter.setVisibility(presenter.getProduces().get(0).mainCategory.equals(Constants.VEGETABLE) ? VISIBLE : GONE);
     }
 
     abstract CustomerAdapter getAdapter(Context context, ArrayList<Produce> list, Preferences_ pref, String category);
@@ -125,6 +127,31 @@ abstract class HistoryPage extends RelativeLayout implements PageListener, Compo
     @AfterViews
     protected void initViews() {
         setBottomInfo();
+        initFooter();
+    }
+
+    private void initFooter() {
+        uiHandler = new Handler(getContext().getMainLooper());
+        View footer = LayoutInflater.from(getContext()).inflate(R.layout.price_footer, null);
+        footer.setOnClickListener(null);
+        dataList.addFooterView(footer);
+        dataList.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == SCROLL_STATE_IDLE && fab.getVisibility() == GONE) {
+                    uiHandler.postDelayed(showButton, 600);
+                } else if (scrollState == SCROLL_STATE_TOUCH_SCROLL) {
+                    uiHandler.removeCallbacks(showButton);
+                    if (fab.getVisibility() == VISIBLE) {
+                        uiHandler.post(hideButton);
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+            }
+        });
     }
 
     @Click
