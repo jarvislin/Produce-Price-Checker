@@ -57,28 +57,8 @@ public class IndexPresenter extends Presenter {
         if(ToolsHelper.isNetworkAvailable(getContext())) {
             checkLatestVersion();
         }
-
-//        test();
-
     }
 
-    @Background
-    void test() {
-        Gson gson = new Gson();
-//        String result = client.getHistoryDirectoryFromGitHub("fruit", "104");
-//        HistoryDirectory directory = gson.fromJson(result, HistoryDirectory.class);
-//        for(HistoryDirectory.History history : directory.getHistory()) {
-//            Log.e("HIS", history.getYear());
-//            for(String date : history.getDate()) {
-//                Log.e("date", date);
-//            }
-//        }
-
-        ArrayList<ApiProduce> list = new Gson().fromJson(client.getHistoryDataFromGitHub("fruit", "104", "104", "10.24"), new TypeToken<List<ApiProduce>>(){}.getType());
-        for(ApiProduce produce : list) {
-            Log.e("NAME", produce.getProduceName());
-        }
-    }
 
     public void direct(String page){
         ProduceData data = null;

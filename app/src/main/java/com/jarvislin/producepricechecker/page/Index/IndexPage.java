@@ -68,9 +68,8 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     @UiThread
     void showNews() {
         ToolsHelper.showDialog(getContext(), "新功能",
-                "1. 蔬菜頁面新增分類過濾以便快速查詢。\n" +
-                        "2. 版面調整。\n" +
-                        "3. 移除書籤功能，留下標示功能。");
+                "1. 歷史價格查詢。\n" +
+                        "2. 版面調整。");
     }
 
 
