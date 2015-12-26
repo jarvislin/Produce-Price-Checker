@@ -18,6 +18,16 @@
 
 版本
 ---------
+* ver 1.3.7
+ * 修正閃退問題 
+* ver 1.3.6
+ * 歷史價格查詢
+* ver 1.3.4
+ * 蔬菜頁面新增分類過濾以便快速查詢
+ * 移除書籤功能
+* ver 1.3.1
+ * 偵測新版本
+ * 版面調整
 * ver 1.3.0
  * 資料來源改用Open Data
  * 新增分享功能
@@ -51,7 +61,3 @@ https://github.com/jarvislin/Produce-Price-Checker/blob/master/LICENSE
 - http://www.freepik.com
 - http://www.flaticon.com
 - http://creativecommons.org/licenses/by/3.0
-
-選單功能使用Yalantis的ContextMenu，
-其授權方式為Apache License, Version 2.0。
-- https://github.com/Yalantis/Context-Menu.Android
