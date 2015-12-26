@@ -9,12 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.database.DatabaseController;
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
 import java.util.ArrayList;
-
-import database.DatabaseController;
-import database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/6/15.
@@ -87,6 +86,12 @@ public class CustomerAdapter extends BaseAdapter {
         holder.avgPrice.setText(low + " - " + high);
 
         return view;
+    }
+
+    public void updateList(ArrayList<Produce> newlist) {
+        list.clear();
+        list.addAll(newlist);
+        this.notifyDataSetChanged();
     }
 
     private class ViewHolder {

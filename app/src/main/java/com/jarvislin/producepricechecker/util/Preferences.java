@@ -1,5 +1,6 @@
 package com.jarvislin.producepricechecker.util;
 
+import org.androidannotations.annotations.sharedpreferences.DefaultBoolean;
 import org.androidannotations.annotations.sharedpreferences.DefaultFloat;
 import org.androidannotations.annotations.sharedpreferences.DefaultInt;
 import org.androidannotations.annotations.sharedpreferences.DefaultString;
@@ -8,7 +9,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 /**
  * Created by Jarvis Lin on 2015/6/19.
  */
-@SharedPref(value=SharedPref.Scope.UNIQUE)
+@SharedPref(value= SharedPref.Scope.UNIQUE)
 public interface Preferences {
 
     @DefaultString("109")
@@ -40,5 +41,14 @@ public interface Preferences {
 
     @DefaultInt(1)
     int versionCode();
+
+    @DefaultBoolean(false)
+    boolean needToUpdate();
+
+    @DefaultInt(0)
+    int openAppCount();
+
+    @DefaultBoolean(false)
+    boolean hasShownRating();
 
 }

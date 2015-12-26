@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:drawable/dialog_holo_light_frame"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:text="顯示以下分類"
+        android:textColor="@color/main_blue"
+        android:textSize="22sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/light_blue" />
+
+
+    <CheckBox
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:checked="true"
+        android:text="根莖菜類"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/actionbar_back"
+        android:theme="@android:style/Theme.Holo.Light"/>
+
+    <CheckBox
+        android:id="@+id/leaf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:checked="true"
+        android:text="葉菜類"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/actionbar_back"
+        android:theme="@android:style/Theme.Holo.Light"/>
+
+    <CheckBox
+        android:id="@+id/flower_fruit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:checked="true"
+        android:text="花果菜類"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/actionbar_back"
+        android:theme="@android:style/Theme.Holo.Light"/>
+
+    <CheckBox
+        android:id="@+id/mushroom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:checked="true"
+        android:text="菇菌類"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/actionbar_back"
+        android:theme="@android:style/Theme.Holo.Light"/>
+
+    <CheckBox
+        android:id="@+id/pickle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:checked="true"
+        android:text="醃製類"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/actionbar_back"
+        android:theme="@android:style/Theme.Holo.Light"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#ffdbdbdb" />
+
+    <Button
+        android:id="@+id/dismiss"
+        android:background="@drawable/press_effect_with_alpha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="關閉"
+        android:textSize="14sp"/>
+
+
+</LinearLayout>

@@ -9,13 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
-import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.ArrayList;
-
-import database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/6/20.

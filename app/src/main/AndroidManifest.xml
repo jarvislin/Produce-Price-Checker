@@ -8,49 +8,31 @@
     <application
         android:name=".Application"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/tomato"
         android:label="@string/app_name"
-        android:screenOrientation="portrait"
-        android:theme="@style/MyAppTheme" >
+        android:largeHeap="true"
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".activity.IndexActivity_"
+            android:name=".MainActivity_"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.MerchantActivity_"
-            android:label="@string/title_activity_data_list"
+            android:name=".SettingsActivity_"
+            android:label="@string/app_name"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base" >
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
         </activity>
-        <activity
-            android:name=".activity.CustomerActivity_"
-            android:label="@string/title_activity_data_list"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base" >
-        </activity>
-        <activity
-            android:name=".activity.SettingsActivity_"
-            android:label="@string/setting"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyAppTheme" >
-        </activity>
-        <activity
-            android:name=".activity.CustomerBookmarkActivity_"
-            android:label="@string/my_list"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base">
-        </activity>
-        <activity
-            android:name=".activity.MerchantBookmarkActivity_"
-            android:label="@string/my_list"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.Base">
+        <activity android:name=".BlankActivity_"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 
