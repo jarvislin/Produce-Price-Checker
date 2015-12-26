@@ -21,6 +21,7 @@ import org.androidannotations.api.rest.RestErrorHandler;
 import org.springframework.core.NestedRuntimeException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -109,8 +110,9 @@ public class DataLoader {
     private void updateDatabase(ArrayList<Produce> produces) {
         if (produces != null && !produces.isEmpty()) {
             DatabaseController.clearTable(currentCategory, currentMarketNumber);
-            for (Produce produce : produces) {
-                produce.save();
+            Iterator<Produce> iterator = produces.iterator();
+            while (iterator.hasNext()) {
+                iterator.next().save();
             }
             DatabaseController.updateBookmark(produces, currentBookmarkCategory);
         }
