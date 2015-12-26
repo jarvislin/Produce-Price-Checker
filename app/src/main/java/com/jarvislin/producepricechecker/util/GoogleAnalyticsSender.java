@@ -10,7 +10,7 @@ import com.google.android.gms.analytics.Tracker;
  * Created by Jarvis Lin on 2014/12/8.
  */
 public class GoogleAnalyticsSender {
-    private static final String PROPERTY_ID = "UA-38743404-5";
+    private static final String PROPERTY_ID = "";
     private static GoogleAnalyticsSender mSender;
     private static Tracker mTracker;
 

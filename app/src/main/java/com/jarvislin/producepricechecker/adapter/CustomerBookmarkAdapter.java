@@ -11,14 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jarvislin.producepricechecker.R;
+import com.jarvislin.producepricechecker.database.DatabaseController;
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.Preferences_;
-import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import java.util.ArrayList;
-
-import database.DatabaseController;
-import database.Produce;
 
 /**
  * Created by Jarvis Lin on 2015/6/20.

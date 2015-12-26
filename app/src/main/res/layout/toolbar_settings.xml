@@ -2,7 +2,6 @@
 <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/toolbar"
-    style="@style/GalaxyZooThemeToolbarDarkOverflow"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/actionbar_back"
@@ -10,13 +9,4 @@
     android:textAppearance="@android:color/white"
     app:contentInsetStart="0dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            style="@style/ActionBarTitle"
-            android:text="@string/setting" />
-
-    </RelativeLayout>
 </android.support.v7.widget.Toolbar>

@@ -9,7 +9,7 @@ import org.androidannotations.annotations.sharedpreferences.SharedPref;
 /**
  * Created by Jarvis Lin on 2015/6/19.
  */
-@SharedPref(value=SharedPref.Scope.UNIQUE)
+@SharedPref(value= SharedPref.Scope.UNIQUE)
 public interface Preferences {
 
     @DefaultString("109")
@@ -44,5 +44,11 @@ public interface Preferences {
 
     @DefaultBoolean(false)
     boolean needToUpdate();
+
+    @DefaultInt(0)
+    int openAppCount();
+
+    @DefaultBoolean(false)
+    boolean hasShownRating();
 
 }

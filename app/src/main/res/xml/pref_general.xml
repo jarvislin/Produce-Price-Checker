@@ -39,22 +39,4 @@
         android:dependency="@string/pref_key_is_customer"
         android:title="利潤範圍"/>
 
-
-    <PreferenceCategory android:title="@string/other_info" />
-
-    <Preference
-        android:title="@string/about"
-        android:key="@string/pref_key_about"
-        android:summary="@string/about_description"/>
-
-    <Preference
-        android:title="@string/site"
-        android:key="@string/pref_key_visit"
-        android:summary="@string/visit_site" />
-
-    <Preference
-        android:title="@string/rating"
-        android:key="@string/pref_key_rating"
-        android:summary="@string/rating_for_app" />
-
 </PreferenceScreen>

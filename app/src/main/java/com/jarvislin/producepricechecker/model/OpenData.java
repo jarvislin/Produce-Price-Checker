@@ -17,15 +17,11 @@ public class OpenData implements Serializable, Comparable<OpenData> {
     @SerializedName("交易日期")
     private String transactionDate;
 
-
-
     @SerializedName("中價")
     private String middlePrice;
 
-
     @SerializedName("市場代號")
     private String marketNumber;
-
 
     @SerializedName("上價")
     private String topPrice;
@@ -71,7 +67,7 @@ public class OpenData implements Serializable, Comparable<OpenData> {
 
     public void setMarketNumber(String marketNumber) {
         this.marketNumber = marketNumber;
-     }
+    }
 
     public String getTopPrice() {
         return topPrice;
@@ -92,9 +88,9 @@ public class OpenData implements Serializable, Comparable<OpenData> {
 
     @Override
     public String toString() {
-        return "ClassPojo [transactionAmount = " + transactionAmount + ", lowPrice = " + lowPrice + ", transactionDate = " + transactionDate + ", middlePrice = " + middlePrice  + ", marketNumber = " + marketNumber + ", topPrice = " + topPrice + ", produceNumber = " + produceNumber + "]";
+        return "ClassPojo [transactionAmount = " + transactionAmount + ", lowPrice = " + lowPrice + ", transactionDate = " + transactionDate + ", middlePrice = " + middlePrice + ", marketNumber = " + marketNumber + ", topPrice = " + topPrice + ", produceNumber = " + produceNumber + "]";
 
-  }
+    }
 
     @Override
     public int compareTo(OpenData data) {

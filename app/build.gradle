@@ -1,20 +1,21 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'android-apt'
+def AAVersion = '3.3.2'
 
 buildscript {
     repositories {
+        jcenter()
         mavenCentral()
         mavenLocal()
     }
     dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
 
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
     }
 }
-
-apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
-def AAVersion = '3.3+'
 
 apt {
     arguments {
@@ -29,17 +30,25 @@ apt {
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "23.0.1"
+
     defaultConfig {
         applicationId "com.jarvislin.producepricechecker"
-        minSdkVersion 11
-        targetSdkVersion 22
-        versionCode 12
-        versionName '1.3.1'
+        minSdkVersion 14
+        targetSdkVersion 23
+        versionCode 15
+        versionName "1.3.7"
     }
     buildTypes {
+        debug {
+            minifyEnabled true
+            shrinkResources false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
-
+            minifyEnabled false
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     productFlavors {
@@ -52,17 +61,23 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.yalantis:contextmenu:1.0.1'
-    compile 'com.google.android.gms:play-services-analytics:7.8.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile 'com.android.support:appcompat-v7:23.1.1'
+    compile 'com.google.android.gms:play-services-analytics:8.3.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
     apt 'com.raizlabs.android:DBFlow-Compiler:2.1.0'
     compile 'com.raizlabs.android:DBFlow-Core:2.1.0'
     compile 'com.raizlabs.android:DBFlow:2.1.0'
-    apt "org.androidannotations:androidannotations:$AAVersion"
-    compile "org.androidannotations:androidannotations-api:$AAVersion"
-    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+    compile 'com.google.code.gson:gson:2.4'
+    compile 'com.squareup.flow:flow:0.10'
+    compile 'com.squareup.flow:flow-path:0.10'
     compile 'org.jsoup:jsoup:1.8.3'
-    compile 'com.google.android.gms:play-services-ads:7.8.0'
-    compile 'com.android.support:support-v4:23.0.0'
+    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+    compile "org.androidannotations:androidannotations-api:$AAVersion"
+    apt "org.androidannotations:androidannotations:$AAVersion"
+    compile('com.mikepenz:materialdrawer:4.3.0@aar') {
+        transitive = true
+    }
+    compile 'com.getbase:floatingactionbutton:1.10.0'
+    compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
+    compile 'com.prolificinteractive:material-calendarview:1.1.0'
 }
