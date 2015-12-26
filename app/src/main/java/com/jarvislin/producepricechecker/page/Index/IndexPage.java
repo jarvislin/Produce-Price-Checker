@@ -68,8 +68,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     @UiThread
     void showNews() {
         ToolsHelper.showDialog(getContext(), "新功能",
-                "1. 歷史價格查詢。\n" +
-                        "2. 版面調整。");
+                "修正有時會閃退的錯誤");
     }
 
 
