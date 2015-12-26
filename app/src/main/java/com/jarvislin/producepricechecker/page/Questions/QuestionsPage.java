@@ -26,8 +26,11 @@ public class QuestionsPage extends ScrollView implements PageListener {
     public void onPageStart(ActivityComponentHelper componentHelper) {
         componentHelper.showToolbar(false);
         componentHelper.showArrow();
-        componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(true);
-        componentHelper.getToolbar().setTitle("常見問題");
+//        componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(true);
+//        componentHelper.getToolbar().setTitle("常見問題");
+        if (componentHelper.getActivity().getSupportActionBar() != null) {
+            componentHelper.getActivity().getSupportActionBar().setTitle("常見問題");
+        }
     }
 
     @Override

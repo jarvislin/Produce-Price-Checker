@@ -1,6 +1,7 @@
 package com.jarvislin.producepricechecker.model;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
@@ -51,10 +52,13 @@ public class ProduceData implements Serializable{
         return "無法顯示";
     }
 
-    public int getDefaultMarketTitlePosition(Context context) {
+    public int getMarketTitlePosition(Context context, String number) {
+        if(TextUtils.isEmpty(number)) {
+            number = defaultMarketNumber;
+        }
         String [] numbers = context.getResources().getStringArray(getMarketNumbersResId());
         for (int i = 0; i < numbers.length; i++) {
-            if(defaultMarketNumber.equals(numbers[i])) {
+            if(number.equals(numbers[i])) {
                 return i;
             }
         }

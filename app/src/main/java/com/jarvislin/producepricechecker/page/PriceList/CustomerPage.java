@@ -7,6 +7,7 @@ import com.jarvislin.producepricechecker.adapter.CustomerAdapter;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.util.Preferences_;
 
+import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EView;
 
 import java.util.ArrayList;
@@ -18,7 +19,7 @@ import flow.path.Path;
  */
 @EView
 public class CustomerPage extends PriceListPage {
-
+    
     public CustomerPage(Context context, AttributeSet attrs) {
         super(context, attrs);
         Path.get(context);
@@ -29,11 +30,13 @@ public class CustomerPage extends PriceListPage {
         return new CustomerAdapter(context, list, prefs, bookmarkCategory);
     }
 
+    @Override
+    protected boolean enableSpinner() {
+        return true;
+    }
 
-
-
-
-
-
-
+    @Override
+    protected boolean enableRefresh() {
+        return true;
+    }
 }

@@ -30,4 +30,14 @@ public class MerchantPage extends PriceListPage {
         return new MerchantAdapter(context, list, prefs, bookmarkCategory);
     }
 
+    @Override
+    protected boolean enableSpinner() {
+        return true;
+    }
+
+    @Override
+    protected boolean enableRefresh() {
+        return true;
+    }
+
 }

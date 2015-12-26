@@ -88,6 +88,12 @@ public class CustomerAdapter extends BaseAdapter {
         return view;
     }
 
+    public void updateList(ArrayList<Produce> newlist) {
+        list.clear();
+        list.addAll(newlist);
+        this.notifyDataSetChanged();
+    }
+
     private class ViewHolder {
         LinearLayout cell;
         TextView type;

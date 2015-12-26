@@ -3,11 +3,18 @@ package com.jarvislin.producepricechecker.page.Index;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.jarvislin.producepricechecker.ApiClient;
+import com.jarvislin.producepricechecker.ApiClient_;
 import com.jarvislin.producepricechecker.BuildConfig;
 import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.SettingsActivity_;
+import com.jarvislin.producepricechecker.model.ApiProduce;
+import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.page.PriceList.CustomerPath;
@@ -18,11 +25,14 @@ import com.jarvislin.producepricechecker.util.ToolsHelper;
 
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import flow.Flow;
 import flow.path.Path;
@@ -37,6 +47,8 @@ public class IndexPresenter extends Presenter {
     IndexPage page;
     @Pref
     Preferences_ prefs;
+    @RestService
+    protected ApiClient client;
     @Override
     protected void init(Path path, View view) {
         this.path = (IndexPath) path;
@@ -46,6 +58,7 @@ public class IndexPresenter extends Presenter {
             checkLatestVersion();
         }
     }
+
 
     public void direct(String page){
         ProduceData data = null;

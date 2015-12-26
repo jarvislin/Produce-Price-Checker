@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 
+import com.jarvislin.producepricechecker.page.History.HistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
 import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
@@ -29,11 +30,14 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import de.greenrobot.event.EventBus;
 import flow.Flow;
 import flow.FlowDelegate;
 import flow.History;
+import flow.path.Path;
 
 @EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, ActivityComponentHelper {
@@ -43,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
     Toolbar toolbar;
     @ViewById(R.id.container)
     FrameLayoutContainerView container;
+    @Extra
+    protected HistoryPath historyPath;
     private Drawer drawer;
 
     @Override
@@ -57,9 +63,13 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
-                , new GsonParceler(), History.single(new IndexPath()), this);
+                , new GsonParceler(), History.single(getFirstPath()), this);
 
         drawer = getDrawer();
+    }
+
+    private Path getFirstPath() {
+        return (historyPath == null) ? new IndexPath() : historyPath;
     }
 
     private Drawer getDrawer() {
@@ -87,6 +97,11 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                                     .icon(CommunityMaterial.Icon.cmd_format_list_bulleted)
                                     .color(getResources().getColor(android.R.color.darker_gray))
                                     .sizeDp(18)),
+                            new SecondaryDrawerItem().withName("歷史價格").withSelectable(false).withIcon(new IconicsDrawable(this)
+                                            .icon(CommunityMaterial.Icon.cmd_calendar)
+                                            .color(getResources().getColor(android.R.color.darker_gray))
+                                            .sizeDp(18)
+                            ),
                             new SecondaryDrawerItem().withName("常見問題").withSelectable(false).withIcon(new IconicsDrawable(this)
                                             .icon(CommunityMaterial.Icon.cmd_help)
                                             .color(getResources().getColor(android.R.color.darker_gray))
@@ -127,22 +142,26 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, 
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_price_list");
                             break;
                         case 2:
-                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
-                            Flow.get(MainActivity.this).set(new QuestionsPath());
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_history");
+                            EventBus.getDefault().post(new Events.onHistoryClicked());
                             break;
                         case 3:
-
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_questions");
+                            BlankActivity_.intent(getActivity()).questionsPath(new QuestionsPath()).start();
                             break;
                         case 4:
+
+                            break;
+                        case 5:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_share");
                             ToolsHelper.shareText(MainActivity.this, "分享：", MainActivity.this.getString(R.string.share_text));
 
                             break;
-                        case 5:
-                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
-                            ToolsHelper.openUrl(MainActivity.this, "https://www.facebook.com/produce.price.checker");
-                            break;
                         case 6:
+                            GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_FB");
+                            ToolsHelper.openUrl(MainActivity.this, "fb://page/811415095642801");
+                            break;
+                        case 7:
                             GoogleAnalyticsSender.getInstance(MainActivity.this).send("click_contact");
                             ToolsHelper.openUrl(MainActivity.this, "http://jarvislin.com/contact/");
                     }
