@@ -14,7 +14,7 @@
 
 下載
 ---------
-[<img src="http://developer.android.com/images/brand/en_generic_rgb_wo_60.png">](https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker)
+https://play.google.com/store/apps/details?id=com.jarvislin.producepricechecker
 
 版本
 ---------
