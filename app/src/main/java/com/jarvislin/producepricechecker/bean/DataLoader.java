@@ -91,9 +91,13 @@ public class DataLoader {
         ArrayList<ApiProduce> list = new Gson().fromJson(client.getDataFromGitHub(currentCategory, currentMarketNumber)
                 , new TypeToken<List<ApiProduce>>() {
         }.getType());
-        ApiDataAdapter adapter = new ApiDataAdapter(list);
-        onReceiveDataListener.OnReceived(adapter.getDataList());
-        updateDatabase(adapter.getDataList());
+        if(list == null || list.size() == 0 ){
+            loadClientData();
+        } else {
+            ApiDataAdapter adapter = new ApiDataAdapter(list);
+            onReceiveDataListener.OnReceived(adapter.getDataList());
+            updateDatabase(adapter.getDataList());
+        }
     }
 
     public ArrayList<ApiProduce> getHistory(String year, String date) {
