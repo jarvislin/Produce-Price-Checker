@@ -68,7 +68,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     @UiThread
     void showNews() {
         ToolsHelper.showDialog(getContext(), "新功能",
-                "修正有時會閃退的錯誤");
+                "修正6.0版會閃退的錯誤");
     }
 
 

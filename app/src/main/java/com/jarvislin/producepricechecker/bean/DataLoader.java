@@ -13,6 +13,7 @@ import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.adapter.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -110,10 +111,7 @@ public class DataLoader {
     private void updateDatabase(ArrayList<Produce> produces) {
         if (produces != null && !produces.isEmpty()) {
             DatabaseController.clearTable(currentCategory, currentMarketNumber);
-            Iterator<Produce> iterator = produces.iterator();
-            while (iterator.hasNext()) {
-                iterator.next().save();
-            }
+            TransactionManager.getInstance().saveOnSaveQueue(produces);
             DatabaseController.updateBookmark(produces, currentBookmarkCategory);
         }
     }
