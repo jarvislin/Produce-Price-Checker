@@ -3,6 +3,10 @@ package com.jarvislin.producepricechecker.database;
 
 import android.text.TextUtils;
 
+import com.raizlabs.android.dbflow.list.FlowQueryList;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTransaction;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -94,26 +98,21 @@ public class DatabaseController {
     }
 
     public static void updateBookmark(ArrayList<Produce> produces, String category) {
-        ArrayList<Produce> bookmarks = getProduces(category);
+        FlowQueryList<Produce> bookmarks = new FlowQueryList<>(Produce.class);
+        bookmarks.addAll(getProduces(category));
+        bookmarks.beginTransaction();
         for (Produce bookmark : bookmarks) {
             for (Produce produce : produces) {
                 if (bookmark.produceName.equals(produce.produceName)) {
-                    Condition[] conditions = {
-                            Condition.column(Produce$Table.TOPPRICE).eq(produce.topPrice)
-                            , Condition.column(Produce$Table.MIDDLEPRICE).eq(produce.middlePrice)
-                            , Condition.column(Produce$Table.LOWPRICE).eq(produce.lowPrice)
-                            , Condition.column(Produce$Table.AVERAGEPRICE).eq(produce.averagePrice)
-                            , Condition.column(Produce$Table.TRANSACTIONDATE).eq(produce.transactionDate)
-                    };
-
-                    new Update(Produce.class)
-                            .set(conditions)
-                            .where(Condition.column(Produce$Table.PRODUCENAME).is(produce.produceName))
-                            .and(Condition.column(Produce$Table.MAINCATEGORY).is(category))
-                            .queryClose();
+                    bookmark.topPrice = produce.topPrice;
+                    bookmark.middlePrice = produce.middlePrice;
+                    bookmark.lowPrice = produce.lowPrice;
+                    bookmark.averagePrice = produce.averagePrice;
+                    bookmark.transactionDate = produce.transactionDate;
+                    bookmark.update();
                 }
             }
         }
-
+        bookmarks.endTransactionAndNotify();
     }
 }
