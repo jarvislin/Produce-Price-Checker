@@ -14,6 +14,8 @@ import com.jarvislin.producepricechecker.adapter.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTransaction;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;

@@ -4,12 +4,16 @@ package com.jarvislin.producepricechecker.database;
 import android.text.TextUtils;
 
 import com.raizlabs.android.dbflow.list.FlowQueryList;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTransaction;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Jarvis Lin on 2015/6/13.
@@ -94,16 +98,16 @@ public class DatabaseController {
         bookmark.save();
     }
 
-    public static void updateBookmark(ArrayList<Produce> produceList, String category) {
-        FlowQueryList<Produce> produces = new FlowQueryList<>(Produce.class);
-        produces.addAll(produceList);
-        produces.beginTransaction();
-        for(Produce produce : produces) {
-            if(isBookmark(produce.produceName, category)){
-                produce.mainCategory = category;
-                produce.update();
+    public static void updateBookmark(ArrayList<Produce> produceList, String bookmarkCategory) {
+        ArrayList<Produce> produces = new ArrayList<>(produceList);
+        FlowQueryList<Produce> flowQueryList = new FlowQueryList<>(Produce.class);
+        flowQueryList.beginTransaction();
+        for (Produce produce: produces) {
+            if(isBookmark(produce.produceName, bookmarkCategory)){
+                produce.mainCategory = bookmarkCategory;
+                flowQueryList.set(produce);
             }
         }
-        produces.endTransactionAndNotify();
+        flowQueryList.endTransactionAndNotify();
     }
 }
