@@ -3,12 +3,17 @@ package com.jarvislin.producepricechecker.database;
 
 import android.text.TextUtils;
 
+import com.raizlabs.android.dbflow.list.FlowQueryList;
+import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTransaction;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
 import com.raizlabs.android.dbflow.sql.language.Update;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by Jarvis Lin on 2015/6/13.
@@ -93,27 +98,16 @@ public class DatabaseController {
         bookmark.save();
     }
 
-    public static void updateBookmark(ArrayList<Produce> produces, String category) {
-        ArrayList<Produce> bookmarks = getProduces(category);
-        for (Produce bookmark : bookmarks) {
-            for (Produce produce : produces) {
-                if (bookmark.produceName.equals(produce.produceName)) {
-                    Condition[] conditions = {
-                            Condition.column(Produce$Table.TOPPRICE).eq(produce.topPrice)
-                            , Condition.column(Produce$Table.MIDDLEPRICE).eq(produce.middlePrice)
-                            , Condition.column(Produce$Table.LOWPRICE).eq(produce.lowPrice)
-                            , Condition.column(Produce$Table.AVERAGEPRICE).eq(produce.averagePrice)
-                            , Condition.column(Produce$Table.TRANSACTIONDATE).eq(produce.transactionDate)
-                    };
-
-                    new Update(Produce.class)
-                            .set(conditions)
-                            .where(Condition.column(Produce$Table.PRODUCENAME).is(produce.produceName))
-                            .and(Condition.column(Produce$Table.MAINCATEGORY).is(category))
-                            .queryClose();
-                }
+    public static void updateBookmark(ArrayList<Produce> produceList, String bookmarkCategory) {
+        ArrayList<Produce> produces = new ArrayList<>(produceList);
+        FlowQueryList<Produce> flowQueryList = new FlowQueryList<>(Produce.class);
+        flowQueryList.beginTransaction();
+        for (Produce produce: produces) {
+            if(isBookmark(produce.produceName, bookmarkCategory)){
+                produce.mainCategory = bookmarkCategory;
+                flowQueryList.set(produce);
             }
         }
-
+        flowQueryList.endTransactionAndNotify();
     }
 }

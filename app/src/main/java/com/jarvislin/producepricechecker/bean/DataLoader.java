@@ -14,6 +14,8 @@ import com.jarvislin.producepricechecker.adapter.ApiDataAdapter;
 import com.jarvislin.producepricechecker.util.DateUtil;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
 import com.raizlabs.android.dbflow.runtime.TransactionManager;
+import com.raizlabs.android.dbflow.runtime.transaction.process.ProcessModelInfo;
+import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTransaction;
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
@@ -91,9 +93,13 @@ public class DataLoader {
         ArrayList<ApiProduce> list = new Gson().fromJson(client.getDataFromGitHub(currentCategory, currentMarketNumber)
                 , new TypeToken<List<ApiProduce>>() {
         }.getType());
-        ApiDataAdapter adapter = new ApiDataAdapter(list);
-        onReceiveDataListener.OnReceived(adapter.getDataList());
-        updateDatabase(adapter.getDataList());
+        if(list == null || list.size() == 0 ){
+            loadClientData();
+        } else {
+            ApiDataAdapter adapter = new ApiDataAdapter(list);
+            onReceiveDataListener.OnReceived(adapter.getDataList());
+            updateDatabase(adapter.getDataList());
+        }
     }
 
     public ArrayList<ApiProduce> getHistory(String year, String date) {
