@@ -3,6 +3,7 @@ package com.jarvislin.producepricechecker.database;
 
 import android.text.TextUtils;
 
+import com.raizlabs.android.dbflow.list.FlowQueryList;
 import com.raizlabs.android.dbflow.sql.builder.Condition;
 import com.raizlabs.android.dbflow.sql.language.Delete;
 import com.raizlabs.android.dbflow.sql.language.Select;
@@ -93,12 +94,16 @@ public class DatabaseController {
         bookmark.save();
     }
 
-    public static void updateBookmark(ArrayList<Produce> produces, String category) {
+    public static void updateBookmark(ArrayList<Produce> produceList, String category) {
+        FlowQueryList<Produce> produces = new FlowQueryList<>(Produce.class);
+        produces.addAll(produceList);
+        produces.beginTransaction();
         for(Produce produce : produces) {
             if(isBookmark(produce.produceName, category)){
                 produce.mainCategory = category;
                 produce.update();
             }
         }
+        produces.endTransactionAndNotify();
     }
 }
