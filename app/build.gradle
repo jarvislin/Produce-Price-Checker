@@ -17,6 +17,10 @@ buildscript {
     }
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
 apt {
     arguments {
         androidManifestFile variant.outputs[0].processResources.manifestFile
@@ -80,4 +84,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
     compile 'com.prolificinteractive:material-calendarview:1.1.0'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
 }
