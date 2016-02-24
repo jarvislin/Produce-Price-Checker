@@ -30,6 +30,7 @@ import com.jarvislin.producepricechecker.util.ToolsHelper;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
@@ -128,37 +129,40 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     }
 
     @Background
-    public void getChartItems(Produce produce) {
+    public void getChartItems(final Produce produce) {
         ToolsHelper.showProgressDialog(getContext(), false);
-        ArrayList<OpenData> list = new ArrayList<>();
         String[] date = produce.transactionDate.split("\\.");
-        try {
-            int year = Integer.parseInt(date[0]);
-            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
-            list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
-            }.getType());
 
-            Iterator<OpenData> iterator = list.iterator();
-            while (iterator.hasNext()) {
-                if (!iterator.next().getProduceNumber().equals(produce.produceNumber) || iterator.next().getTransactionAmount().equals("0")) {
-                    iterator.remove();
-                }
-            }
+        int year = Integer.parseInt(date[0]);
+        String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
+        ArrayList<OpenData> list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
+        }.getType());
 
-            Log.e("GG", list.size() + "");
-            for (OpenData data : list) {
-                Log.e("GG", data.getTransactionDate() + "");
-            }
-        } catch (Exception ex) {
-
-        } finally {
-            ToolsHelper.closeProgressDialog(false);
-            if (list == null || list.isEmpty()) {
-                //show error
-                Log.e("GG", "FAILED");
-            } else {
-                Flow.get(getContext()).set(new DetailsPath(produce, list));
+        Iterator<OpenData> iterator = list.iterator();
+        OpenData temp;
+        while (iterator.hasNext()) {
+            temp = iterator.next();
+            if (!temp.getProduceNumber().equals(produce.produceNumber) || temp.getTransactionAmount().equals("0")) {
+                iterator.remove();
             }
         }
+
+        Log.e("GG", list.size() + "");
+        for (OpenData data : list) {
+            Log.e("GG", data.getTransactionDate() + "");
+        }
+
+        ToolsHelper.closeProgressDialog(false);
+        if (list == null || list.isEmpty()) {
+            //show error
+            Log.e("GG", "FAILED");
+        } else {
+            direct(produce, list);
+        }
+    }
+
+    @UiThread
+    protected void direct(Produce produce, ArrayList<OpenData> list) {
+        Flow.get(getContext()).set(new DetailsPath(produce, list));
     }
 }

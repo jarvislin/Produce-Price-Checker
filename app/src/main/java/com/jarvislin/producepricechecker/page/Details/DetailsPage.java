@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import flow.path.Path;
-import lecho.lib.hellocharts.model.ComboLineColumnChartData;
-import lecho.lib.hellocharts.view.ComboLineColumnChartView;
 
 /**
  * Created by Jarvis Lin on 2016/2/23.
@@ -57,10 +55,10 @@ public class DetailsPage extends ScrollView implements PageListener {
     @Override
     public void onPageStart(ActivityComponentHelper componentHelper) {
         presenter.setView(this);
+        initViews();
     }
 
-    @AfterViews
-    protected void initViews() {
+    private void initViews() {
         list = presenter.getChartDataList();
         data = presenter.getProduceData();
         CombinedData data = new CombinedData(getDates(list));

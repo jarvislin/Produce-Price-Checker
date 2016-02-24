@@ -328,7 +328,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 //                }
 //
 
-                adapter.notifyDataSetChanged();
+//                adapter.notifyDataSetChanged();
                 presenter.getChartItems(object);
             }
         };

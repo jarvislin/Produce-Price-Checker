@@ -53,6 +53,6 @@
         <com.github.mikephil.charting.charts.CombinedChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="400dp"/>
     </LinearLayout>
 </com.jarvislin.producepricechecker.page.Details.DetailsPage_>
