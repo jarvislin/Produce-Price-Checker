@@ -6,7 +6,9 @@ import android.view.View;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.jarvislin.producepricechecker.ApiClient;
+import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.OpenData;
+import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 
 import org.androidannotations.annotations.Background;
@@ -25,36 +27,18 @@ import flow.path.Path;
 public class DetailsPresenter extends Presenter {
     private DetailsPath path;
     private DetailsPage page;
-    @RestService
-    protected ApiClient client;
-
 
     @Override
     protected void init(Path path, View view) {
         this.path = (DetailsPath) path;
         this.page = (DetailsPage) view;
-
-        fetch();
     }
 
-    @Background
-    protected void fetch() {
-        Gson gson = new Gson();
-        ArrayList<OpenData> list;
-        String data = client.getOpenData("102.12.26", "104.12.26", "椰子", "台北一");
-        list = gson.fromJson(data, new TypeToken<ArrayList<OpenData>>() {
-        }.getType());
+    public Produce getProduceData() {
+        return path.data;
+    }
 
-        Iterator<OpenData> iterator = list.iterator();
-        while (iterator.hasNext()) {
-            if(!iterator.next().getProduceNumber().equals("11")) {
-                iterator.remove();
-            }
-        }
-
-        Log.e("GG", list.size() + "");
-        for(OpenData openData: list){
-            Log.e("GG",openData.getTransactionDate() + "");
-        }
+    public ArrayList<OpenData> getChartDataList() {
+        return path.list;
     }
 }

@@ -39,6 +39,7 @@ import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
 import com.jarvislin.producepricechecker.model.ProduceData;
+import com.jarvislin.producepricechecker.page.Details.DetailsPath;
 import com.jarvislin.producepricechecker.page.PageListener;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.DateUtil;
@@ -318,15 +319,17 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
                 Produce object = (Produce) adapter.getItem(position);
                 ColorDrawable color = (ColorDrawable) view.getBackground();
 
-                if (getResources().getColor(R.color.highlight) == color.getColor()) {
-                    DatabaseController.delete(object.produceName, data.getBookmarkCategory());
-                    Toast.makeText(getContext(), R.string.remove_bookmark, Toast.LENGTH_SHORT).show();
-                } else {
-                    DatabaseController.insertBookmark(object, data.getBookmarkCategory());
-                    Toast.makeText(getContext(), R.string.add_bookmark, Toast.LENGTH_SHORT).show();
-                }
+//                if (getResources().getColor(R.color.highlight) == color.getColor()) {
+//                    DatabaseController.delete(object.produceName, data.getBookmarkCategory());
+//                    Toast.makeText(getContext(), R.string.remove_bookmark, Toast.LENGTH_SHORT).show();
+//                } else {
+//                    DatabaseController.insertBookmark(object, data.getBookmarkCategory());
+//                    Toast.makeText(getContext(), R.string.add_bookmark, Toast.LENGTH_SHORT).show();
+//                }
+//
 
                 adapter.notifyDataSetChanged();
+                presenter.getChartItems(object);
             }
         };
     }
