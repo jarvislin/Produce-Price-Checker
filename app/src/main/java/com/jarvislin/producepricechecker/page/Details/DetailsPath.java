@@ -8,6 +8,7 @@ import com.jarvislin.producepricechecker.path.PathLayout;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import flow.path.Path;
 
@@ -16,10 +17,13 @@ import flow.path.Path;
  */
 @PathLayout(R.layout.details)
 public class DetailsPath extends Path implements Serializable {
-    public Produce data;
+    public String market;
+    public String produce;
     public ArrayList<OpenData> list;
-    public DetailsPath(Produce data, ArrayList<OpenData> list) {
+    public DetailsPath(String market, String produce, ArrayList<OpenData> list) {
         this.list = list;
-        this.data = data;
+        Collections.sort(this.list);
+        this.produce = produce;
+        this.market = market;
     }
 }

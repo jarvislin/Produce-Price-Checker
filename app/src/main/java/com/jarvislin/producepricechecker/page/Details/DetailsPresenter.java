@@ -34,11 +34,15 @@ public class DetailsPresenter extends Presenter {
         this.page = (DetailsPage) view;
     }
 
-    public Produce getProduceData() {
-        return path.data;
-    }
-
     public ArrayList<OpenData> getChartDataList() {
         return path.list;
+    }
+
+    public String getMarketName() {
+        return path.market;
+    }
+
+    public String getProduceName() {
+        return path.produce;
     }
 }

@@ -113,9 +113,9 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         presenter.setView(this);
         activity = componentHelper.getActivity();
         EventBus.getDefault().register(this);
-        componentHelper.getActivity().getSupportActionBar().setDisplayShowTitleEnabled(false);
         componentHelper.showToolbar(true);
         componentHelper.showHamburger();
+        componentHelper.getToolbar().setTitle("");
         update.setVisibility(enableRefresh() ? VISIBLE : GONE);
     }
 

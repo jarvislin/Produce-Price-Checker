@@ -2,57 +2,22 @@
 <com.jarvislin.producepricechecker.page.Details.DetailsPage_
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <LinearLayout
-        android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/data"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="資料筆數："/>
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/data"/>
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinner"/>
 
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:id="@+id/name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="名稱"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="市場"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="日期"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="上價"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="中價"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="下價"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="平均價"/>
-
-        <com.jarvislin.producepricechecker.custom.TitleTextView_
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:title_text="成交量"/>
-
-        <com.github.mikephil.charting.charts.CombinedChart
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"/>
-    </LinearLayout>
 </com.jarvislin.producepricechecker.page.Details.DetailsPage_>
