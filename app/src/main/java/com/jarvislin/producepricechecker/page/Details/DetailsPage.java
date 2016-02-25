@@ -37,7 +37,7 @@ import flow.path.Path;
 public class DetailsPage extends RelativeLayout implements PageListener, AdapterView.OnItemSelectedListener {
     private enum Price {TOP, MID, LOW}
 
-    private int currentPosition = 0;
+    private int currentPosition = -1;
     @Bean
     protected DetailsPresenter presenter;
     @ViewById
@@ -46,7 +46,7 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
     protected LineChart chart;
     @ViewById
     protected Spinner spinner;
-    private String[] dataAmount = {"10筆", "50筆", "100筆", "200筆", "400筆", "750筆"};
+    private String[] dataAmount = {"10筆", "50筆", "100筆", "200筆", "500筆"};
     private ArrayList<ILineDataSet> dataSets = new ArrayList<>();
     private LineData lineData;
 
@@ -71,23 +71,14 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
         spinner.setOnItemSelectedListener(this);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, dataAmount);
         spinner.setAdapter(adapter);
-
-        int amount = 10;
         list = presenter.getChartDataList();
-
-        dataSets.add(generateLineData(Price.TOP, amount));
-        dataSets.add(generateLineData(Price.MID, amount));
-        dataSets.add(generateLineData(Price.LOW, amount));
-        lineData = new LineData(getDates(list, amount), dataSets);
         chart.setDescription("單位：元/公斤");
-        chart.setData(lineData);
-        chart.invalidate();
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (currentPosition != position) {
-            currentPosition = position;
+
             int amount = 10;
             switch (position) {
                 case 0:
@@ -103,14 +94,13 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
                     amount = 200;
                     break;
                 case 4:
-                    amount = 400;
-                    break;
-                case 5:
-                    amount = 750;
+                    amount = 500;
                     break;
             }
-            dataSets.clear();
-            lineData.clearValues();
+            if(!dataSets.isEmpty()) {
+                dataSets.clear();
+                lineData.clearValues();
+            }
             dataSets.add(generateLineData(Price.TOP, amount));
             dataSets.add(generateLineData(Price.MID, amount));
             dataSets.add(generateLineData(Price.LOW, amount));
@@ -118,6 +108,8 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
             lineData = new LineData(getDates(list, amount), dataSets);
             chart.setData(lineData);
             chart.invalidate();
+
+            currentPosition = position;
         }
     }
 
