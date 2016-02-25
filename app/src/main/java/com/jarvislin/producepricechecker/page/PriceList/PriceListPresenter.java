@@ -132,37 +132,36 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     public void getChartItems(final Produce produce) {
         ToolsHelper.showProgressDialog(getContext(), false);
         String[] date = produce.transactionDate.split("\\.");
+        ArrayList<OpenData> list = null;
+        try {
+            int year = Integer.parseInt(date[0]);
+            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
+            list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
+            }.getType());
 
-        int year = Integer.parseInt(date[0]);
-        String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
-        ArrayList<OpenData> list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
-        }.getType());
-
-        Iterator<OpenData> iterator = list.iterator();
-        OpenData temp;
-        while (iterator.hasNext()) {
-            temp = iterator.next();
-            if (!temp.getProduceNumber().equals(produce.produceNumber) || temp.getTransactionAmount().equals("0")) {
-                iterator.remove();
+            Iterator<OpenData> iterator = list.iterator();
+            OpenData temp;
+            while (iterator.hasNext()) {
+                temp = iterator.next();
+                if (!temp.getProduceNumber().equals(produce.produceNumber) || temp.getTransactionAmount().equals("0")) {
+                    iterator.remove();
+                }
             }
-        }
+        } catch (Exception ex) {
 
-        Log.e("GG", list.size() + "");
-        for (OpenData data : list) {
-            Log.e("GG", data.getTransactionDate() + "");
-        }
-
-        ToolsHelper.closeProgressDialog(false);
-        if (list == null || list.isEmpty()) {
-            //show error
-            Log.e("GG", "FAILED");
-        } else {
-            direct(produce, list);
+        } finally {
+            ToolsHelper.closeProgressDialog(false);
+            if (list == null || list.isEmpty()) {
+                //show error
+                showToast("無法取得資料，請確認網路狀況。", Toast.LENGTH_SHORT);
+            } else {
+                direct(produce, list);
+            }
         }
     }
 
     @UiThread
     protected void direct(Produce produce, ArrayList<OpenData> list) {
-        Flow.get(getContext()).set(new DetailsPath(produce.marketName,produce.produceName, list));
+        Flow.get(getContext()).set(new DetailsPath(produce.marketName, produce.produceName, list));
     }
 }
