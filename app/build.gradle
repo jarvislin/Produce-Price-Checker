@@ -40,8 +40,8 @@ android {
         applicationId "com.jarvislin.producepricechecker"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 18
-        versionName "1.4.0"
+        versionCode 19
+        versionName "1.4.1"
     }
     buildTypes {
         debug {

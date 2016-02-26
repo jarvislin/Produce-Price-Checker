@@ -15,6 +15,7 @@
         <item name="android:textColorSecondary">@android:color/white</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
         <item name="actionMenuTextColor">@android:color/white</item>
+        <item name="colorControlNormal">@android:color/white</item>
     </style>
 
     <style name="ActionBarTitle">

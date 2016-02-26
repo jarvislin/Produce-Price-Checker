@@ -162,6 +162,9 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
 
     @UiThread
     protected void direct(Produce produce, ArrayList<OpenData> list) {
-        Flow.get(getContext()).set(new DetailsPath(produce.marketName, produce.produceName, list));
+        Intent intent = new Intent();
+        intent.setClass(getContext(), BlankActivity_.class);
+        intent.putExtra("detailsPath", new DetailsPath(produce.marketName, produce.produceName, list));
+        getContext().startActivity(intent);
     }
 }

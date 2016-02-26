@@ -310,6 +310,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
         return new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                GoogleAnalyticsSender.getInstance(getContext()).send("click_bookmark");
                 Produce object = (Produce) adapter.getItem(position);
                 ColorDrawable color = (ColorDrawable) view.getBackground();
 
@@ -338,6 +339,7 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GoogleAnalyticsSender.getInstance(getContext()).send("click_chart");
                 Produce object = (Produce) adapter.getItem(position);
                 presenter.getChartItems(object);
             }
