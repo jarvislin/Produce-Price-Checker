@@ -20,6 +20,7 @@ public class DetailsPath extends Path implements Serializable {
     public String market;
     public String produce;
     public ArrayList<OpenData> list;
+
     public DetailsPath(String market, String produce, ArrayList<OpenData> list) {
         this.list = list;
         Collections.sort(this.list);

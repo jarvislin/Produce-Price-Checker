@@ -298,11 +298,33 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             adapter = getAdapter(getContext(), list, prefs, presenter.getProduceData().getBookmarkCategory());
             dataList.setAdapter(adapter);
             dataList.setOnItemClickListener(itemClickListener(presenter.getProduceData()));
+            dataList.setOnItemLongClickListener(itemLongClickListener(presenter.getProduceData()));
             setBottomInfo();
             subcategoryFilter.setVisibility(presenter.getProduceData().getCategory().equals(Constants.VEGETABLE) ? VISIBLE : GONE);
             //reset dialog status
             resetFilter();
         }
+    }
+
+    private AdapterView.OnItemLongClickListener itemLongClickListener(final ProduceData data) {
+        return new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Produce object = (Produce) adapter.getItem(position);
+                ColorDrawable color = (ColorDrawable) view.getBackground();
+
+                if (getResources().getColor(R.color.highlight) == color.getColor()) {
+                    DatabaseController.delete(object.produceName, data.getBookmarkCategory());
+                    Toast.makeText(getContext(), R.string.remove_bookmark, Toast.LENGTH_SHORT).show();
+                } else {
+                    DatabaseController.insertBookmark(object, data.getBookmarkCategory());
+                    Toast.makeText(getContext(), R.string.add_bookmark, Toast.LENGTH_SHORT).show();
+                }
+
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+        };
     }
 
     private void resetFilter() {
@@ -317,22 +339,12 @@ public abstract class PriceListPage extends RelativeLayout implements PageListen
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Produce object = (Produce) adapter.getItem(position);
-                ColorDrawable color = (ColorDrawable) view.getBackground();
-
-//                if (getResources().getColor(R.color.highlight) == color.getColor()) {
-//                    DatabaseController.delete(object.produceName, data.getBookmarkCategory());
-//                    Toast.makeText(getContext(), R.string.remove_bookmark, Toast.LENGTH_SHORT).show();
-//                } else {
-//                    DatabaseController.insertBookmark(object, data.getBookmarkCategory());
-//                    Toast.makeText(getContext(), R.string.add_bookmark, Toast.LENGTH_SHORT).show();
-//                }
-//
-
-//                adapter.notifyDataSetChanged();
                 presenter.getChartItems(object);
             }
         };
     }
+
+
 
     public void onEvent(Events.onHistoryClicked event) {
         presenter.fetchHistoryDirectory();

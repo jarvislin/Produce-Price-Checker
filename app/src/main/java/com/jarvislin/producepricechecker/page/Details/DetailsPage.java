@@ -2,11 +2,14 @@ package com.jarvislin.producepricechecker.page.Details;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -17,11 +20,17 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.jarvislin.producepricechecker.ActivityComponentHelper;
+import com.jarvislin.producepricechecker.R;
 import com.jarvislin.producepricechecker.custom.TitleTextView;
+import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.model.OpenData;
 import com.jarvislin.producepricechecker.page.PageListener;
+import com.jarvislin.producepricechecker.util.ToolsHelper;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import org.androidannotations.annotations.Bean;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EView;
 import org.androidannotations.annotations.ViewById;
 
@@ -35,7 +44,7 @@ import flow.path.Path;
  */
 @EView
 public class DetailsPage extends RelativeLayout implements PageListener, AdapterView.OnItemSelectedListener {
-    private enum Price {TOP, MID, LOW}
+    private enum Price {TOP, MID, LOW, AVG}
 
     private int currentPosition = -1;
     @Bean
@@ -46,7 +55,8 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
     protected LineChart chart;
     @ViewById
     protected Spinner spinner;
-    private String[] dataAmount = {"10筆", "50筆", "100筆", "200筆", "500筆"};
+
+    private String[] dataAmount = {"10筆", "50筆", "100筆", "200筆", "400筆", "750筆"};
     private ArrayList<ILineDataSet> dataSets = new ArrayList<>();
     private LineData lineData;
 
@@ -94,16 +104,20 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
                     amount = 200;
                     break;
                 case 4:
-                    amount = 500;
+                    amount = 400;
+                    break;
+                case 5:
+                    amount = 750;
                     break;
             }
-            if(!dataSets.isEmpty()) {
+            if (!dataSets.isEmpty()) {
                 dataSets.clear();
                 lineData.clearValues();
             }
             dataSets.add(generateLineData(Price.TOP, amount));
             dataSets.add(generateLineData(Price.MID, amount));
             dataSets.add(generateLineData(Price.LOW, amount));
+            dataSets.add(generateLineData(Price.AVG, amount));
 
             lineData = new LineData(getDates(list, amount), dataSets);
             chart.setData(lineData);
@@ -143,6 +157,10 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
                 title = "下價";
                 color = Color.rgb(53, 114, 227);
                 break;
+            case AVG:
+                title = "平均價";
+                color = Color.rgb(206, 189, 34);
+                break;
             default:
                 title = "";
                 color = 0;
@@ -163,6 +181,9 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
                 case LOW:
                     entries.add(new Entry(Float.parseFloat(list.get(index).getLowPrice()), count));
                     break;
+                case AVG:
+                    entries.add(new Entry(Float.parseFloat(list.get(index).getAveragePrice()), count));
+                    break;
             }
         }
 
@@ -180,7 +201,6 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
 
         return set;
     }
-
 
     @Override
     public void onCreateOptionsMenu(ActivityComponentHelper componentHelper, Menu menu) {
