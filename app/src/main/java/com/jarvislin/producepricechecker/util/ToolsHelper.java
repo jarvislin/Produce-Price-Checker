@@ -5,6 +5,8 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -13,6 +15,7 @@ import android.os.Looper;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,6 +147,20 @@ public class ToolsHelper {
         Intent chooser = Intent.createChooser(intent, context.getString(R.string.choose_service));
         context.startActivity(chooser);
     }
+
+    public static void changeToGrayScale(ImageView v) {
+        ColorMatrix matrix = new ColorMatrix();
+        matrix.setSaturation(0);  //0 means grayscale
+        ColorMatrixColorFilter cf = new ColorMatrixColorFilter(matrix);
+        v.setColorFilter(cf);
+        v.setAlpha(0.5f);
+    }
+
+    public static void changeToFullColor(ImageView v) {
+        v.setColorFilter(null);
+        v.setAlpha(1.f);
+    }
+
 
 
 

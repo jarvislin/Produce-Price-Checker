@@ -26,6 +26,9 @@ public class OpenData implements Serializable, Comparable<OpenData> {
     @SerializedName("上價")
     private String topPrice;
 
+    @SerializedName("平均價")
+    private String averagePrice;
+
     @SerializedName("作物代號")
     private String produceNumber;
 
@@ -95,5 +98,13 @@ public class OpenData implements Serializable, Comparable<OpenData> {
     @Override
     public int compareTo(OpenData data) {
         return String.CASE_INSENSITIVE_ORDER.compare(this.getTransactionDate(), data.getTransactionDate());
+    }
+
+    public String getAveragePrice() {
+        return averagePrice;
+    }
+
+    public void setAveragePrice(String averagePrice) {
+        this.averagePrice = averagePrice;
     }
 }

@@ -1,9 +1,12 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.BlankActivity;
 import com.jarvislin.producepricechecker.BlankActivity_;
@@ -12,7 +15,9 @@ import com.jarvislin.producepricechecker.bean.DataLoader;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
+import com.jarvislin.producepricechecker.model.OpenData;
 import com.jarvislin.producepricechecker.model.ProduceData;
+import com.jarvislin.producepricechecker.page.Details.DetailsPath;
 import com.jarvislin.producepricechecker.page.History.CustomerHistoryPath;
 import com.jarvislin.producepricechecker.page.History.MerchantHistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
@@ -25,10 +30,12 @@ import com.jarvislin.producepricechecker.util.ToolsHelper;
 import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import flow.Flow;
 import flow.History;
@@ -45,6 +52,8 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     protected DataLoader dataLoader;
     @Pref
     protected Preferences_ preferences;
+    @RestService
+    protected ApiClient client;
 
     @Override
     protected void init(Path path, View view) {
@@ -103,7 +112,7 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ToolsHelper.showProgressDialog(getContext(), false);
         HistoryDirectory directory = dataLoader.getHistoryDirectory();
         ToolsHelper.closeProgressDialog(false);
-        if(directory != null) {
+        if (directory != null) {
             page.showHistoryDialog(directory);
         }
     }
@@ -117,5 +126,42 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         intent.setClass(getContext(), BlankActivity_.class);
         intent.putExtra("historyPath", (preferences.userMode().get().equals(Constants.CUSTOMER)) ? new CustomerHistoryPath(list) : new MerchantHistoryPath(list));
         getContext().startActivity(intent);
+    }
+
+    @Background
+    public void getChartItems(final Produce produce) {
+        ToolsHelper.showProgressDialog(getContext(), false);
+        String[] date = produce.transactionDate.split("\\.");
+        ArrayList<OpenData> list = null;
+        try {
+            int year = Integer.parseInt(date[0]);
+            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
+            list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
+            }.getType());
+
+            Iterator<OpenData> iterator = list.iterator();
+            OpenData temp;
+            while (iterator.hasNext()) {
+                temp = iterator.next();
+                if (!temp.getProduceNumber().equals(produce.produceNumber) || temp.getTransactionAmount().equals("0")) {
+                    iterator.remove();
+                }
+            }
+        } catch (Exception ex) {
+
+        } finally {
+            ToolsHelper.closeProgressDialog(false);
+            if (list == null || list.isEmpty()) {
+                //show error
+                showToast("無法取得資料，請確認網路狀況。", Toast.LENGTH_SHORT);
+            } else {
+                direct(produce, list);
+            }
+        }
+    }
+
+    @UiThread
+    protected void direct(Produce produce, ArrayList<OpenData> list) {
+        Flow.get(getContext()).set(new DetailsPath(produce.marketName, produce.produceName, list));
     }
 }
