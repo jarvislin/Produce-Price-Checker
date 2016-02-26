@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jarvislin.producepricechecker.page.Details.DetailsPage_
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="4dp">
+        <TextView
+            android:id="@+id/data_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="資料筆數："
+            android:textSize="16sp"
+            android:textColor="@color/main_blue"/>
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/data_text"/>
+    </RelativeLayout>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top"/>
+</com.jarvislin.producepricechecker.page.Details.DetailsPage_>
