@@ -135,7 +135,15 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ArrayList<OpenData> list = null;
         try {
             int year = Integer.parseInt(date[0]);
-            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
+            String marketName = produce.marketName;
+            if(produce.marketName.equals("台中市場")) {
+                marketName = "台中市";
+            } else if (produce.marketName.equals("高雄市場")) {
+                marketName = "高雄市";
+            } else if (produce.marketName.equals("彰化市場")) {
+                marketName = "溪湖鎮";
+            }
+            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, marketName);
             list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
             }.getType());
 
