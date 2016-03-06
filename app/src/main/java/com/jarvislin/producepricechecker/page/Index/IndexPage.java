@@ -68,7 +68,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
     @UiThread
     void showNews() {
         ToolsHelper.showDialog(getContext(), "新功能",
-                "新增歷史價格走勢圖表，最多可查詢兩年記錄。");
+                "修正某些市場無法使用歷史價格走勢圖表之錯誤。");
     }
 
 
@@ -98,6 +98,7 @@ public class IndexPage extends FrameLayout implements PageListener, HandlesBack 
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "馬上更新", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                GoogleAnalyticsSender.getInstance(getContext()).send("click_update_app");
                 presenter.direct("update_app");
             }
         });

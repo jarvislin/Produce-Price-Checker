@@ -73,7 +73,9 @@ public class DetailsPage extends RelativeLayout implements PageListener, Adapter
         presenter.setView(this);
         componentHelper.showToolbar(false);
         componentHelper.showArrow();
-        componentHelper.getToolbar().setTitle(presenter.getMarketName() + " " + presenter.getProduceName());
+        if (componentHelper.getActivity().getSupportActionBar() != null) {
+            componentHelper.getActivity().getSupportActionBar().setTitle(presenter.getMarketName() + " " + presenter.getProduceName());
+        }
         initViews();
     }
 

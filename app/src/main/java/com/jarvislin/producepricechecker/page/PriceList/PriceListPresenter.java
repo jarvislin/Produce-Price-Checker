@@ -23,6 +23,7 @@ import com.jarvislin.producepricechecker.page.History.MerchantHistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.path.HandlesBack;
+import com.jarvislin.producepricechecker.path.Utils;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -135,7 +136,15 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
         ArrayList<OpenData> list = null;
         try {
             int year = Integer.parseInt(date[0]);
-            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, produce.marketName);
+            String marketName = produce.marketName;
+            if(produce.marketName.equals("台中市場")) {
+                marketName = "台中市";
+            } else if (produce.marketName.equals("高雄市場")) {
+                marketName = "高雄市";
+            } else if (produce.marketName.equals("彰化市場")) {
+                marketName = "溪湖鎮";
+            }
+            String openData = client.getOpenData(year - 2 + "." + date[1] + "." + date[2], produce.transactionDate, produce.produceName, marketName);
             list = new Gson().fromJson(openData, new TypeToken<ArrayList<OpenData>>() {
             }.getType());
 
@@ -153,7 +162,13 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
             ToolsHelper.closeProgressDialog(false);
             if (list == null || list.isEmpty()) {
                 //show error
-                showToast("無法取得資料，請確認網路狀況。", Toast.LENGTH_SHORT);
+                String error;
+                if(!ToolsHelper.isNetworkAvailable(getContext())) {
+                    error = "無法取得資料，請確認網路狀況。";
+                } else {
+                    error = "無法取得資料，可能伺服器維修中，請稍後再試。";
+                }
+                showToast(error, Toast.LENGTH_SHORT);
             } else {
                 direct(produce, list);
             }
@@ -162,6 +177,9 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
 
     @UiThread
     protected void direct(Produce produce, ArrayList<OpenData> list) {
-        Flow.get(getContext()).set(new DetailsPath(produce.marketName, produce.produceName, list));
+        Intent intent = new Intent();
+        intent.setClass(getContext(), BlankActivity_.class);
+        intent.putExtra("detailsPath", new DetailsPath(produce.marketName, produce.produceName, list));
+        getContext().startActivity(intent);
     }
 }

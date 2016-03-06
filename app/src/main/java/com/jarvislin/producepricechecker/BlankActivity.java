@@ -1,7 +1,10 @@
 package com.jarvislin.producepricechecker;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Spinner;
 
+import com.jarvislin.producepricechecker.page.Details.DetailsPath;
 import com.jarvislin.producepricechecker.page.History.HistoryPath;
 import com.jarvislin.producepricechecker.page.Questions.QuestionsPath;
 import com.jarvislin.producepricechecker.path.FrameLayoutContainerView;
@@ -38,6 +42,8 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
     protected HistoryPath historyPath;
     @Extra
     protected QuestionsPath questionsPath;
+    @Extra
+    protected DetailsPath detailsPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +57,22 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
         setSupportActionBar(toolbar);
         FlowDelegate.NonConfigurationInstance nonConfig = (FlowDelegate.NonConfigurationInstance)
                 getLastCustomNonConfigurationInstance();
-        Path path = historyPath != null ? historyPath : questionsPath;
-        if (path == null) this.finish();
+        Path path = questionsPath;
+        if (historyPath != null) {
+            path = historyPath;
+        } else if (detailsPath != null) {
+            path = detailsPath;
+        }
+        if (path == null) {
+            this.finish();
+        }
         flowSupport = FlowDelegate.onCreate(nonConfig, getIntent(), savedInstanceState
                 , new GsonParceler(), History.single(path), this);
+        
+        final Drawable arrow = ContextCompat.getDrawable(this, R.drawable.ic_action_back);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().setHomeAsUpIndicator(arrow);
+        }
     }
 
 
