@@ -23,6 +23,7 @@ import com.jarvislin.producepricechecker.page.History.MerchantHistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.path.HandlesBack;
+import com.jarvislin.producepricechecker.path.Utils;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -161,7 +162,13 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
             ToolsHelper.closeProgressDialog(false);
             if (list == null || list.isEmpty()) {
                 //show error
-                showToast("無法取得資料，請確認網路狀況。", Toast.LENGTH_SHORT);
+                String error;
+                if(!ToolsHelper.isNetworkAvailable(getContext())) {
+                    error = "無法取得資料，請確認網路狀況。";
+                } else {
+                    error = "無法取得資料，可能伺服器維修中，請稍後再試。";
+                }
+                showToast(error, Toast.LENGTH_SHORT);
             } else {
                 direct(produce, list);
             }
