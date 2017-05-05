@@ -159,12 +159,9 @@ public class BlankActivity extends AppCompatActivity implements Flow.Dispatcher,
     @Override
     public void dispatch(Flow.Traversal traversal, final Flow.TraversalCallback callback) {
         ToolsHelper.hideSoftKeyboard(this);
-        container.dispatch(traversal, new Flow.TraversalCallback() {
-            @Override
-            public void onTraversalCompleted() {
-                invalidateOptionsMenu();
-                callback.onTraversalCompleted();
-            }
+        container.dispatch(traversal, () -> {
+            invalidateOptionsMenu();
+            callback.onTraversalCompleted();
         });
     }
 

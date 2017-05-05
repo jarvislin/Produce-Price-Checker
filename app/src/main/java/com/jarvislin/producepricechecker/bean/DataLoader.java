@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jarvislin.producepricechecker.ApiClient;
 import com.jarvislin.producepricechecker.database.DatabaseController;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
@@ -19,9 +18,6 @@ import com.raizlabs.android.dbflow.runtime.transaction.process.UpdateModelListTr
 
 import org.androidannotations.annotations.AfterInject;
 import org.androidannotations.annotations.EBean;
-import org.androidannotations.annotations.rest.RestService;
-import org.androidannotations.api.rest.RestErrorHandler;
-import org.springframework.core.NestedRuntimeException;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,8 +28,6 @@ import java.util.List;
  */
 @EBean(scope = EBean.Scope.Singleton)
 public class DataLoader {
-    @RestService
-    protected ApiClient client;
     private String currentMarketNumber;
     private String currentCategory;
     private String currentBookmarkCategory;

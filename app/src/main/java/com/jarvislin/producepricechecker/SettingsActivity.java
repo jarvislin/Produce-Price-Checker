@@ -21,7 +21,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.PreferenceByKey;
 import org.androidannotations.annotations.PreferenceChange;
 import org.androidannotations.annotations.PreferenceClick;
-import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 /**
@@ -33,8 +32,6 @@ public class SettingsActivity extends PreferenceActivity {
     @Pref
     Preferences_ prefs;
 
-    @RestService
-    ApiClient client;
 
     private static final String PREF_NAME = "Preferences";
 

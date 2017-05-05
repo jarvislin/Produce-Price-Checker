@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'android-apt'
-def AAVersion = '3.3.2'
+apply plugin: 'me.tatarka.retrolambda'
+
+def AAVersion = '4.3.0'
 
 buildscript {
     repositories {
@@ -10,7 +10,6 @@ buildscript {
         mavenLocal()
     }
     dependencies {
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -21,37 +20,25 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
-apt {
-    arguments {
-        androidManifestFile variant.outputs[0].processResources.manifestFile
-        // if you have multiple outputs (when using splits), you may want to have other index than 0
-
-        // You can set optional annotation processing options here, like these commented options:
-        // logLevel 'INFO'
-        // logFile '/var/log/aa.log'
-    }
-}
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion '25.0.0'
+    compileSdkVersion 25
+    buildToolsVersion '25.0.2'
 
     defaultConfig {
         applicationId "com.jarvislin.producepricechecker"
         minSdkVersion 14
-        targetSdkVersion 23
-        versionCode 20
+        targetSdkVersion 25
+        versionCode getTimestamp() as Integer ?: 0
         versionName "1.4.2"
     }
     buildTypes {
         debug {
             minifyEnabled false
-            shrinkResources false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -61,28 +48,63 @@ android {
         exclude 'META-INF/notice.txt'
         exclude 'META-INF/license.txt'
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:23.2.0'
-    compile 'com.google.android.gms:play-services-analytics:8.4.0'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    apt 'com.raizlabs.android:DBFlow-Compiler:2.1.0'
-    compile 'com.raizlabs.android:DBFlow-Core:2.1.0'
-    compile 'com.raizlabs.android:DBFlow:2.1.0'
-    compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.flow:flow:0.10'
-    compile 'com.squareup.flow:flow-path:0.10'
-    compile 'org.jsoup:jsoup:1.8.3'
-    compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
+
+    //RxJava
+    
+
+    // Http
+    
+    //AA
+    annotationProcessor "org.androidannotations:androidannotations:$AAVersion"
     compile "org.androidannotations:androidannotations-api:$AAVersion"
-    apt "org.androidannotations:androidannotations:$AAVersion"
+
     compile('com.mikepenz:materialdrawer:4.3.0@aar') {
         transitive = true
     }
+    
+    //logger
+    
+    //debug tool
+    
+    //lombok
+    
+    //unit test
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.google.android.gms:play-services-analytics:10.2.1'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile 'com.squareup.flow:flow:0.10'
+    compile 'com.squareup.flow:flow-path:0.10'
+    compile 'org.jsoup:jsoup:1.8.3'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile 'io.reactivex.rxjava2:rxjava:2.0.9'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
+    compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.getbase:floatingactionbutton:1.10.0'
     compile 'com.mikepenz:community-material-typeface:1.2.64.1@aar'
     compile 'com.prolificinteractive:material-calendarview:1.1.0'
     compile 'com.github.PhilJay:MPAndroidChart:v2.2.2'
+    compile 'com.jakewharton.timber:timber:4.3.1'
+    compile 'com.facebook.stetho:stetho:1.4.2'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support.constraint:constraint-layout:+'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:1.10.19'
+    provided 'org.projectlombok:lombok:1.16.2'
+}
+
+static def getTimestamp() {
+    def date = new Date()
+    return Integer.parseInt(date.format('yyMMdd'))
 }

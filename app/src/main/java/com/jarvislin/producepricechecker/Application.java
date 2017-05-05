@@ -1,6 +1,8 @@
 package com.jarvislin.producepricechecker;
 
-import com.raizlabs.android.dbflow.config.FlowManager;
+import com.facebook.stetho.Stetho;
+
+import timber.log.Timber;
 
 /**
  * Created by Jarvis Lin on 2015/6/13.
@@ -9,6 +11,10 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        FlowManager.init(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+            Stetho.initializeWithDefaults(this);
+        }
     }
 }

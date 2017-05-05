@@ -39,7 +39,6 @@ import flow.FlowDelegate;
 import flow.History;
 import flow.path.Path;
 
-@EActivity(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements Flow.Dispatcher, ActivityComponentHelper {
     private FlowDelegate flowSupport;
     private Bundle savedInstanceState;

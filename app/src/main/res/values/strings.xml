@@ -50,4 +50,13 @@
     <string name="remove_bookmark">已移除重點標示</string>
     <string name="add_bookmark">已將項目加入重點標示</string>
     <string name="banner_ad_unit_id">ca-app-pub-7707196961258408/5115613320</string>
+    <string name="please_wait">請稍候...</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main3">Main3Activity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

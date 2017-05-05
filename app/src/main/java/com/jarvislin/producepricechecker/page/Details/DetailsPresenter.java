@@ -1,22 +1,14 @@
 package com.jarvislin.producepricechecker.page.Details;
 
-import android.util.Log;
 import android.view.View;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.jarvislin.producepricechecker.ApiClient;
-import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.OpenData;
-import com.jarvislin.producepricechecker.model.ProduceData;
 import com.jarvislin.producepricechecker.page.Presenter;
 
-import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.rest.RestService;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import flow.path.Path;
 

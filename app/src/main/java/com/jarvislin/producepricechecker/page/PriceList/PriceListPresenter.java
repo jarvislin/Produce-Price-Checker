@@ -1,17 +1,16 @@
 package com.jarvislin.producepricechecker.page.PriceList;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.jarvislin.producepricechecker.ApiClient;
-import com.jarvislin.producepricechecker.BlankActivity;
 import com.jarvislin.producepricechecker.BlankActivity_;
-import com.jarvislin.producepricechecker.MainActivity_;
+import com.jarvislin.producepricechecker.base.BaseRepository;
 import com.jarvislin.producepricechecker.bean.DataLoader;
+import com.jarvislin.producepricechecker.data.DataPreference_;
+import com.jarvislin.producepricechecker.data.UserPreference_;
 import com.jarvislin.producepricechecker.database.Produce;
 import com.jarvislin.producepricechecker.model.ApiProduce;
 import com.jarvislin.producepricechecker.model.HistoryDirectory;
@@ -23,7 +22,6 @@ import com.jarvislin.producepricechecker.page.History.MerchantHistoryPath;
 import com.jarvislin.producepricechecker.page.Index.IndexPath;
 import com.jarvislin.producepricechecker.page.Presenter;
 import com.jarvislin.producepricechecker.path.HandlesBack;
-import com.jarvislin.producepricechecker.path.Utils;
 import com.jarvislin.producepricechecker.util.Constants;
 import com.jarvislin.producepricechecker.util.Preferences_;
 import com.jarvislin.producepricechecker.util.ToolsHelper;
@@ -32,7 +30,6 @@ import org.androidannotations.annotations.Background;
 import org.androidannotations.annotations.Bean;
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.UiThread;
-import org.androidannotations.annotations.rest.RestService;
 import org.androidannotations.annotations.sharedpreferences.Pref;
 
 import java.util.ArrayList;
@@ -53,8 +50,6 @@ public class PriceListPresenter extends Presenter implements DataLoader.OnReceiv
     protected DataLoader dataLoader;
     @Pref
     protected Preferences_ preferences;
-    @RestService
-    protected ApiClient client;
 
     @Override
     protected void init(Path path, View view) {
