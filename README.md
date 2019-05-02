@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjarvislin%2FProduce-Price-Checker.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjarvislin%2FProduce-Price-Checker?ref=badge_shield)
+
 蔬果行情站 - Android
 ==========
 <img src="https://lh6.ggpht.com/GCDvi_WtOavfDC074RsXM3JdABUsLjWLEbKVrNGxxm7XAQUb5d7oTg1a7qylOsOQ1Q=h900-rw" width="253" height="450">
@@ -61,3 +63,7 @@ https://github.com/jarvislin/Produce-Price-Checker/blob/master/LICENSE
 - http://www.freepik.com
 - http://www.flaticon.com
 - http://creativecommons.org/licenses/by/3.0
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjarvislin%2FProduce-Price-Checker.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjarvislin%2FProduce-Price-Checker?ref=badge_large)
